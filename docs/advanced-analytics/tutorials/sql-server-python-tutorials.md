@@ -1,3 +1,4 @@
+<--
 ---
 title: "SQL Server Python Tutorials | Microsoft Docs"
 ms.custom: 
@@ -19,6 +20,8 @@ author: "jeannt"
 ms.author: "jeannt"
 manager: "jhubbard"
 ---
+-->
+
 # SQL Server Python Tutorials
 
 This article provides a list of tutorials and samples that demonstrate the use of Python with SQL Server 2017. Through these samples and demos, you will learn:
