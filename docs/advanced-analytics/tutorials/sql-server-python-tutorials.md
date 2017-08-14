@@ -22,42 +22,42 @@ manager: "jhubbard"
 ---
 -->
 
-# SQL Server + Python ƒ`ƒ…[ƒgƒŠƒAƒ‹
+# SQL Server + Python ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 
-‚±‚Ì‹LŽ–‚ÍPython‚ðSQL Server 2017‚ÅŽg—p‚·‚é‚½‚ß‚Ìƒ`ƒ…[ƒgƒŠƒAƒ‹‚ÆƒTƒ“ƒvƒ‹‚ð’ñ‹Ÿ‚µ‚Ü‚·B‚±‚ê‚É‚æ‚Á‚ÄŽŸ‚Ì‚±‚Æ‚ðŠw‚Ñ‚Ü‚·B
+ã“ã®è¨˜äº‹ã¯Pythonã‚’SQL Server 2017ã§ä½¿ç”¨ã™ã‚‹ãŸã‚ã®ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã¨ã‚µãƒ³ãƒ—ãƒ«ã‚’æä¾›ã—ã¾ã™ã€‚ã“ã‚Œã«ã‚ˆã£ã¦æ¬¡ã®ã“ã¨ã‚’å­¦ã³ã¾ã™ã€‚
 
-+ T-SQL‚©‚çPython‚ðŽÀs‚·‚é•û–@
-+ ƒŠƒ‚[ƒg‚¨‚æ‚Ñƒ[ƒJƒ‹‚ÌŒvŽZƒRƒ“ƒeƒLƒXƒg‚Ì—‰ðA‚¨‚æ‚ÑSQL Server‚ðŽg—p‚µ‚ÄPythonƒR[ƒh‚ðŽÀs‚·‚é•û–@
-+ PythonƒR[ƒh‚ðƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚Æ‚µ‚Ä’è‹`‚·‚é•û–@
-+ –{”ÔŠÂ‹«—p‚ÌPythonƒR[ƒh‚ÌÅ“K‰»
-+ ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚É‹@ŠBŠwK‚ð‘g‚Ýž‚Þ‚½‚ß‚ÌŒ»ŽÀ‚É‘¦‚µ‚½ƒVƒiƒŠƒI
++ T-SQLã‹ã‚‰Pythonã‚’å®Ÿè¡Œã™ã‚‹æ–¹æ³•
++ ãƒªãƒ¢ãƒ¼ãƒˆãŠã‚ˆã³ãƒ­ãƒ¼ã‚«ãƒ«ã®è¨ˆç®—ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®ç†è§£ã€ãŠã‚ˆã³SQL Serverã‚’ä½¿ç”¨ã—ã¦Pythonã‚³ãƒ¼ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹æ–¹æ³•
++ Pythonã‚³ãƒ¼ãƒ‰ã‚’ã‚¹ãƒˆã‚¢ãƒ‰ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã¨ã—ã¦å®šç¾©ã™ã‚‹æ–¹æ³•
++ æœ¬ç•ªç’°å¢ƒç”¨ã®Pythonã‚³ãƒ¼ãƒ‰ã®æœ€é©åŒ–
++ ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã«æ©Ÿæ¢°å­¦ç¿’ã‚’çµ„ã¿è¾¼ã‚€ãŸã‚ã®ç¾å®Ÿã«å³ã—ãŸã‚·ãƒŠãƒªã‚ª
 
-—vŒ‚ÆƒZƒbƒgƒAƒbƒv‚ÌÚ×‚É‚Â‚¢‚Ä‚ÍA[‘O’ñðŒ](#bkmk_Prerequisites)‚ðŽQÆ‚µ‚Ä‚­‚¾‚³‚¢B
+è¦ä»¶ã¨ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã®è©³ç´°ã«ã¤ã„ã¦ã¯ã€[å‰ææ¡ä»¶](#bkmk_Prerequisites)ã‚’å‚ç…§ã—ã¦ãã ã•ã„ã€‚
 
-## <a name="bkmk_pythontutorials"></a>Python ƒ`ƒ…[ƒgƒŠƒAƒ‹
+## <a name="bkmk_pythontutorials"></a>Python ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 
-+ [T-SQL‚©‚çPython‚ðŽÀs‚·‚é•û–@](run-python-using-t-sql.md)
++ [T-SQLã‹ã‚‰Pythonã‚’å®Ÿè¡Œã™ã‚‹æ–¹æ³•](run-python-using-t-sql.md)
 
-  SQL Server 2016‚©‚ç“±“ü‚³‚ê‚½Šg’£‹@\‚ðŽg‚Á‚ÄT-SQL‚©‚çPython‚ðŽÀs‚·‚é‚½‚ß‚ÌŠî‘b‚ðŠw‚Ñ‚Ü‚·B
+  SQL Server 2016ã‹ã‚‰å°Žå…¥ã•ã‚ŒãŸæ‹¡å¼µæ©Ÿæ§‹ã‚’ä½¿ã£ã¦T-SQLã‹ã‚‰Pythonã‚’å®Ÿè¡Œã™ã‚‹ãŸã‚ã®åŸºç¤Žã‚’å­¦ã³ã¾ã™ã€‚
 
-+ [revoscalepy‚ðŽg‚Á‚ÄPython‚Å‹@ŠBŠwKƒ‚ƒfƒ‹‚ðì¬‚·‚é](use-python-revoscalepy-to-create-model.md)
++ [revoscalepyã‚’ä½¿ã£ã¦Pythonã§æ©Ÿæ¢°å­¦ç¿’ãƒ¢ãƒ‡ãƒ«ã‚’ä½œæˆã™ã‚‹](use-python-revoscalepy-to-create-model.md)
 
-  V‚µ‚¢ **revoscalepy** ƒ‰ƒCƒuƒ‰ƒŠ‚Ì **rxLinMod** ‚ðŽg—p‚µ‚Äƒ‚ƒfƒ‹‚ðì¬‚µ‚Ü‚·BƒR[ƒh‚ÍƒŠƒ‚[ƒg‚ÌPythonƒ^[ƒ~ƒiƒ‹‚©‚ç‹N“®‚³‚ê‚Ü‚·‚ªAƒ‚ƒfƒŠƒ“ƒO‚ÍSQL Server‚ÌƒRƒ“ƒeƒLƒXƒg‚Åˆ—‚³‚ê‚Ü‚·B
+  æ–°ã—ã„ **revoscalepy** ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã® **rxLinMod** ã‚’ä½¿ç”¨ã—ã¦ãƒ¢ãƒ‡ãƒ«ã‚’ä½œæˆã—ã¾ã™ã€‚ã‚³ãƒ¼ãƒ‰ã¯ãƒªãƒ¢ãƒ¼ãƒˆã®Pythonã‚¿ãƒ¼ãƒŸãƒŠãƒ«ã‹ã‚‰èµ·å‹•ã•ã‚Œã¾ã™ãŒã€ãƒ¢ãƒ‡ãƒªãƒ³ã‚°ã¯SQL Serverã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã§å‡¦ç†ã•ã‚Œã¾ã™ã€‚
 
-+ [Python‚Å—\‘ªƒ‚ƒfƒ‹\’z‚·‚é](https://github.com/gho9o9/sql-server-samples/tree/master/samples/features/machine-learning-services/python/getting-started/rental-prediction)
++ [Pythonã§äºˆæ¸¬ãƒ¢ãƒ‡ãƒ«æ§‹ç¯‰ã™ã‚‹](https://github.com/gho9o9/sql-server-samples/tree/master/samples/features/machine-learning-services/python/getting-started/rental-prediction)
 
-  ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ðŽg—p‚µ‚ÄƒXƒL[ƒŒƒ“ƒ^ƒ‹Ž–‹Æ‚Ì“úX‚ÌŽù—v—\‘ª‚ðs‚¤ƒ‚ƒfƒ‹‚ðì¬‚µ‚Ü‚·B
+  ã‚¹ãƒˆã‚¢ãƒ‰ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã‚’ä½¿ç”¨ã—ã¦ã‚¹ã‚­ãƒ¼ãƒ¬ãƒ³ã‚¿ãƒ«äº‹æ¥­ã®æ—¥ã€…ã®éœ€è¦äºˆæ¸¬ã‚’è¡Œã†ãƒ¢ãƒ‡ãƒ«ã‚’ä½œæˆã—ã¾ã™ã€‚
 
-+ [SQLŠJ”­ŽÒ‚Ì‚½‚ß‚Ì In-Database Python •ªÍ](sqldev-in-database-python-for-sql-developers.md)
++ [SQLé–‹ç™ºè€…ã®ãŸã‚ã® In-Database Python åˆ†æž](sqldev-in-database-python-for-sql-developers.md)
 
-  T-SQLƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ðŽg—p‚µ‚ÄŠ®‘S‚ÈPythonƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚ð\’z‚µ‚Ü‚·B
+  T-SQLã‚¹ãƒˆã‚¢ãƒ‰ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã‚’ä½¿ç”¨ã—ã¦å®Œå…¨ãªPythonã‚½ãƒªãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ§‹ç¯‰ã—ã¾ã™ã€‚
 
-+ [Pythonƒ‚ƒfƒ‹‚Ì“WŠJ‚Æ—˜—p](..\python\publish-consume-python-code.md)
++ [Pythonãƒ¢ãƒ‡ãƒ«ã®å±•é–‹ã¨åˆ©ç”¨](..\python\publish-consume-python-code.md)
 
-  Microsoft Machine Learning Server‚ÌÅVƒo[ƒWƒ‡ƒ“‚ðŽg—p‚µ‚ÄPythonƒ‚ƒfƒ‹‚ð“±“ü‚·‚é•û–@‚ðŠw‚Ñ‚Ü‚·B
+  Microsoft Machine Learning Serverã®æœ€æ–°ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’ä½¿ç”¨ã—ã¦Pythonãƒ¢ãƒ‡ãƒ«ã‚’å°Žå…¥ã™ã‚‹æ–¹æ³•ã‚’å­¦ã³ã¾ã™ã€‚
 
 <!--
-## PythonƒTƒ“ƒvƒ‹
+## Pythonã‚µãƒ³ãƒ—ãƒ«
 
 These samples and demos provided by the SQL Server development team highlight ways that you can use embedded analytics in real-world applications.
 
@@ -66,9 +66,9 @@ These samples and demos provided by the SQL Server development team highlight wa
   Learn how a ski rental business might use machine learning to predict future rentals, which helps the business plan and staff to meet future demand.
 -->
 
-## <a name="bkmk_Prerequisites"></a>‘O’ñðŒ
+## <a name="bkmk_Prerequisites"></a>å‰ææ¡ä»¶
 
-‚±‚ê‚ç‚Ìƒ`ƒ…[ƒgƒŠƒAƒ‹‚ðŽg—p‚·‚é‚É‚ÍASQL Server 2017 Machine Learning Services (In-Database)‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚è‚Ü‚·BMachine Learning Services‚ÍR‚Ü‚½‚ÍPython‚ðƒTƒ|[ƒg‚µ‚Ä‚¢‚Ü‚·B‚½‚¾‚µAPython‚ð—˜—p‚·‚éÛ‚É‚ÍƒCƒ“ƒXƒg[ƒ‹‚·‚éŒ¾Œê‚ÉPython‚ð‘I‘ð‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B‚È‚¨R‚ÆPython‚Ì—¼•û‚ð“¯‚¶ƒRƒ“ƒsƒ…[ƒ^‚ÉƒCƒ“ƒXƒg[ƒ‹‚·‚é‚±‚Æ‚ª‰Â”\‚Å‚·B
+ã“ã‚Œã‚‰ã®ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚’ä½¿ç”¨ã™ã‚‹ã«ã¯ã€SQL Server 2017 Machine Learning Services (In-Database)ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚Machine Learning Servicesã¯Rã¾ãŸã¯Pythonã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã™ã€‚ãŸã ã—ã€Pythonã‚’åˆ©ç”¨ã™ã‚‹éš›ã«ã¯ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹è¨€èªžã«Pythonã‚’é¸æŠžã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚ãªãŠRã¨Pythonã®ä¸¡æ–¹ã‚’åŒã˜ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã“ã¨ãŒå¯èƒ½ã§ã™ã€‚
 
 <!--
 > [!NOTE]
@@ -77,18 +77,18 @@ These samples and demos provided by the SQL Server development team highlight wa
 **SQL Server 2017**
 -->
 
-SQL Server‚ÌƒCƒ“ƒXƒg[ƒ‹Š®—¹Œã‚ÉAˆÈ‰º‚ÌƒXƒeƒbƒv‚ª•K—v‚Å‚·B
+SQL Serverã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«å®Œäº†å¾Œã«ã€ä»¥ä¸‹ã®ã‚¹ãƒ†ãƒƒãƒ—ãŒå¿…è¦ã§ã™ã€‚
 
-+ ŠO•”ƒXƒNƒŠƒvƒgŽÀs‹@”\‚ð—LŒø‰»‚µ‚Ü‚·B `sp_configure 'enable external script', 1`
-+ SQL Server‚ðÄ‹N“®‚µ‚Ü‚·B
-+ ŠO•”ƒ‰ƒ“ƒ^ƒCƒ€‚ÌƒR[ƒ‹‚É•K—v‚ÈŒ ŒÀ‚ªƒT[ƒrƒXƒAƒJƒEƒ“ƒg‚É•t—^‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ðŠm”F‚µ‚Ü‚·B
-+ ƒT[ƒo[‚Ö‚ÌÚ‘±Aƒf[ƒ^‚Ì“Ç‚ÝŽæ‚èA‚¨‚æ‚ÑƒTƒ“ƒvƒ‹‚É•K—v‚Èƒf[ƒ^ƒx[ƒXƒIƒuƒWƒFƒNƒg‚Ìì¬‚É•K—v‚ÈƒAƒNƒZƒX‹–‰Â‚ªSQLƒƒOƒCƒ“‚Ü‚½‚ÍWindowsƒ†[ƒU[ƒAƒJƒEƒ“ƒg‚É•t—^‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ðŠm”F‚µ‚Ü‚·B
++ å¤–éƒ¨ã‚¹ã‚¯ãƒªãƒ—ãƒˆå®Ÿè¡Œæ©Ÿèƒ½ã‚’æœ‰åŠ¹åŒ–ã—ã¾ã™ã€‚ `sp_configure 'enable external script', 1`
++ SQL Serverã‚’å†èµ·å‹•ã—ã¾ã™ã€‚
++ å¤–éƒ¨ãƒ©ãƒ³ã‚¿ã‚¤ãƒ ã®ã‚³ãƒ¼ãƒ«ã«å¿…è¦ãªæ¨©é™ãŒã‚µãƒ¼ãƒ“ã‚¹ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã«ä»˜ä¸Žã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¾ã™ã€‚
++ ã‚µãƒ¼ãƒãƒ¼ã¸ã®æŽ¥ç¶šã€ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿å–ã‚Šã€ãŠã‚ˆã³ã‚µãƒ³ãƒ—ãƒ«ã«å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆã«å¿…è¦ãªã‚¢ã‚¯ã‚»ã‚¹è¨±å¯ãŒSQLãƒ­ã‚°ã‚¤ãƒ³ã¾ãŸã¯Windowsãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã«ä»˜ä¸Žã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¾ã™ã€‚
 
-ƒgƒ‰ƒuƒ‹‚É‘˜‹ö‚µ‚½ê‡‚ÍAŽŸ‚Ìˆê”Ê“I‚È–â‘è‚É‚Â‚¢‚Ä‚Ì‹LŽ–‚ðŽQl‚É‚µ‚Ä‚­‚¾‚³‚¢B[SQL Server R Services‚ÌƒCƒ“ƒXƒg[ƒ‹‚ÆƒAƒbƒvƒOƒŒ[ƒh](../../advanced-analytics/r-services/upgrade-and-installation-faq-sql-server-r-services.md)
+ãƒˆãƒ©ãƒ–ãƒ«ã«é­é‡ã—ãŸå ´åˆã¯ã€æ¬¡ã®ä¸€èˆ¬çš„ãªå•é¡Œã«ã¤ã„ã¦ã®è¨˜äº‹ã‚’å‚è€ƒã«ã—ã¦ãã ã•ã„ã€‚[SQL Server R Servicesã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã¨ã‚¢ãƒƒãƒ—ã‚°ãƒ¬ãƒ¼ãƒ‰](../../advanced-analytics/r-services/upgrade-and-installation-faq-sql-server-r-services.md)
 
-## ŠÖ˜A€–Ú
+## é–¢é€£é …ç›®
 
-[R ƒ`ƒ…[ƒgƒŠƒAƒ‹](sql-server-r-tutorials.md)
+[R ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«](sql-server-r-tutorials.md)
 
 
 <!--
