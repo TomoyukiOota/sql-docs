@@ -1,4 +1,4 @@
-<--
+<!--
 ---
 title: "SQL Server Python Tutorials | Microsoft Docs"
 ms.custom: 
