@@ -79,7 +79,7 @@ These samples and demos provided by the SQL Server development team highlight wa
 
 SQL Serverのインストール完了後に、以下のステップが必要です。
 
-+ 外部スクリプト実行機能を有効化します。 `sp_configure 'enable external script', 1`
++ 外部スクリプト実行機能を有効化します。 `sp_configure 'external scripts enabled', 1`
 + SQL Serverを再起動します。
 + 外部ランタイムのコールに必要な権限がサービスアカウントに付与されていることを確認します。
 + サーバーへの接続、データの読み取り、およびサンプルに必要なデータベースオブジェクトの作成に必要なアクセス許可がSQLログインまたはWindowsユーザーアカウントに付与されていることを確認します。
