@@ -107,8 +107,8 @@ daysMap = {
 OutputDataSet["DayOfWeek"] = pandas.Series([daysMap[i] for i in OutputDataSet["DayOfWeek"]], index = OutputDataSet.index, dtype = "int32")
 ', 
 @input_data_1 = N'SELECT * FROM PythonTest',
-@input_data_1_name = 'InputDataSet'
-@output_data_1_name = 'OutputDataSet'
+@input_data_1_name = N'InputDataSet',
+@output_data_1_name = N'OutputDataSet',
 @params = N'@r_rowsPerRead INT, @ParamINT INT OUTPUT, @ParamCharN CHAR(6) OUTPUT',
 @r_rowsPerRead = @RowsPerRead,
 @paramINT = @ParamINT OUTPUT,
