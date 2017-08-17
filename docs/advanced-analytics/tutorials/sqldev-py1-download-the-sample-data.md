@@ -48,6 +48,9 @@
 
 [Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
 
+## 出典
+[Step 1: Download the Sample Data](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-py1-download-the-sample-data)
+
 <!--
 ---
 title: "Step 1: Download the Sample Data| Microsoft Docs"

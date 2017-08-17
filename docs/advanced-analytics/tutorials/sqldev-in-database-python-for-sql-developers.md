@@ -68,6 +68,8 @@ IDEでソリューションを作成してテストした後、Pythonコード�
 
 [Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
 
+## 出典
+[In-Database Python Analytics for SQL Developers](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-python-for-sql-developers)
 
 <!--
 ---
