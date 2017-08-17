@@ -52,7 +52,7 @@ manager: "jhubbard"
 
   T-SQLストアドプロシージャを使用して完全なPythonソリューションを構築します。
 
-+ [Pythonモデルの展開と利用](docs/advanced-analytics/python/publish-consume-python-code.md)
++ [Pythonモデルの展開と利用](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/python/publish-consume-python-code.md)
 
   Microsoft Machine Learning Serverの最新バージョンを使用してPythonモデルを導入する方法を学びます。
 
