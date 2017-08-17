@@ -5,6 +5,9 @@
 > [!NOTE]
 > 同様のチュートリアルのR版は[こちら](sqldev-in-database-r-for-sql-developers.md)。R版はSQL Server 2017とSQL Server 2016の両方で動作します。
 
+## 出典
+[In-Database Python Analytics for SQL Developers](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-python-for-sql-developers)
+
 ## 概要
 
 エンドツーエンドソリューションを構築するプロセスは通常、データの取得とクレンジング、データの探索と特徴エンジニアリング、モデルのトレーニングとチューニング、そして最終的には本番環境へのモデル展開で構成されます。実際のコーディング、デバッグ、テストは、以下のようなPython用の統合開発環境（IDE）を使用するのが最適です。
@@ -13,9 +16,7 @@
 + Spyder：[Visual Studio 2017](https://blogs.msdn.microsoft.com/visualstudio/2017/05/12/a-lap-around-python-in-visual-studio-2017/)に含まれ[Data Science workload](https://blogs.msdn.microsoft.com/visualstudio/2016/11/18/data-science-workloads-in-visual-studio-2017-rc/)によりインストールされます。
 + Python Tools for Visual Studio：[Visual Studio用のPython Extensions](https://docs.microsoft.com/visualstudio/python/python-in-visual-studio).
 
-IDEでソリューションを作成してテストした後、PythonコードをTransact-SQLストアドプロシージャとしてSQL Serverに展開します。
-
-このチュートリアルでは、必要なすべてのPythonコードを提供し、SQL Serverを使用してソリューションを構築および展開します。
+Python IDEでソリューションを作成してテストした後、PythonコードをTransact-SQLストアドプロシージャとしてSQL Serverに展開します。このチュートリアルでは、必要なすべてのPythonコードを提供します。
 
 - [Step 1: サンプルデータのダウンロード](sqldev-py1-download-the-sample-data.md)
 
@@ -67,9 +68,6 @@ IDEでソリューションを作成してテストした後、Pythonコード�
 ## 関連項目
 
 [Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
-
-## 出典
-[In-Database Python Analytics for SQL Developers](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-python-for-sql-developers)
 
 <!--
 ---
