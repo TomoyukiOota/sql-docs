@@ -1,3 +1,75 @@
+# SQL開発者のための In-Database Python 分析
+
+このチュートリアルの目的は、SQLプログラマーにSQL Serverで機械学習ソリューションを構築する実践的な体験を提供することです。 このチュートリアルでは、ストアドプロシージャにPythonコードを追加することで、Pythonをアプリケーションに組み込む方法を学習します。
+
+> [!NOTE]
+> 同様のチュートリアルのR版は[こちら](sqldev-in-database-r-for-sql-developers.md)。R版はSQL Server 2017とSQL Server 2016の両方で動作します。
+
+## 概要
+
+エンドツーエンドソリューションを構築するプロセスは通常、データの取得とクレンジング、データの探索と特徴エンジニアリング、モデルのトレーニングとチューニング、そして最終的には本番環境へのモデル展開で構成されます。実際の開発やデバッグは、以下のようなPython用の統合開発環境（IDE）を使用するのが最適です。
+
++ PyCharm, 人気のあるIDEです。
++ Spyder, [Visual Studio 2017](https://blogs.msdn.microsoft.com/visualstudio/2017/05/12/a-lap-around-python-in-visual-studio-2017/)に含まれ[Data Science workload](https://blogs.msdn.microsoft.com/visualstudio/2016/11/18/data-science-workloads-in-visual-studio-2017-rc/)によりインストールされます。
++ [Visual Studio用のPython Extensions](https://docs.microsoft.com/visualstudio/python/python-in-visual-studio).
+
+After you have created and tested the solution in the IDE, you can deploy the Python code to [!INCLUDE[ssNoVersion](../../includes/ssnoversion-md.md)] using [!INCLUDE[tsql](../../includes/tsql-md.md)] stored procedures in the familiar environment of [!INCLUDE[ssManStudio](../../includes/ssmanstudio-md.md)].
+
+In this walkthrough, we'll assume that you have been given all the Python code needed for the solution, and you'll focus on building and deploying the solution using SQL Server.
+
+- [Step 1: Download the Sample Data](sqldev-py1-download-the-sample-data.md)
+
+  Download the sample dataset and all script files to a local computer.
+
+- [Step 2: Import Data to SQL Server using PowerShell](sqldev-py2-import-data-to-sql-server-using-powershell.md)
+
+  Execute a PowerShell script that creates a database and a table on the specified instance, and loads the sample data to the table.
+
+- [Step 3: Explore and Visualize the Data](sqldev-py3-explore-and-visualize-the-data.md)
+
+  Perform basic data exploration and visualization, by calling Python from [!INCLUDE[tsql](../../includes/tsql-md.md)] stored procedures.
+
+- [Step 4: Create Data Features using T-SQL](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+
+  Create new data features using custom SQL functions.
+  
+- [Step 5: Train and Save a Model using T-SQL](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+
+   Build and save the machine learning model, using Python in stored procedures.
+  
+-  [Step 6: Operationalize the Model](sqldev-py6-operationalize-the-model.md)
+
+  After the model has been saved to the database, call the model for prediction using [!INCLUDE[tsql](../../includes/tsql-md.md)].
+
+> [!NOTE]
+> We recommend that you do not use [!INCLUDE[ssManStudioFull](../../includes/ssmanstudiofull-md.md)] to write or test Python code. If the code that you embed in a stored procedure has any problems, the information that is returned from the stored procedure is usually inadequate to understand the cause of the error.
+
+
+### Scenario
+
+This walkthrough uses the well-known NYC Taxi data set. To make this walkthrough quick and easy, the data is sampled. Using this data, you'll create a binary classification model that predicts whether a particular trip is likely to get a tip or not, based on columns such as the time of day, distance, and pick-up location.
+
+### Requirements
+
+This walkthrough is intended for users who are already familiar with fundamental database operations, such as creating databases and tables, importing data into tables, and creating SQL queries.
+
+All Python code is provided. An experienced SQL programmer should be able to complete this walkthrough by using [!INCLUDE[tsql](../../includes/tsql-md.md)] in [!INCLUDE[ssManStudioFull](../../includes/ssmanstudiofull-md.md)] or by running the provided PowerShell scripts.
+
+Before starting the walkthrough, you must complete these preparations:
+
+- Install an instance of SQL Server 2017 with Machine Learning Services and Python enabled (requires CTP 2.0 or later).
+- The login that you use for this walkthrough must have permissions to create databases and other objects, to upload data, select data, and run stored procedures.
+
+## Next Step
+
+  [Step 1: Download the Sample Data](sqldev-py1-download-the-sample-data.md)
+
+## See Also
+
+[Machine Learning Services with Python](../python/sql-server-python-services.md)
+
+
+<!--
 ---
 title: "In-Database Python Analytics for SQL Developers | Microsoft Docs"
 ms.custom: ""
@@ -91,3 +163,5 @@ Before starting the walkthrough, you must complete these preparations:
 [Machine Learning Services with Python](../python/sql-server-python-services.md)
 
 
+
+-->
