@@ -1,3 +1,79 @@
+# Step 2: PowerShellを使用したSQL Serverへのデータインポート
+
+このステップでは、ダウンロードしたスクリプトの1つを実行して、チュートリアルに必要なデータベースオブジェクトを作成します。このスクリプトは、使用するストアドプロシージャのほとんども作成し、指定したデータベースのテーブルにサンプルデータをロードします。
+
+## 出典
+[Step 2: Import Data to SQL Server using PowerShell](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-py2-import-data-to-sql-server-using-powershell)
+
+## オブジェクト作成とデータロード
+
+ダウンロードしたファイル群の中のPowerShellスクリプト`RunSQL_SQL_Walkthrough.ps1`を実行し、チュートリアル環境を準備します。このスクリプトは次のアクションを実行します：
+
+- SQL Native ClientおよびSQLコマンドラインユーティリティがインストールされていない場合はインストールします。これらは、bcpを使用してデータをバルクロードするために必要です。
+
+- SQL Serverインスタンスにデータベースとテーブルを作成し、そこへデータをバルクロードします。
+
+- さらに複数の関数とストアドプロシージャを作成します。
+
+## スクリプトの実行
+
+1. 管理者としてPowerShellコマンドプロンプトを開き、次のコマンドを実行します。
+  
+    ```PowerShell:PowerShell
+    .\RunSQL_SQL_Walkthrough.ps1
+    ```
+
+   次の情報を入力するよう求められます。
+    - Machine Learning Services（Python）がインストールされているサーバ名またはアドレス。
+    - 作成するデータベースの名前
+    - 対象のSQL Serverのユーザー名とパスワード。このユーザは、データベース、テーブル、ストアドプロシージャ、関数の作成権限、およびテーブルへのデータロード権限が必要です。ユーザー名とパスワードを省略した場合は現在のWindowsユーザによってログインします。
+    - ダウンロードしたファイル群の中のサンプルデータファイル`nyctaxi1pct.csv`のパス。例えば、`C:\tempPythonSQL\nyctaxi1pct.csv`です。
+
+<!--
+	> [!NOTE]
+	> Make sure that your xmlrw.dll is in the same folder as your bcp.exe. If not, please copy it over.
+-->
+
+![PowerShell Image 1](media/sqldev-python-ps-1-gho9o9.png "PowerShell Image 1")
+
+![PowerShell Image 1](media/sqldev-python-ps-2-gho9o9.png "PowerShell Image 1")
+
+2. 上記手順の一環で指定したデータベース名とユーザー名をプレースホルダに置き換えるように、すべてのT-SQLスクリプトが変更されています。
+  
+3. T-SQLスクリプトによって作成されるストアドプロシージャと関数がデータベース内に作成されていることを確認します。
+     
+    |**T-SQLスクリプトファイル**|**ストアドプロシージャ／関数**|
+    |------|------|
+    |create-db-tb-upload-data.sql|データベースと2つのテーブルを作成します。<br /><br />テーブル`nyctaxi_sample`: メインとなるNYC Taxiデータセットが登録されます。ロードされるデータはNYC Taxiデータセットの1％のサンプルです。クラスタ化カラムストアインデックスの定義によってストレージ効率とクエリパフォーマンスを向上させています。<br /><br />テーブル`nyc_taxi_models`: 訓練された高度な分析モデルが登録されます。|
+    |fnCalculateDistance.sql|乗車位置と降車位置の間の直接距離を計算するスカラー値関数`fnCalculateDistance`を作成します。|
+    |fnEngineerFeatures.sql|モデルトレーニング用の新しい特徴抽出を作成するテーブル値関数`fnEngineerFeatures`を作成します。|
+    |TrainingTestingSplit.sql|nyctaxi_sampleテーブルのデータを、nyctaxi_sample_trainingとnyctaxi_sample_testingの2つに分割するプロシージャ`TrainingTestingSplit`を作成します。|
+    |PredictTipSciKitPy.sql|モデルを使用した予測のために、scikit-learnで作成した訓練されたモデルを呼び出すプロシージャ`PredictTipSciKitPy`を作成します。プロシージャは、入力パラメータとしてクエリを受け入れ、入力行に対するスコアを含む数値の列を戻します。|
+    |PredictTipRxPy.sql|モデルを使用した予測のために、RevoScalePyで作成した訓練されたモデルを呼び出すプロシージャ`PredictTipRxPy`を作成します。プロシージャは、入力パラメータとしてクエリを受け入れ、入力行に対するスコアを含む数値の列を戻します。|
+    |PredictTipSingleModeSciKitPy.sql|モデルを使用した予測のために、scikit-learnで作成した訓練されたモデルを呼び出すプロシージャ`PredictTipSingleModeSciKitPy`を作成します。このストアドプロシージャは新しい観測値を入力として、個々の特徴値はインラインパラメータとして受け取り、新しい観測値に対する予測値を返します。|
+    |PredictTipSingleModeRxPy.sql|モデルを使用した予測のために、scikit-learnで作成した訓練されたモデルを呼び出すプロシージャ`PredictTipSingleModeRxPy`を作成します。このストアドプロシージャは新しい観測値を入力として、個々の特徴値はインラインパラメータとして受け取り、新しい観測値に対する予測値を返します。|
+    |SerializePlots.sql|データ探索用のプロシージャ`SerializePlots`を作成します。このストアドプロシージャは、Pythonを使用してグラフィックを作成し、グラフオブジェクトをシリアライズします。|
+    |TrainTipPredictionModelSciKitPy.sql|scikit-learnによるロジスティック回帰モデルを訓練するプロシージャ`TrainTipPredictionModelSciKitPy`を作成します。このモデルはランダムに選択された60％のデータを使用して訓練され、tipped値（チップをもらうか否か）を予測します。ストアドプロシージャの出力は訓練されたモデルであり、テーブル`nyc_taxi_models`に登録されます。|
+    |TrainTipPredictionModelRxPy.sql|RevoScalePyによるロジスティック回帰モデルを訓練するプロシージャ`TrainTipPredictionModelRxPy`を作成します。このモデルはランダムに選択された60％のデータを使用して訓練され、tipped値（チップをもらうか否か）を予測します。ストアドプロシージャの出力は訓練されたモデルであり、テーブル`nyc_taxi_models`に登録されます。|
+  
+    ![browse tables in SSMS](media/sqldev-python-browsetables1-gho9o9.png "view tables in SSMS")
+
+    > [!NOTE]
+    > T-SQLスクリプトはデータベースオブジェクトを再作成しないため、すでに存在する場合にはデータが重複して登録されます。そのため、スクリプトを再実行する場合は事前に既存オブジェクトを削除してください。
+
+## 次のステップ
+
+[Step 3: データの探索と可視化](sqldev-py3-explore-and-visualize-the-data.md)
+
+## 前のステップ
+
+[Step 1: サンプルデータのダウンロード](sqldev-py1-download-the-sample-data.md)
+
+## 関連項目
+
+[Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
+
+<!--
 ---
 title: "Step 2: Import Data to SQL Server using PowerShell | Microsoft Docs"
 ms.custom: ""
@@ -96,3 +172,5 @@ Among the downloaded files you should see a PowerShell script. To prepare the en
 [Machine Learning Services with Python](../python/sql-server-python-services.md)
 
 
+
+-->
