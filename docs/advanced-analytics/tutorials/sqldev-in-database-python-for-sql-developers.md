@@ -62,23 +62,22 @@ Python IDEでソリューションを作成してテストした後、Pythonコ�
 
 - SQL Server 2017 内でPython（およびR）実行するにはsp_configureでexternal scripts enabledの設定変更が必要です。またexternal scripts enabledパラメータは設定変更の反映にSQL Server 2017の再起動が必要です。
 
-1. 外部スクリプト実行機能の有効化
+    1. 外部スクリプト実行機能の有効化
 
-```SQL:T-SQL
-EXEC sp_configure 'external scripts enabled', 1;
-```
+        ```SQL:T-SQL
+        EXEC sp_configure 'external scripts enabled', 1;
+        ```
 
-2. SQL Server 2017の再起動
+    2. SQL Server 2017の再起動
 
-```cmd:cmd
-net stop "SQL Server Launchpad (MSSQLSERVER)"
-net stop "SQL Server (MSSQLSERVER)"
-net start "SQL Server (MSSQLSERVER)"
-net start "SQL Server Launchpad (MSSQLSERVER)"
+        ```cmd:cmd
+        net stop "SQL Server Launchpad (MSSQLSERVER)"
+        net stop "SQL Server (MSSQLSERVER)"
+        net start "SQL Server (MSSQLSERVER)"
+        net start "SQL Server Launchpad (MSSQLSERVER)"
+        ```
 
-```
-
-netコマンドに渡すインスタンス名は環境に応じて変更してください。またSQL Server AgentサービスなどSQL Serverサービスに依存するサービスがある場合には明示的に再開してください。
+    netコマンドに渡すインスタンス名は環境に応じて変更してください。またSQL Server AgentサービスなどSQL Serverサービスに依存するサービスがある場合には明示的に再開してください。
 
 - このチュートリアルで使用するSQL Serverログインには、データベースやその他のオブジェクトの作成、データの更新、データの参照、ストアドプロシージャの実行の権限を付与してください。
 
