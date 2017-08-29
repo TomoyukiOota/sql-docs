@@ -55,6 +55,18 @@
     > [!NOTE]
     > T-SQLスクリプトはデータベースオブジェクトを再作成しないため、すでに存在する場合にはデータが重複して登録されます。そのため、スクリプトを再実行する場合は事前に既存オブジェクトを削除してください。
 
+## **重要**：一部オブジェクトの再定義
+
+以下のSQLを実行し一部のオブジェクトを再定義します。
+**SQL Server 2017 CTP から SQL Server 2017 RC にバージョンアップした際にRevoScalePyの仕様が変更されたため、その仕様変更に対応させることがこの再定義の主な理由です。**
+
+- [TrainTipPredictionModelSciKitPy](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_TrainTipPredictionModelSciKitPy.sql)
+- [TrainTipPredictionModelRxPy](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_TrainTipPredictionModelRxPy.sql)
+- [PredictTipSciKitPy](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_PredictTipSciKitPy.sql)
+- [PredictTipRxPy](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_PredictTipRxPy.sql)
+- [PredictTipSingleModeSciKitPy](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_PredictTipSingleModeSciKitPy.sql)
+- [PredictTipSingleModeRxPy](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_PredictTipSingleModeRxPy.sql)
+
 ## 次のステップ
 
 [Step 3: データの探索と可視化](sqldev-py3-explore-and-visualize-the-data.md)
