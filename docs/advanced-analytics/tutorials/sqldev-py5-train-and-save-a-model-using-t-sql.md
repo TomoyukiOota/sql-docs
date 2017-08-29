@@ -1,3 +1,181 @@
+# Step 5: T-SQLを使用したモデルのトレーニングと保存
+
+このステップでは、Pythonパッケージであるscikit-learnとrevoscalepyを使用して、機械学習モデルをトレーニングする方法を学習します。これらのPythonパッケージは既にSQL Server Machine Learning Servicesと共にインストールされているため、モジュールをロードしてストアドプロシージャ内から必要な関数を呼び出すことができます。作成したデータ特徴を使用してモデルをトレーニングし、訓練されたモデルをSQL Serverのテーブルに保存します。
+
+## サンプルデータをトレーニングセットとテストセットに分割する
+
+1.  ストアドプロシージャ`TrainTestSplit`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
+
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`TrainTestSplit`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+
+    `TrainTestSplit`はnyctaxi_sampleテーブルのデータをnyctaxi_sample_trainingとnyctaxi_sample_testingの2つのテーブルに分割します。
+
+    ```SQL:TrainTestSplit
+    CREATE PROCEDURE [dbo].[TrainTestSplit] (@pct int)
+    AS
+    
+    DROP TABLE IF EXISTS dbo.nyctaxi_sample_training
+    SELECT * into nyctaxi_sample_training FROM nyctaxi_sample WHERE (ABS(CAST(BINARY_CHECKSUM(medallion,hack_license)  as int)) % 100) < @pct
+    
+    DROP TABLE IF EXISTS dbo.nyctaxi_sample_testing
+    SELECT * into nyctaxi_sample_testing FROM nyctaxi_sample
+    WHERE (ABS(CAST(BINARY_CHECKSUM(medallion,hack_license)  as int)) % 100) > @pct
+    GO
+    ```
+
+2. ストアドプロシージャを実行し、トレーニングセットに割り当てる割合を表す整数を入力します。たとえば、次の文は、トレーニングセットにデータの60％を割り当てます。トレーニングとテストのデータは、2つの別々のテーブルに格納されます。
+
+    ```SQLT-SQL
+    EXEC TrainTestSplit 60
+    GO
+    ```
+    
+    ![result5-1](media/sqldev-python-step5-1-gho9o9.png "result5-1")
+
+## scikit-learnを使ってロジスティック回帰モデルを構築する
+
+このセクションでは、作成したトレーニングデータを使用してモデルをトレーニングするストアドプロシージャを作成します。このストアドプロシージャは入力データを定義し、ロジスティック回帰モデルをトレーニングするためにscikit-learn関数を使用します。これはシステムストアドプロシージャsp_execute_external_scriptを使用して、SQL ServerとともにインストールされたPythonランタイムを呼び出すことで実装しています。
+
+新しいトレーニングデータをパラメータとして定義しシステムストアドプロシージャsp_execute_exernal_scriptの呼び出しをラップするストアドプロシージャを作成することで、モデルの再トレーニングを容易にしています。
+
+1.  ストアドプロシージャ`TrainTipPredictionModelSciKitPy`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
+
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`TrainTipPredictionModelSciKitPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+
+```SQL:TrainTipPredictionModelSciKitPy
+DROP PROCEDURE IF EXISTS TrainTipPredictionModelSciKitPy;
+GO
+
+CREATE PROCEDURE [dbo].[TrainTipPredictionModelSciKitPy] (@trained_model varbinary(max) OUTPUT)
+AS
+BEGIN
+  EXEC sp_execute_external_script
+  @language = N'Python',
+  @script = N'
+import numpy
+import pickle
+# import pandas
+from sklearn.linear_model import LogisticRegression
+
+##Create SciKit-Learn logistic regression model
+X = InputDataSet[["passenger_count", "trip_distance", "trip_time_in_secs", "direct_distance"]]
+y = numpy.ravel(InputDataSet[["tipped"]])
+
+SKLalgo = LogisticRegression()
+logitObj = SKLalgo.fit(X, y)
+
+##Serialize model
+trained_model = pickle.dumps(logitObj)
+  ',
+  @input_data_1 = N'
+  select tipped, fare_amount, passenger_count, trip_time_in_secs, trip_distance, 
+  dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) as direct_distance
+  from nyctaxi_sample_training
+  ',
+  @input_data_1_name = N'InputDataSet',
+  @params = N'@trained_model varbinary(max) OUTPUT',
+  @trained_model = @trained_model OUTPUT;
+  ;
+END;
+GO
+```
+
+2. 次のSQL文を実行して、トレーニングされたモデルをnyc_taxi_modelsテーブルに登録します。
+
+    ```SQL:T-SQL
+    DECLARE @model VARBINARY(MAX);
+    EXEC TrainTipPredictionModelSciKitPy @model OUTPUT;
+    INSERT INTO nyc_taxi_models (name, model) VALUES('SciKit_model', @model);
+    ```
+
+    データ処理とモデルのフィッティングには数分かかります。Pythonのstdoutストリームにパイプされるメッセージは、Management Studioのメッセージウィンドウに表示されます。
+    
+    ![result5-2](media/sqldev-python-step5-2-gho9o9.png "result5-2")
+    
+    ![result5-2_error](media/sqldev-python-step5-2_error-gho9o9.png "result5-2_error")
+
+3. nyc_taxi_modelsテーブルに新しいレコードが1つ追加され、シリアライズされたモデルが登録されていることを確認します。
+
+    ![result5-3](media/sqldev-python-step5-3-gho9o9.png "result5-3")
+
+## revoscalepyパッケージを使用してロジスティックモデルを構築する
+
+次に、新しいリリースとなるRevoScalePyパッケージを使用したストアドプロシージャによってロジスティック回帰モデルをトレーニングします。Python のRevoScalePyパッケージには、RのRevoScaleRパッケージで提供されるものと同様のオブジェクト定義やデータ加工処理、機械学習のためのアルゴリズムが含まれています。このライブラリによって、ロジスティックや線形回帰、デシジョンツリーなどの一般的なアルゴリズムを使用した予測モデルのトレーニングや、計算コンテキストの作成、計算コンテキスト間のデータ移動、データ加工処理ができます。RevoScalePyの詳細は[Introducing RevoScalePy](https://docs.microsoft.com/ja-jp/sql/advanced-analytics/python/what-is-revoscalepy)を確認してください。
+
+1.  ストアドプロシージャ`TrainTipPredictionModelRxPy`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
+
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`TrainTipPredictionModelRxPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+
+```SQL:TrainTipPredictionModelRxPy
+DROP PROCEDURE IF EXISTS TrainTipPredictionModelRxPy;
+GO
+
+CREATE PROCEDURE [dbo].[TrainTipPredictionModelRxPy] (@trained_model varbinary(max) OUTPUT)
+AS
+BEGIN
+EXEC sp_execute_external_script 
+  @language = N'Python',
+  @script = N'
+import numpy
+import pickle
+# import pandas
+from revoscalepy.functions.RxLogit import rx_logit
+
+## Create a logistic regression model using rx_logit function from revoscalepy package
+logitObj = rx_logit("tipped ~ passenger_count + trip_distance + trip_time_in_secs + direct_distance", data = InputDataSet);
+
+## Serialize model
+trained_model = pickle.dumps(logitObj)
+',
+@input_data_1 = N'
+select tipped, fare_amount, passenger_count, trip_time_in_secs, trip_distance, 
+dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) as direct_distance
+from nyctaxi_sample_training
+',
+@input_data_1_name = N'InputDataSet',
+@params = N'@trained_model varbinary(max) OUTPUT',
+@trained_model = @trained_model OUTPUT;
+;
+END;
+GO
+```
+    
+    - nyctaxi_sample_trainingデータにrevoscalepyパッケージを使用してロジスティック回帰モデルをトレーニングします。
+    - SELECTクエリはカスタムスカラ関数fnCalculateDistanceを使用して、乗車位置と降車位置の間の直接距離を計算します。クエリの結果はデフォルトのPython入力変数`InputDataset`に格納されます。
+    - Pythonスクリプトは、Machine Learning Servicesに含まれているrevoscalepyのLogisticRegression関数を呼び出して、ロジスティック回帰モデルを作成します。
+    - tippedを目的変数に、passenger_count、trip_distance、trip_time_in_secs、およびdirect_distanceを説明変数としてモデルを作成します。    - Python変数`logitObj`で示される訓練済みモデルはシリアライズされ出力パラメータとして返ります。この出力をnyc_taxi_modelsテーブルに登録することで、将来の予測に繰り返し使用することができます。
+
+2. 次のSQL文を実行して、トレーニングされたモデルをnyc_taxi_modelsテーブルに登録します。
+
+    ```SQL:T-SQL
+    DECLARE @model VARBINARY(MAX);
+    EXEC TrainTipPredictionModelRxPy @model OUTPUT;
+    INSERT INTO nyc_taxi_models (name, model) VALUES('revoscalepy_model', @model);
+    ```
+
+    データ処理とモデルのフィッティングには数分かかります。Pythonのstdoutストリームにパイプされるメッセージは、Management Studioのメッセージウィンドウに表示されます。
+
+    ![result5-4](media/sqldev-python-step5-4-gho9o9.png "result5-4")
+    
+3. nyc_taxi_modelsテーブルに新しいレコードが1つ追加され、シリアライズされたモデルが登録されていることを確認します。
+
+    ![result5-5](media/sqldev-python-step5-5-gho9o9.png "result5-5")
+    
+次のステップでは、訓練されたモデルを使用して予測を作成します。
+
+## 次のステップ
+
+[Step 6: モデルの利用](sqldev-py6-operationalize-the-model.md)
+
+## 前のステップ
+
+[Step 4: T-SQLを使用したデータの特徴抽出](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+
+## 関連項目
+
+[Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
+
+<!--
 ---
 title: "Step 5: Train and Save a Model using T-SQL | Microsoft Docs"
 ms.custom: ""
@@ -188,3 +366,5 @@ In the next step, you use the trained models to create predictions.
 ## Previous step
 
 [Step 4: Create data features using T-SQL](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+
+-->

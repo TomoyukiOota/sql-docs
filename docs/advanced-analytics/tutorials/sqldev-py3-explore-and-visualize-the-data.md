@@ -41,12 +41,12 @@ SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの
 
 このストアドプロシージャはシリアライズされたPython描画オブジェクトをvarbinaryデータのストリームとして返します。バイナリデータは直接表示することはできませんが、クライアント上でPythonコードを使用してバイナリデータをデシリアライズし、その画像ファイルをクライアントコンピュータに保存します。
 
-### Plots_Pythonストアドプロシージャを定義する
+### SerializePlotsストアドプロシージャを定義する
 
-1.  SQL Server Management Studioで、新しいクエリウィンドウを開きます。
+1.  ストアドプロシージャ`SerializePlots`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-2.  チュートリアル用のデータベースに対して、以下のステートメントを使用してプロシージャを定義します。
-  
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`SerializePlots`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+    
     ```SQL:SerializePlots
     
     CREATE PROCEDURE [dbo].[SerializePlots]
@@ -118,7 +118,7 @@ SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの
   
     ![result](media/sqldev-python-step3-1-gho9o9.png "result")
   
-2.  以下のPythonスクリプト内の接続文字列を環境に合わせて変更した後、実行します。
+2.  ダウンロードしたファイル群の中のPythonスクリプト`DeserializeSavePlots.py`内の接続文字列を環境に合わせて変更した後、実行します。
   
     **SQL Server 認証の場合**
     
@@ -158,7 +158,7 @@ SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの
   
     ![result2](media/sqldev-python-step3-2-gho9o9.png "result2")
   
-4.  出力ファイルはPythonの作業ディレクトリに作成されます。
+4.  4つのファイルがPythonの作業ディレクトリに作成されます。
 
     ![result3-1](media/sqldev-python-step3-3-1-gho9o9.png "result3-1")
     ![result3-2](media/sqldev-python-step3-3-2-gho9o9.png "result3-2")
