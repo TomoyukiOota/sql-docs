@@ -42,43 +42,43 @@
 
     Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`TrainTipPredictionModelSciKitPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
-```SQL:TrainTipPredictionModelSciKitPy
-DROP PROCEDURE IF EXISTS TrainTipPredictionModelSciKitPy;
-GO
-
-CREATE PROCEDURE [dbo].[TrainTipPredictionModelSciKitPy] (@trained_model varbinary(max) OUTPUT)
-AS
-BEGIN
-  EXEC sp_execute_external_script
-  @language = N'Python',
-  @script = N'
-import numpy
-import pickle
-# import pandas
-from sklearn.linear_model import LogisticRegression
-
-##Create SciKit-Learn logistic regression model
-X = InputDataSet[["passenger_count", "trip_distance", "trip_time_in_secs", "direct_distance"]]
-y = numpy.ravel(InputDataSet[["tipped"]])
-
-SKLalgo = LogisticRegression()
-logitObj = SKLalgo.fit(X, y)
-
-##Serialize model
-trained_model = pickle.dumps(logitObj)
-  ',
-  @input_data_1 = N'
-  select tipped, fare_amount, passenger_count, trip_time_in_secs, trip_distance, 
-  dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) as direct_distance
-  from nyctaxi_sample_training
-  ',
-  @input_data_1_name = N'InputDataSet',
-  @params = N'@trained_model varbinary(max) OUTPUT',
-  @trained_model = @trained_model OUTPUT;
-  ;
-END;
-GO
-```
+    ```SQL:TrainTipPredictionModelSciKitPy
+    DROP PROCEDURE IF EXISTS TrainTipPredictionModelSciKitPy;
+    GO
+    
+    CREATE PROCEDURE [dbo].[TrainTipPredictionModelSciKitPy] (@trained_model varbinary(max) OUTPUT)
+    AS
+    BEGIN
+      EXEC sp_execute_external_script
+      @language = N'Python',
+      @script = N'
+    import numpy
+    import pickle
+    # import pandas
+    from sklearn.linear_model import LogisticRegression
+    
+    ##Create SciKit-Learn logistic regression model
+    X = InputDataSet[["passenger_count", "trip_distance", "trip_time_in_secs", "direct_distance"]]
+    y = numpy.ravel(InputDataSet[["tipped"]])
+    
+    SKLalgo = LogisticRegression()
+    logitObj = SKLalgo.fit(X, y)
+    
+    ##Serialize model
+    trained_model = pickle.dumps(logitObj)
+    ',
+      @input_data_1 = N'
+      select tipped, fare_amount, passenger_count, trip_time_in_secs, trip_distance, 
+      dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) as direct_distance
+      from nyctaxi_sample_training
+      ',
+      @input_data_1_name = N'InputDataSet',
+      @params = N'@trained_model varbinary(max) OUTPUT',
+      @trained_model = @trained_model OUTPUT;
+      ;
+    END;
+    GO
+    ```
 
 2. 次のSQL文を実行して、トレーニングされたモデルをnyc_taxi_modelsテーブルに登録します。
 
@@ -106,40 +106,40 @@ GO
 
     Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`TrainTipPredictionModelRxPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
-```SQL:TrainTipPredictionModelRxPy
-DROP PROCEDURE IF EXISTS TrainTipPredictionModelRxPy;
-GO
-
-CREATE PROCEDURE [dbo].[TrainTipPredictionModelRxPy] (@trained_model varbinary(max) OUTPUT)
-AS
-BEGIN
-EXEC sp_execute_external_script 
-  @language = N'Python',
-  @script = N'
-import numpy
-import pickle
-# import pandas
-from revoscalepy.functions.RxLogit import rx_logit
-
-## Create a logistic regression model using rx_logit function from revoscalepy package
-logitObj = rx_logit("tipped ~ passenger_count + trip_distance + trip_time_in_secs + direct_distance", data = InputDataSet);
-
-## Serialize model
-trained_model = pickle.dumps(logitObj)
-',
-@input_data_1 = N'
-select tipped, fare_amount, passenger_count, trip_time_in_secs, trip_distance, 
-dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) as direct_distance
-from nyctaxi_sample_training
-',
-@input_data_1_name = N'InputDataSet',
-@params = N'@trained_model varbinary(max) OUTPUT',
-@trained_model = @trained_model OUTPUT;
-;
-END;
-GO
-```
+    ```SQL:TrainTipPredictionModelRxPy
+    DROP PROCEDURE IF EXISTS TrainTipPredictionModelRxPy;
+    GO
     
+    CREATE PROCEDURE [dbo].[TrainTipPredictionModelRxPy] (@trained_model varbinary(max) OUTPUT)
+    AS
+    BEGIN
+    EXEC sp_execute_external_script 
+      @language = N'Python',
+      @script = N'
+    import numpy
+    import pickle
+    # import pandas
+    from revoscalepy.functions.RxLogit import rx_logit
+    
+    ## Create a logistic regression model using rx_logit function from revoscalepy package
+    logitObj = rx_logit("tipped ~ passenger_count + trip_distance + trip_time_in_secs + direct_distance", data = InputDataSet);
+    
+    ## Serialize model
+    trained_model = pickle.dumps(logitObj)
+    ',
+    @input_data_1 = N'
+    select tipped, fare_amount, passenger_count, trip_time_in_secs, trip_distance, 
+    dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) as direct_distance
+    from nyctaxi_sample_training
+    ',
+    @input_data_1_name = N'InputDataSet',
+    @params = N'@trained_model varbinary(max) OUTPUT',
+    @trained_model = @trained_model OUTPUT;
+    ;
+    END;
+    GO
+    ```
+
 - nyctaxi_sample_trainingデータにrevoscalepyパッケージを使用してロジスティック回帰モデルをトレーニングします。
 - SELECTクエリはカスタムスカラ関数fnCalculateDistanceを使用して、乗車位置と降車位置の間の直接距離を計算します。クエリの結果はデフォルトのPython入力変数`InputDataset`に格納されます。
 - Pythonスクリプトは、Machine Learning Servicesに含まれているrevoscalepyのLogisticRegression関数を呼び出して、ロジスティック回帰モデルを作成します。
