@@ -1,3 +1,183 @@
+# Step 3: データの探索と可視化
+
+データサイエンスソリューション開発には、通常、集中的なデータの探索とデータの可視化が含まれます。このステップでは、サンプルデータを探索しいくつかのプロットを生成します。さらに、Pythonでグラフィックスオブジェクトをシリアライズする方法、およびデシリアライズしてプロットを作成する方法を学習します。
+
+> [!NOTE]
+> このチュートリアルでは二項分類モデルのみを示します。回帰分類や多項分類などほかのモデルを構築することも可能です。
+
+## データの確認
+
+元のデータセットにはタクシー識別子と運転記録が別々のファイルで提供されていますが、サンプルデータを使いやすくするために_medallion_、_hack_license_、_pickup_datetime_をキーにジョインしています。また使用するレコードは、元のレコード数の1％でサンプリングしています。サンプリングされたデータセットは1,703,957の行と23の列を持っています。
+
+**タクシー識別子**
+
+- medallion列はタクシーの一意なID番号を示します。
+- hack_license列は運転手の匿名化された運転免許証番号を示します。
+
+**運転記録および運賃記録**
+
+- 各運転記録には、乗車と降車の場所と時間、および運転距離が含まれます。
+- 各運賃記録には、支払タイプ、合計支払い額、チップ金額などの支払情報が含まれます。
+- 最後の3つの列は、さまざまな機械学習タスクに使用できます。
+    - tip_amount列は連続した数値が含まれ、回帰分析のためのラベル列として使用できます。
+    - tipped列は yes / no 値のみがあり、二項分類に使用できます。
+    - tip_class列は複数の**クラスラベル**があり、多項分類のためのラベル列として使用できます。
+- ラベル列として使用される値はtip_amount列に基づいています。
+
+    |派生列|ルール|
+    |-|-|
+     |tipped|If tip_amount > 0, tipped = 1, otherwise tipped = 0|
+    |tip_class|Class 0: tip_amount = $0<br /><br />Class 1: tip_amount > $0 and tip_amount <= $5<br /><br />Class 2: tip_amount > $5 and tip_amount <= $10<br /><br />Class 3: tip_amount > $10 and tip_amount <= $20<br /><br />Class 4: tip_amount > $20|
+
+## T-SQL内のPythonでプロットを作成する
+
+可視化はデータと異常値の分布を理解するために重要で、Pythonにはデータ可視化のための多くのパッケージが提供されています。matplotlibモジュールは、ヒストグラム、散布図、箱ひげ図、およびその他のデータ探索グラフを作成するための多くの機能を含む人気のライブラリです。
+
+このセクションでは、ストアドプロシージャを使用してプロットを操作する方法を学習します。ここではプロットをvarbinary型のデータとして扱っています。
+
+### プロットをvarbinaryデータ型として格納する
+
+SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの**RevoScalePy**パッケージは、RライブラリのRevoScaleRパッケージに相当します。この例ではrxHistogramを使用し、Transact-SQLクエリの結果データに基づいたヒストグラムをプロットします。簡単にするためにPlotHistogramストアドプロシージャでラップします。
+
+このストアドプロシージャはシリアライズされたPython描画オブジェクトをvarbinaryデータのストリームとして返します。バイナリデータは直接表示することはできませんが、クライアント上でPythonコードを使用してバイナリデータをデシリアライズし、その画像ファイルをクライアントコンピュータに保存します。
+
+### Plots_Pythonストアドプロシージャを定義する
+
+1.  SQL Server Management Studioで、新しいクエリウィンドウを開きます。
+
+2.  チュートリアル用のデータベースに対して、以下のステートメントを使用してプロシージャを定義します。
+  
+    ```SQL:SerializePlots
+    
+    CREATE PROCEDURE [dbo].[SerializePlots]
+    AS
+    BEGIN
+      SET NOCOUNT ON;
+      DECLARE @query nvarchar(max) =
+      N'SELECT cast(tipped as int) as tipped, tip_amount, fare_amount FROM [dbo].[nyctaxi_sample]'
+      EXECUTE sp_execute_external_script
+      @language = N'Python',
+      @script = N'
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    import pickle
+
+    fig_handle = plt.figure()
+    plt.hist(InputDataSet.tipped)
+    plt.xlabel("Tipped")
+    plt.ylabel("Counts")
+    plt.title("Histogram, Tipped")
+    plot0 = pd.DataFrame(data =[pickle.dumps(fig_handle)], columns =["plot"])
+    plt.clf()
+
+    plt.hist(InputDataSet.tip_amount)
+    plt.xlabel("Tip amount ($)")
+    plt.ylabel("Counts")
+    plt.title("Histogram, Tip amount")
+    plot1 = pd.DataFrame(data =[pickle.dumps(fig_handle)], columns =["plot"])
+    plt.clf()
+
+    plt.hist(InputDataSet.fare_amount)
+    plt.xlabel("Fare amount ($)")
+    plt.ylabel("Counts")
+    plt.title("Histogram, Fare amount")
+    plot2 = pd.DataFrame(data =[pickle.dumps(fig_handle)], columns =["plot"])
+    plt.clf()
+
+    plt.scatter( InputDataSet.fare_amount, InputDataSet.tip_amount)
+    plt.xlabel("Fare Amount ($)")
+    plt.ylabel("Tip Amount ($)")
+    plt.title("Tip amount by Fare amount")
+    plot3 = pd.DataFrame(data =[pickle.dumps(fig_handle)], columns =["plot"])
+    plt.clf()
+
+    OutputDataSet = plot0.append(plot1, ignore_index=True).append(plot2, ignore_index=True).append(plot3, ignore_index=True)
+    ',
+                                     @input_data_1 = @query
+      WITH RESULT SETS ((plot varbinary(max)))
+    END
+
+    GO
+  
+    ```
+**Notes:**
+
+- 変数`@query`は、Pythonコードブロックへのインプット`@input_data_1`として渡されるクエリテキストを定義しています。
+- Pythonスクリプトはかなり簡単で、**matplotlibライブラリ**の`figure`によってヒストグラムと散布図を作成し、これらのオブジェクトを**pickleライブラリ**を使用してシリアライズしています。
+- Python描画オブジェクトはアウトプットのために**pandas**データフレームへシリアライズされます。
+
+### varbinaryデータを画像ファイルとして出力する
+
+1.  Management Studioで以下のクエリを実行します。
+  
+    ```
+    EXEC [dbo].[SerializePlots]
+    ```
+  
+    ![result](media/sqldev-python-step3-1-gho9o9.png "result")
+  
+2.  以下のPythonスクリプト内の接続文字列を環境に合わせて変更した後、実行します。
+  
+    **SQL Server 認証の場合**
+    
+        ```python:DeserializeSavePlots.py
+        import pyodbc
+        import pickle
+        import os
+        cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER={SERVER_NAME};DATABASE={DB_NAME};UID={USER_NAME};PWD={PASSOWRD}')
+        cursor = cnxn.cursor()
+        cursor.execute("EXECUTE [dbo].[SerializePlots]")
+        tables = cursor.fetchall()
+        for i in range(0, len(tables)):
+            fig = pickle.loads(tables[i][0])
+            fig.savefig(str(i)+'.png')
+        print("The plots are saved in directory: ",os.getcwd())
+        ```  
+    **Windows認証の場合**
+
+        ```python:DeserializeSavePlots.py
+        import pyodbc
+        import pickle
+        import os
+        cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER={SERVER_NAME};DATABASE={DB_NAME};Trusted_Connection=yes;')
+        cursor = cnxn.cursor()
+        cursor.execute("EXECUTE [dbo].[SerializePlots]")
+        tables = cursor.fetchall()
+        for i in range(0, len(tables)):
+            fig = pickle.loads(tables[i][0])
+            fig.savefig(str(i)+'.png')
+        print("The plots are saved in directory: ",os.getcwd())
+        ```
+
+    > [!NOTE]
+    > Pythonのランタイムのバージョンをサーバとクライアントで合わせてください。またクライアントで使用するmatplotlibなどPythonライブラリのバージョンはサーバと合わせるもしくは上位のバージョンとしてください。
+
+3.  接続が成功すると、以下の結果が表示されます。
+  
+    ![result2](media/sqldev-python-step3-2-gho9o9.png "result2")
+  
+4.  出力ファイルはPythonの作業ディレクトリに作成されます。
+
+    ![result3-1](media/sqldev-python-step3-3-1-gho9o9.png "result3-1")
+    ![result3-2](media/sqldev-python-step3-3-2-gho9o9.png "result3-2")
+    ![result3-3](media/sqldev-python-step3-3-3-gho9o9.png "result3-3")
+    ![result3-4](media/sqldev-python-step3-3-4-gho9o9.png "result3-4")
+    
+## Next Step
+
+[Step 4: T-SQLを使用したデータの特徴抽出](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+
+## Previous Step
+
+[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)
+
+## See Also
+
+[Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
+
+<!--
 ---
 title: "Step 3: Explore and Visualize the Data | Microsoft Docs"
 ms.custom: ""
@@ -200,3 +380,4 @@ The stored procedure returns a serialized Python `figure` object as a stream of 
 ## See Also
 
 [Machine Learning Services with Python](../python/sql-server-python-services.md)
+-->
