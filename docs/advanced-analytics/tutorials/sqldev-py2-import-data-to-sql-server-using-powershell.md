@@ -34,9 +34,9 @@
 	> Make sure that your xmlrw.dll is in the same folder as your bcp.exe. If not, please copy it over.
 -->
 
-![PowerShell Image 1](media/sqldev-python-ps-1-gho9o9.png "PowerShell Image 1")
+    ![PowerShell Image 1](media/sqldev-python-ps-1-gho9o9.png "PowerShell Image 1")
 
-![PowerShell Image 1](media/sqldev-python-ps-2-gho9o9.png "PowerShell Image 1")
+    ![PowerShell Image 1](media/sqldev-python-ps-2-gho9o9.png "PowerShell Image 1")
 
 2. 上記手順の一環で指定したデータベース名とユーザー名をプレースホルダに置き換えるように、すべてのT-SQLスクリプトが変更されています。
   
