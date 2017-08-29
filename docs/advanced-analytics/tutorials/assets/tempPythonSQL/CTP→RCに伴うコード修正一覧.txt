@@ -1,0 +1,62 @@
+● TrainTipPredictionModelSciKitPy	https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_TrainTipPredictionModelSciKitPy.sql
+・import pandas
+　↓
+　# import pandas
+・スクリプト内のインデントを削除
+
+● TrainTipPredictionModelRxPy	https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_TrainTipPredictionModelRxPy.sql
+・import pandas
+　↓
+　# import pandas
+
+・from revoscalepy.functions.RxLogit import rx_logit_ex
+　↓
+　from revoscalepy.functions.RxLogit import rx_logit
+
+・logitObj = rx_logit_ex("tipped ~ passenger_count + trip_distance + trip_time_in_secs + direct_distance", data = InputDataSet);
+　↓
+　logitObj = rx_logit("tipped ~ passenger_count + trip_distance + trip_time_in_secs + direct_distance", data = InputDataSet);
+
+● PredictTipSciKitPy	https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_PredictTipSciKitPy.sql
+・import pandas
+　↓
+　# import pandas
+
+● PredictTipRxPy	https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_PredictTipRxPy.sql
+・import pandas
+　↓
+　# import pandas
+
+・from revoscalepy.functions.RxPredict import rx_predict_ex
+　↓
+　from revoscalepy.functions.RxPredict import rx_predict
+
+・prob_array = rx_predict_ex(mod, X)
+　↓
+　prob_array = rx_predict(mod, X)
+
+・prob_list = list(prob_rrray._results["tipped_Pred"])
+　↓
+　prob_list = prob_array["tipped_Pred"].values
+
+● PredictTipSingleModeSciKitPy	https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_PredictTipSingleModeSciKitPy.sql
+・import pandas
+　↓
+　# import pandas
+
+● PredictTipSingleModeRxPy	https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_PredictTipSingleModeRxPy.sql
+・import pandas
+　↓
+　# import pandas
+
+・from revoscalepy.functions.RxPredict import rx_predict_ex
+　↓
+　from revoscalepy.functions.RxPredict import rx_predict
+
+・prob_array = rx_predict_ex(mod, x)
+　↓
+　prob_array = rx_predict(mod, x)
+
+・prob_list = [prob_array._results["tipped_Pred"]]
+　↓
+　prob_list = prob_array["tipped_Pred"].values
