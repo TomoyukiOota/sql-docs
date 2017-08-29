@@ -1,20 +1,20 @@
-# Step 4: T-SQL���g�p�����f�[�^�̓������o
+# Step 4: T-SQLを使用したデータの特徴抽出
 
-�f�[�^�̒T����A�f�[�^���炢�����̓��@�����W�������G���W�j�A�����O�Ɉڂ�܂��B���f�[�^����������o���s���v���Z�X�́A���x�ȕ��̓��f�����O�̏d�v�ȃX�e�b�v�ł��B
+データの探索後、データからいくつかの洞察を収集し特徴エンジニアリングに移ります。生データから特徴抽出を行うプロセスは、高度な分析モデリングの重要なステップです。
 
-���̃X�e�b�v�ł́ATransact-SQL�֐����g�p���Đ��f�[�^����������o���s�����@���w�K���܂��B���̌�A�X�g�A�h�v���V�[�W�����炻�̊֐����Ăяo���āA�����l���܂ރe�[�u�����쐬���܂��B
+このステップでは、Transact-SQL関数を使用して生データから特徴抽出を行う方法を学習します。その後、ストアドプロシージャからその関数を呼び出して、特徴値を含むテーブルを作成します。
 
-## �֐��̒�`
+## 関数の定義
 
-���f�[�^�ɋL�^���ꂽ���[�^�[�����l�͒n���I�����܂��͈ړ�������\�����̂ɂȂ��Ă��Ȃ��ꍇ�����邽�߁A���̃f�[�^�Z�b�g�ŗ��p�\�ȍ��W���g�p���ď�Ԉʒu�ƍ~�Ԉʒu�̊Ԃ̒��ڋ������v�Z���܂��B������s�����߂ɃJ�X�^��Transact-SQL�֐���[Haversine��](https://en.wikipedia.org/wiki/Haversine_formula)���g�p���܂��B
+元データに記録されたメーター距離値は地理的距離または移動距離を表すものになっていない場合があるため、このデータセットで利用可能な座標を使用して乗車位置と降車位置の間の直接距離を計算します。これを行うためにカスタムTransact-SQL関数で[Haversine式](https://en.wikipedia.org/wiki/Haversine_formula)を使用します。
 
-T-SQL�֐�`fnCalculateDistance`��Haversine�����g�p���ċ������v�Z���AT-SQL�֐�`fnEngineerFeatures`�͂��ׂĂ̓������܂ރe�[�u�����쐬���܂��B
+T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnEngineerFeatures`はすべての特徴を含むテーブルを作成します。
 
-### fnCalculateDistance���g�p���Ĉړ��������v�Z����
+### fnCalculateDistanceを使用して移動距離を計算する
 
-1.  T-SQL�֐�`fnCalculateDistance`��[Step 2: PowerShell���g�p����SQL Server�ւ̃f�[�^�C���|�[�g](sqldev-py2-import-data-to-sql-server-using-powershell.md)��ʂ���SQL Server�ɒ�`����Ă��܂��B
+1.  T-SQL関数`fnCalculateDistance`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studio�̃I�u�W�F�N�g�G�N�X�v���[���ŁA[�v���O���~���O]�A[�֐�]�A[�X�J���[�l�֐�]�̏��ɓW�J���܂��B`fnCalculateDistance`���E�N���b�N���A[�ύX] ��I�����ĐV�����N�G���E�B���h�E��Transact-SQL�X�N���v�g���J���܂��B
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[スカラー値関数]の順に展開します。`fnCalculateDistance`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
   
     ```SQL:fnCalculateDistance
     CREATE FUNCTION [dbo].[fnCalculateDistance] (@Lat1 float, @Long1 float, @Lat2 float, @Long2 float)
@@ -41,16 +41,16 @@ T-SQL�֐�`fnCalculateDistance`��Haversine�����g�p���ċ������v�Z���AT-SQL�֐�`fnE
     ```
 **Notes:**
 
-- ���̊֐��̓X�J���[�l�֐��ł���A���O��`���ꂽ�^�̒P��̃f�[�^�l��Ԃ��܂��B
-- ��Ԉʒu�ƍ~�Ԉʒu�̏ꏊ���瓾��ꂽ�ܓx�ƌo�x�̒l�����͂Ƃ��Ďg�p����܂��BHaversine���́A�ʒu�����W�A���ɕϊ����A�����̒l���g�p���āA2�̏ꏊ�̊Ԃ̒��ڋ������v�Z���܂��B
+- この関数はスカラー値関数であり、事前定義された型の単一のデータ値を返します。
+- 乗車位置と降車位置の場所から得られた緯度と経度の値が入力として使用されます。Haversine式は、位置をラジアンに変換し、これらの値を使用して、2つの場所の間の直接距離を計算します。
 
-### fnEngineerFeatures���g�p���ē����l��ۑ�����
+### fnEngineerFeaturesを使用して特徴値を保存する
 
-1.  T-SQL�֐�`fnEngineerFeatures`��[Step 2: PowerShell���g�p����SQL Server�ւ̃f�[�^�C���|�[�g](sqldev-py2-import-data-to-sql-server-using-powershell.md)��ʂ���SQL Server�ɒ�`����Ă��܂��B
+1.  T-SQL関数`fnEngineerFeatures`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studio�̃I�u�W�F�N�g�G�N�X�v���[���ŁA[�v���O���~���O]�A[�֐�]�A[�e�[�u���l�֐�]�̏��ɓW�J���܂��B`fnCalculateDistance`���E�N���b�N���A[�ύX] ��I�����ĐV�����N�G���E�B���h�E��Transact-SQL�X�N���v�g���J���܂��B
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[テーブル値関数]の順に展開します。`fnCalculateDistance`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
     
-    `fnEngineerFeatures`�͕����̗����͂Ƃ��Ďg�p�������̓����l���Ԃ��e�[�u���l�֐��ł��B`fnEngineerFeatures`�̖ړI�́A���f���\�z�Ɏg�p��������l�Z�b�g���쐬���邱�Ƃł��B`fnEngineerFeatures`�͏�Ԉʒu�ƍ~�Ԉʒu�̊Ԃ̒��������𓾂邽�߂�`fnCalculateDistance`���Ăяo���܂��B
+    `fnEngineerFeatures`は複数の列を入力として使用し複数の特徴値列を返すテーブル値関数です。`fnEngineerFeatures`の目的は、モデル構築に使用する特徴値セットを作成することです。`fnEngineerFeatures`は乗車位置と降車位置の間の直線距離を得るために`fnCalculateDistance`を呼び出します。
   
     ```
     CREATE FUNCTION [dbo].[fnEngineerFeatures] (
@@ -75,7 +75,7 @@ T-SQL�֐�`fnCalculateDistance`��Haversine�����g�p���ċ������v�Z���AT-SQL�֐�`fnE
     GO
     ```
 
-2. ���ꂪ�@�\���邱�Ƃ��m�F���邽�߂ɁA��Ԉʒu�ƍ~�Ԉʒu�̏ꏊ���قȂ�^�]�ɂ�������炸���[�^�[�����l��0�ɐݒ肳�ꂽ�L�^�ɑ΂��Ēn���I�������v�Z���Ă݂܂��B
+2. これが機能することを確認するために、乗車位置と降車位置の場所が異なる運転にもかかわらずメーター距離値が0に設定された記録に対して地理的距離を計算してみます。
 
     ```SQL:T-SQL
         SELECT tipped, fare_amount, passenger_count,(trip_time_in_secs/60) as TripMinutes,
@@ -88,23 +88,23 @@ T-SQL�֐�`fnCalculateDistance`��Haversine�����g�p���ċ������v�Z���AT-SQL�֐�`fnE
     
     ![result4-1](media/sqldev-python-step4-1-gho9o9.png "result4-1")
     
-    ���̒ʂ胁�[�^�[�ɂ���ĕ񍐂��ꂽ�����́A�K�������n���I�������������̂Ƃ��ċL�^����Ă���Ƃ͌���܂���B���������O�����������G���W�j�A�����O���d�v�ȗ��R�ł��B
+    この通りメーターによって報告された距離は、必ずしも地理的距離を示すものとして記録されているとは限りません。こうした前処理が特徴エンジニアリングが重要な理由です。
     
-���̃X�e�b�v�ł́A�����̋@�\���g�p���āAPython���g�p���ċ@�B�w�K���f�����쐬���A�g���[�j���O������@���w�K���܂��B
+次のステップでは、これらの機能を使用して、Pythonを使用して機械学習モデルを作成し、トレーニングする方法を学習します。
 
-## ���̃X�e�b�v
+## 次のステップ
 
-[Step 5: T-SQL���g�p�������f���̃g���[�j���O�ƕۑ�](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+[Step 5: T-SQLを使用したモデルのトレーニングと保存](sqldev-py5-train-and-save-a-model-using-t-sql.md)
 
-## �O�̃X�e�b�v
+## 前のステップ
 
-[Step 3: �f�[�^�̒T���Ɖ���](sqldev-py3-explore-and-visualize-the-data.md)
+[Step 3: データの探索と可視化](sqldev-py3-explore-and-visualize-the-data.md)
 
-## �͂��߂���
+## はじめから
 
-[SQL�J���҂̂��߂� In-Database Python ����](sqldev-in-database-python-for-sql-developers.md)
+[SQL開発者のための In-Database Python 分析](sqldev-in-database-python-for-sql-developers.md)
 
-## �֘A����
+## 関連項目
 
 [Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
 

@@ -1,27 +1,27 @@
-# Step 6: ���f���̗��p
+# Step 6: モデルの利用
 
-���̃X�e�b�v�ł́A�O�̎菇�ŌP���������f���𗘗p������@���w�т܂��B�����ł�"���p"�Ƃ́A�u�X�R�A�����O�̂��߂Ƀ��f����{�Ԋ��ɓW�J����v���Ƃ��Ӗ����Ă��܂��B�����Python�R�[�h���X�g�A�h�v���V�[�W���Ɋ܂܂�Ă��邽�߂ɊȒP�ɓW�J�ł��܂��B�A�v���P�[�V��������V�����ϑ��l�̗\�����s�����߂ɂ̓X�g�A�h�v���V�[�W�����Ăяo�������ł��B
+このステップでは、前の手順で訓練したモデルを利用する方法を学びます。ここでの"利用"とは、「スコアリングのためにモデルを本番環境に展開する」ことを意味しています。これはPythonコードがストアドプロシージャに含まれているために簡単に展開できます。アプリケーションから新しい観測値の予測を行うためにはストアドプロシージャを呼び出すだけです。
 
-�X�g�A�h�v���V�[�W������Python���f�����Ăяo���ɂ́A����2�̕��@������܂��B
+ストアドプロシージャからPythonモデルを呼び出すには、次の2つの方法があります。
 
-- **�o�b�`�X�R�A�����O���[�h**�F�����̍s�̃f�[�^��񋟂��邽�߂�SELECT�N�G�����g�p���܂��B�X�g�A�h�v���V�[�W���͓��͂ɑΉ�����ϑ��l�̃e�[�u����߂��܂�
-- **�X�̃X�R�A�����O���[�h**�F�X�̃p�����[�^�l�̃Z�b�g����͂Ƃ��ēn���܂��B�X�g�A�h�v���V�[�W���͒P��̃��R�[�h�܂��͒l��Ԃ��܂��B
+- **バッチスコアリングモード**：複数の行のデータを提供するためにSELECTクエリを使用します。ストアドプロシージャは入力に対応する観測値のテーブルを戻します
+- **個々のスコアリングモード**：個々のパラメータ値のセットを入力として渡します。ストアドプロシージャは単一のレコードまたは値を返します。
 
-## scikit-learn���f�����g�p�����X�R�A�����O
+## scikit-learnモデルを使用したスコアリング
 
-�X�g�A�h�v���V�[�W��`PredictTipSciKitPy`�́Ascikit-learn���f�����g�p���܂��B`PredictTipSciKitPy`�̓X�g�A�h�v���V�[�W��������Python�\���Ăяo�������b�v���邽�߂̊�{�I�ȍ\���������Ă��܂��B
+ストアドプロシージャ`PredictTipSciKitPy`は、scikit-learnモデルを使用します。`PredictTipSciKitPy`はストアドプロシージャ内からPython予測呼び出しをラップするための基本的な構文を示しています。
 
-- �g�p���郂�f�������X�g�A�h�v���V�[�W���̓��̓p�����[�^�Ŏw�肳��܂��B
-- �w�肳�ꂽ���f����������nyc_taxi_models�e�[�u������V���A���C�Y���ꂽ���f�������o����܂��B
-- �V���A���C�Y���ꂽ���f����Python�ϐ�`mod`�Ɋi�[����܂��B
-- �X�R�A�����O�����V�����P�[�X��`@input_data_1`�Ŏw�肳�ꂽTransact-SQL�N�G������擾����܂��B���̃N�G�����ʂ̓f�t�H���g�̃f�[�^�t���[��`InputDataSet`�ɕۑ�����܂��B
-- ���̃f�[�^�t���[����scikit-learn���f�����g�p���č쐬���ꂽ���W�X�e�B�b�N��A���f��`mod`�̊֐�`predict_proba`�ɓn����܂��B
-- �֐�`predict_proba`�͔C�ӂ̊z�̃`�b�v���󂯎��m��������float�l��߂��܂��B
-- ����ɁA���x���g���b�N`AUC(area under curve)`���v�Z���܂��BAUC�Ȃǂ̐��x���g���b�N�͐����ϐ��ɉ����ĖړI�ϐ��i���Ȃ킿tipped��j���w�肵���ꍇ�ɂ̂ݐ�������܂��B�\���ɂ͖ړI�ϐ��i�ϐ�Y�j��K�v�Ƃ��܂��񂪁A���x���g���b�N�̌v�Z�ɂ͕K�v�ł��B���������āA�X�R�A�����O����f�[�^�ɖړI�ϐ����Ȃ��ꍇ�́A�\�[�X�R�[�h����AUC�v�Z�u���b�N���폜���A�P���ɐ����ϐ�(�ϐ�X)�ɂ���ă`�b�v���󂯎��m����Ԃ��悤�ɃX�g�A�h�v���V�[�W����ύX���邱�Ƃ��ł��܂��B
+- 使用するモデル名をストアドプロシージャの入力パラメータで指定されます。
+- 指定されたモデル名を元にnyc_taxi_modelsテーブルからシリアライズされたモデルが取り出されます。
+- シリアライズされたモデルはPython変数`mod`に格納されます。
+- スコアリングした新しいケースは`@input_data_1`で指定されたTransact-SQLクエリから取得されます。このクエリ結果はデフォルトのデータフレーム`InputDataSet`に保存されます。
+- このデータフレームはscikit-learnモデルを使用して作成されたロジスティック回帰モデル`mod`の関数`predict_proba`に渡されます。
+- 関数`predict_proba`は任意の額のチップを受け取る確率を示すfloat値を戻します。
+- さらに、精度メトリック`AUC(area under curve)`を計算します。AUCなどの精度メトリックは説明変数に加えて目的変数（すなわちtipped列）も指定した場合にのみ生成されます。予測には目的変数（変数Y）を必要としませんが、精度メトリックの計算には必要です。したがって、スコアリングするデータに目的変数がない場合は、ソースコードからAUC計算ブロックを削除し、単純に説明変数(変数X)によってチップを受け取る確率を返すようにストアドプロシージャを変更することができます。
 
-�X�g�A�h�v���V�[�W��`PredictTipSciKitPy`��[Step 2: PowerShell���g�p����SQL Server�ւ̃f�[�^�C���|�[�g](sqldev-py2-import-data-to-sql-server-using-powershell.md)��ʂ���SQL Server�ɒ�`����Ă��܂��B
+ストアドプロシージャ`PredictTipSciKitPy`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-Management Studio�̃I�u�W�F�N�g�G�N�X�v���[���ŁA[�v���O���~���O]�A[�X�g�A�h�v���V�[�W��]�̏��ɓW�J���܂��B`PredictTipSciKitPy`���E�N���b�N���A[�ύX] ��I�����ĐV�����N�G���E�B���h�E��Transact-SQL�X�N���v�g���J���܂��B
+Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTipSciKitPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
 ```SQL:PredictTipSciKitPy
 DROP PROCEDURE IF EXISTS PredictTipSciKitPy;
@@ -65,13 +65,13 @@ END
 GO
 ```
 
-## revoscalepy���f�����g�p�����X�R�A�����O
+## revoscalepyモデルを使用したスコアリング
 
-�X�g�A�h�v���V�[�W��`PredictTipRxPy`�́Arevoscalepy���C�u�������g�p���č쐬���ꂽ���f�����g�p���܂��B����̓v���V�[�W��`PredictTipSciKitPy`�Ƃقړ����悤�ɋ@�\���܂����Arevoscalepy�֐��ɂ͂������̕ύX���������Ă��܂��B
+ストアドプロシージャ`PredictTipRxPy`は、revoscalepyライブラリを使用して作成されたモデルを使用します。これはプロシージャ`PredictTipSciKitPy`とほぼ同じように機能しますが、revoscalepy関数にはいくつかの変更が加えられています。
 
-�X�g�A�h�v���V�[�W��`PredictTipRxPy`��[Step 2: PowerShell���g�p����SQL Server�ւ̃f�[�^�C���|�[�g](sqldev-py2-import-data-to-sql-server-using-powershell.md)��ʂ���SQL Server�ɒ�`����Ă��܂��B
+ストアドプロシージャ`PredictTipRxPy`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-Management Studio�̃I�u�W�F�N�g�G�N�X�v���[���ŁA[�v���O���~���O]�A[�X�g�A�h�v���V�[�W��]�̏��ɓW�J���܂��B`PredictTipRxPy`���E�N���b�N���A[�ύX] ��I�����ĐV�����N�G���E�B���h�E��Transact-SQL�X�N���v�g���J���܂��B
+Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTipRxPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
 ```SQL:PredictTipRxPy
 DROP PROCEDURE IF EXISTS PredictTipRxPy;
@@ -114,16 +114,16 @@ END
 GO
 ```
 
-## �o�b�`�X�R�A�����O�̎��s
+## バッチスコアリングの実行
 
-�X�g�A�h�v���V�[�W��`PredictTipSciKitPy`�����`PredictTipRxPy`�ɂ́A2�̓��̓p�����[�^���K�v�ł��B
+ストアドプロシージャ`PredictTipSciKitPy`および`PredictTipRxPy`には、2つの入力パラメータが必要です。
 
-- �X�R�A�����O�ΏۂƂ���f�[�^�𒊏o����N�G��
-- �X�R�A�����O�Ɏg�p����P���ς݃��f���̎��ʎq
+- スコアリング対象とするデータを抽出するクエリ
+- スコアリングに使用する訓練済みモデルの識別子
 
-���̃Z�N�V�����ł́A�����̈������X�g�A�h�v���V�[�W���ɓn���āA�X�R�A�����O�Ɏg�p���郂�f���ƃf�[�^�̗������ȒP�ɕύX������@���w�K���܂��B
+このセクションでは、これらの引数をストアドプロシージャに渡して、スコアリングに使用するモデルとデータの両方を簡単に変更する方法を学習します。
 
-1. ���̓f�[�^���`���A���̂悤�ɃX�R�A�����O�̂��߂ɃX�g�A�h�v���V�[�W�����Ăяo���܂��B���̗�ł́A�X�R�A�����O�ɃX�g�A�h�v���V�[�W��`PredictTipSciKitPy`���g�p���A���f���̖��O�ƃN�G���������n���܂�
+1. 入力データを定義し、次のようにスコアリングのためにストアドプロシージャを呼び出します。この例では、スコアリングにストアドプロシージャ`PredictTipSciKitPy`を使用し、モデルの名前とクエリ文字列を渡します
 
     ```SQL:T-SQL
     DECLARE @query_string nvarchar(max) -- Specify input query
@@ -137,9 +137,9 @@ GO
     ![result6-1](media/sqldev-python-step6-1-gho9o9.png "result6-1")
     ![result6-2](media/sqldev-python-step6-2-gho9o9.png "result6-2")
 
-    �X�g�A�h�v���V�[�W���́A���̓N�G���̈ꕔ�Ƃ��ēn���ꂽ�e�^�]�L�^�ɑ΂��Ẵ`�b�v���󂯎��m���̗\���l��Ԃ��܂��B�\���l��Management Studio�̌��ʃy�C���ɕ\������܂��B�܂����b�Z�[�W�y�C���ɂ͐��x���g���b�N`AUC�i�Ȑ����ʐρj`���o�͂���܂��B
+    ストアドプロシージャは、入力クエリの一部として渡された各運転記録に対してのチップを受け取る確率の予測値を返します。予測値はManagement Studioの結果ペインに表示されます。またメッセージペインには精度メトリック`AUC（曲線下面積）`が出力されます。
     
-2. revoscalepy���f�����X�R�A�����O�Ɏg�p����ɂ́A�X�g�A�h�v���V�[�W��PredictTipRxPy���Ăяo���܂��B
+2. revoscalepyモデルをスコアリングに使用するには、ストアドプロシージャPredictTipRxPyを呼び出します。
 
     ```SQL
     DECLARE @query_string nvarchar(max) -- Specify input query
@@ -153,26 +153,26 @@ GO
     ![result6-3](media/sqldev-python-step6-3-gho9o9.png "result6-3")
     ![result6-4](media/sqldev-python-step6-4-gho9o9.png "result6-4")
     
-## �X�̃X�R�A�����O�̎��s
+## 個々のスコアリングの実行
 
-�o�b�`�X�R�A�����O�̑���ɁA�P��̃P�[�X��n���A���̒l�Ɋ�Â����P��̌��ʂ𓾂����P�[�X������܂��B���Ƃ��΁AExcel���[�N�V�[�g�AWeb�A�v���P�[�V�����A�܂���Reporting Services���|�[�g�ɂ����ă��[�U����̓��͂Ɋ�Â��ăX�g�A�h�v���V�[�W�����Ăяo���悤�\�����܂��B
+バッチスコアリングの代わりに、単一のケースを渡し、その値に基づいた単一の結果を得たいケースもあります。たとえば、Excelワークシート、Webアプリケーション、またはReporting Servicesレポートにおいてユーザからの入力に基づいてストアドプロシージャを呼び出すよう構成します。
 
-���̃Z�N�V�����ł́A�X�g�A�h�v���V�[�W��`PredictTipSingleModeSciKitPy or PredictTipSingleModeRxPy`���Ăяo���ĒP��̗\�����쐬������@���w�K���܂��B
+このセクションでは、ストアドプロシージャ`PredictTipSingleModeSciKitPy or PredictTipSingleModeRxPy`を呼び出して単一の予測を作成する方法を学習します。
 
-1. �X�g�A�h�v���V�[�W��`PredictTipSingleModeSciKitPy or PredictTipSingleModeRxPy`��[Step 2: PowerShell���g�p����SQL Server�ւ̃f�[�^�C���|�[�g](sqldev-py2-import-data-to-sql-server-using-powershell.md)��ʂ���SQL Server�ɒ�`����Ă��܂��B
+1. ストアドプロシージャ`PredictTipSingleModeSciKitPy or PredictTipSingleModeRxPy`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studio�̃I�u�W�F�N�g�G�N�X�v���[���ŁA[�v���O���~���O]�A[�X�g�A�h�v���V�[�W��]�̏��ɓW�J���܂��B`PredictTipSingleModeSciKitPy or PredictTipSingleModeRxPy`���E�N���b�N���A[�ύX] ��I�����ĐV�����N�G���E�B���h�E��Transact-SQL�X�N���v�g���J���܂��B
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTipSingleModeSciKitPy or PredictTipSingleModeRxPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
     
-    �����̃X�g�A�h�v���V�[�W���́Ascikit-learn�����revoscalepy���f�����g�p���A���̂悤�ɃX�R�A�����O�����s���܂��B
+    これらのストアドプロシージャは、scikit-learnおよびrevoscalepyモデルを使用し、次のようにスコアリングを実行します。
 
-  - ���f���̖��O�ƕ����̒P��l�����͂Ƃ��Ē񋟂���܂��B�����̓��͂ɂ́A�q���A�^�]�����Ȃǂ��܂܂�܂��B
-  - �e�[�u���l�֐�`fnEngineerFeatures`�͈ܓx�ƌo�x����͂Ŏ󂯎�蒼�ڋ����ɕϊ����܂��B
-  - �O���A�v���P�[�V��������X�g�A�h�v���V�[�W�����Ăяo���ꍇ�́A���̓f�[�^��Python���f���̕K�v�ȓ��͋@�\�ƈ�v���邱�Ƃ��m�F���Ă��������B����ɂ́A���̓f�[�^��Python�f�[�^�^�ɃL���X�g���邱�Ƃ�f�[�^�^�A�f�[�^�������؂��邱�Ƃ��܂܂�܂��B
-  - �X�g�A�h�v���V�[�W���́A�i�[����Ă���Python���f���Ɋ�Â��ăX�R�A���쐬���܂��B
+  - モデルの名前と複数の単一値が入力として提供されます。これらの入力には、客数、運転距離などが含まれます。
+  - テーブル値関数`fnEngineerFeatures`は緯度と経度を入力で受け取り直接距離に変換します。
+  - 外部アプリケーションからストアドプロシージャを呼び出す場合は、入力データがPythonモデルの必要な入力機能と一致することを確認してください。これには、入力データをPythonデータ型にキャストすることやデータ型、データ長を検証することが含まれます。
+  - ストアドプロシージャは、格納されているPythonモデルに基づいてスコアを作成します。
 
 ### PredictTipSingleModeSciKitPy
 
-�ȉ���scikit-learn���f�����g�p���ăX�R�A�����O�����s����X�g�A�h�v���V�[�W��`PredictTipSingleModeSciKitPy`�ł��B
+以下はscikit-learnモデルを使用してスコアリングを実行するストアドプロシージャ`PredictTipSingleModeSciKitPy`です。
 
 ```SQL:PredictTipSingleModeSciKitPy
 CREATE PROCEDURE [dbo].[PredictTipSingleModeSciKitPy] (@model varchar(50), @passenger_count int = 0,
@@ -236,7 +236,7 @@ GO
 
 ### PredictTipSingleModeRxPy
 
-�ȉ���revoscalepy���f�����g�p���ăX�R�A�����O�����s����X�g�A�h�v���V�[�W��`PredictTipSingleModeRxPy`�ł��B
+以下はrevoscalepyモデルを使用してスコアリングを実行するストアドプロシージャ`PredictTipSingleModeRxPy`です。
 
 ```SQL
 CREATE PROCEDURE [dbo].[PredictTipSingleModeRxPy] (@model varchar(50), @passenger_count int = 0,
@@ -302,7 +302,7 @@ END
 GO
 ```
 
-2.  Management Studio�ŐV�����N�G���E�B���h�E���J���A�����ϐ������͂��ăX�g�A�h�v���V�[�W�����Ăяo���܂��B
+2.  Management Studioで新しいクエリウィンドウを開き、説明変数列を入力してストアドプロシージャを呼び出します。
 
     ```SQL
     -- Call stored procedure PredictTipSingleModeSciKitPy to score using SciKit-Learn model
@@ -311,7 +311,7 @@ GO
     EXEC [dbo].[PredictTipSingleModeRxPy] 'revoscalepy_model', 1, 2.5, 631, 40.763958,-73.973373, 40.782139,-73.977303
     ```
     
-    7�̐����ϐ��l�͈ȉ��̏����ł��B
+    7つの説明変数値は以下の順序です。
     
     -   passenger_count
     -   trip_distance
@@ -321,23 +321,23 @@ GO
     -   dropoff_latitude
     -   dropoff_longitude
 
-    ���ʂƂ��ď�L�̃p�����[�^��L����^�]�ɂ����ă`�b�v���x������m�����Ԃ���܂��B
+    結果として上記のパラメータを有する運転においてチップが支払われる確率が返されます。
     
     ![result6-5](media/sqldev-python-step6-5-gho9o9.png "result6-5")
     
-## �܂Ƃ�
+## まとめ
 
-���̃`���[�g���A���ł́A�X�g�A�h�v���V�[�W���ɖ��ߍ��܂ꂽPython�R�[�h�𑀍삷����@���w�т܂����BTransact-SQL�Ƃ̓����ɂ��A�\���̂��߂�Python���f���̃f�v���C�����g��G���^�[�v���C�Y�f�[�^���[�N�t���[�̈ꕔ�Ƃ��Ẵ��f���ăg���[�j���O�̑g�ݍ��݂�����ɊȒP�ɂȂ邱�Ƃ��m�F���܂����B
+このチュートリアルでは、ストアドプロシージャに埋め込まれたPythonコードを操作する方法を学びました。Transact-SQLとの統合により、予測のためのPythonモデルのデプロイメントやエンタープライズデータワークフローの一部としてのモデル再トレーニングの組み込みがさらに簡単になることを確認しました。
 
-## �O�̃X�e�b�v
+## 前のステップ
 
-[Step 5: T-SQL���g�p�������f���̃g���[�j���O�ƕۑ�](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+[Step 5: T-SQLを使用したモデルのトレーニングと保存](sqldev-py5-train-and-save-a-model-using-t-sql.md)
 
-## �͂��߂���
+## はじめから
 
-[SQL�J���҂̂��߂� In-Database Python ����](sqldev-in-database-python-for-sql-developers.md)
+[SQL開発者のための In-Database Python 分析](sqldev-in-database-python-for-sql-developers.md)
 
-## �֘A����
+## 関連項目
 
 [Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
 
