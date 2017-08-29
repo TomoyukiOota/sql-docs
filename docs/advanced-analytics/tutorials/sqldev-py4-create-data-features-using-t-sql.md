@@ -92,15 +92,19 @@ T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnE
     
 次のステップでは、これらの機能を使用して、Pythonを使用して機械学習モデルを作成し、トレーニングする方法を学習します。
 
-## Next Step
+## 次のステップ
 
 [Step 5: T-SQLを使用したモデルのトレーニングと保存](sqldev-py5-train-and-save-a-model-using-t-sql.md)
 
-## Previous Step
+## 前のステップ
 
 [Step 3: データの探索と可視化](sqldev-py3-explore-and-visualize-the-data.md)
 
-## See Also
+## はじめから
+
+[SQL開発者のための In-Database Python 分析](sqldev-in-database-python-for-sql-developers.md)
+
+## 関連項目
 
 [Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
 

@@ -69,6 +69,10 @@
 
 [Step 1: サンプルデータのダウンロード](sqldev-py1-download-the-sample-data.md)
 
+## はじめから
+
+[SQL開発者のための In-Database Python 分析](sqldev-in-database-python-for-sql-developers.md)
+
 ## 関連項目
 
 [Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)

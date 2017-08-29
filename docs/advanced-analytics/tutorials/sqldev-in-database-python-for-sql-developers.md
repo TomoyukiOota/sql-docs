@@ -38,7 +38,7 @@ Python IDEでソリューションを作成してテストした後、Pythonコ�
 
    ストアドプロシージャ化したPythonコードにより機械学習モデルを構築して保存します。
   
--  [Step 6: モデルの操作](sqldev-py6-operationalize-the-model.md)
+-  [Step 6: モデルの利用](sqldev-py6-operationalize-the-model.md)
 
   モデルをデータベースに保存した後、Transact-SQLを使用して予測のためにモデルを呼び出します。
 

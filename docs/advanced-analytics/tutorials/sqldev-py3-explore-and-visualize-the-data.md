@@ -165,15 +165,19 @@ SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの
     ![result3-3](media/sqldev-python-step3-3-3-gho9o9.png "result3-3")
     ![result3-4](media/sqldev-python-step3-3-4-gho9o9.png "result3-4")
     
-## Next Step
+## 次のステップ
 
-[Step 4: T-SQLを使用したデータの特徴抽出](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+[Step 4: T-SQLを使用したデータの特徴抽出](sqldev-py4-create-data-features-using-t-sql.md)
 
-## Previous Step
+## 前のステップ
 
 [Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)
 
-## See Also
+## はじめから
+
+[SQL開発者のための In-Database Python 分析](sqldev-in-database-python-for-sql-developers.md)
+
+## 関連項目
 
 [Machine Learning Services with Python](https://docs.microsoft.com/en-us/sql/advanced-analytics/python/sql-server-python-services)
 

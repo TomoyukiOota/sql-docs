@@ -21,8 +21,8 @@
 
 ストアドプロシージャ`PredictTipSciKitPy`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTipSciKitPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
-    
+Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTipSciKitPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+
 ```SQL:PredictTipSciKitPy
 DROP PROCEDURE IF EXISTS PredictTipSciKitPy;
 GO
@@ -71,8 +71,8 @@ GO
 
 ストアドプロシージャ`PredictTipRxPy`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTipRxPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
-    
+Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTipRxPy`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+
 ```SQL:PredictTipRxPy
 DROP PROCEDURE IF EXISTS PredictTipRxPy;
 GO
@@ -332,6 +332,10 @@ GO
 ## 前のステップ
 
 [Step 5: T-SQLを使用したモデルのトレーニングと保存](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+
+## はじめから
+
+[SQL開発者のための In-Database Python 分析](sqldev-in-database-python-for-sql-developers.md)
 
 ## 関連項目
 

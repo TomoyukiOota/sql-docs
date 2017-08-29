@@ -140,10 +140,10 @@ END;
 GO
 ```
     
-    - nyctaxi_sample_trainingデータにrevoscalepyパッケージを使用してロジスティック回帰モデルをトレーニングします。
-    - SELECTクエリはカスタムスカラ関数fnCalculateDistanceを使用して、乗車位置と降車位置の間の直接距離を計算します。クエリの結果はデフォルトのPython入力変数`InputDataset`に格納されます。
-    - Pythonスクリプトは、Machine Learning Servicesに含まれているrevoscalepyのLogisticRegression関数を呼び出して、ロジスティック回帰モデルを作成します。
-    - tippedを目的変数に、passenger_count、trip_distance、trip_time_in_secs、およびdirect_distanceを説明変数としてモデルを作成します。    - Python変数`logitObj`で示される訓練済みモデルはシリアライズされ出力パラメータとして返ります。この出力をnyc_taxi_modelsテーブルに登録することで、将来の予測に繰り返し使用することができます。
+- nyctaxi_sample_trainingデータにrevoscalepyパッケージを使用してロジスティック回帰モデルをトレーニングします。
+- SELECTクエリはカスタムスカラ関数fnCalculateDistanceを使用して、乗車位置と降車位置の間の直接距離を計算します。クエリの結果はデフォルトのPython入力変数`InputDataset`に格納されます。
+- Pythonスクリプトは、Machine Learning Servicesに含まれているrevoscalepyのLogisticRegression関数を呼び出して、ロジスティック回帰モデルを作成します。
+- tippedを目的変数に、passenger_count、trip_distance、trip_time_in_secs、およびdirect_distanceを説明変数としてモデルを作成します。    - Python変数`logitObj`で示される訓練済みモデルはシリアライズされ出力パラメータとして返ります。この出力をnyc_taxi_modelsテーブルに登録することで、将来の予測に繰り返し使用することができます。
 
 2. 次のSQL文を実行して、トレーニングされたモデルをnyc_taxi_modelsテーブルに登録します。
 
@@ -169,7 +169,11 @@ GO
 
 ## 前のステップ
 
-[Step 4: T-SQLを使用したデータの特徴抽出](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+[Step 4: T-SQLを使用したデータの特徴抽出](sqldev-py4-create-data-features-using-t-sql.md)
+
+## はじめから
+
+[SQL開発者のための In-Database Python 分析](sqldev-in-database-python-for-sql-developers.md)
 
 ## 関連項目
 
