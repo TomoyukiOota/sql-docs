@@ -30,7 +30,7 @@ Python IDEでソリューションを作成してテストした後、Pythonコ�
 
   Transact-SQLストアドプロシージャからPythonを実行し、基本的なデータの探索と可視化を実行します。
 
-- [Step 4: T-SQLを使用したデータの特徴抽出](sqldev-py5-train-and-save-a-model-using-t-sql.md)
+- [Step 4: T-SQLを使用したデータの特徴抽出](sqldev-py4-create-data-features-using-t-sql.md)
 
   ユーザ定義関数を活用しデータの特徴抽出を行います。
 
