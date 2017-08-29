@@ -1,28 +1,14 @@
 ---
-# required metadata
-
 title: Release notes for SQL Server 2017 on Linux | Microsoft Docs
 description: This topic contains the release notes and supported features for SQL Server 2017 running on Linux. Release notes are included for RC2 and prior versions.
 author: rothja 
 ms.author: jroth 
 manager: jhubbard
-ms.date: 08/02/2017
+ms.date: 08/07/2017
 ms.topic: article
 ms.prod: sql-linux
 ms.technology: database-engine
 ms.assetid: 1314744f-fcaf-46db-800e-2918fa7e1b6c
-
-# optional metadata
-
-# keywords: ""
-# ROBOTS: ""
-# audience: ""
-# ms.devlang: ""
-# ms.reviewer: ""
-# ms.suite: ""
-# ms.tgt_pltfrm: ""
-# ms.custom: ""
-
 ---
 # Release notes for SQL Server 2017 on Linux
 
@@ -160,6 +146,8 @@ The following sections describe known issues with this release of SQL Server 201
       sudo systemctl restart mssql-server
       ```
 
+- SQL Server 2014 databases on Windows that use In-memory OLTP cannot be restored on SQL Server 2017 on Linux. To restore a SQL Server 2014 database that uses in-memory OLTP, first upgrade the databases to SQL Server 2016 or SQL Server 2017 on Windows before moving them to SQL Server on Linux via backup/restore or detach/attach.
+
 #### Remote database files
 
 - Hosting database files on a NFS server is not supported in this release. This includes using NFS for shared disk failover clustering as well as databases on non-clustered instances. We are working on enabling NFS server support in the upcoming releases.
@@ -275,6 +263,7 @@ The following features and services are not available on Linux at this time. The
 | &nbsp; | Stretch DB |
 | &nbsp; | Polybase |
 | &nbsp; | Distributed Query |
+| &nbsp; | Machine Learning Services |
 | &nbsp; | System extended stored procedures (XP_CMDSHELL, etc.) |
 | &nbsp; | Filetable |
 | &nbsp; | CLR assemblies with the EXTERNAL_ACCESS or UNSAFE permission set |
@@ -864,7 +853,7 @@ The following sections describe known issues with this release of SQL Server 201
     - Change Data Capture
 
 #### In-Memory OLTP
-- In-Memory OLTP databases can only be created in the /var/opt/mssql directory. For more information, visit the [In-memory OLTP Topic](sql-server-linux-performance-get-started.md#use-in-memory-oltp).  
+- In-Memory OLTP databases can only be created in the /var/opt/mssql directory. For more information, visit the [In-memory OLTP Topic](sql-server-linux-performance-get-started.md#use-in-memory-oltp).
 
 #### SqlPackage
 - Using SqlPackage requires specifying an absolute path for files. Using relative paths will map the files under the "/tmp/sqlpackage.\<code\>/system/system32" folder. 
