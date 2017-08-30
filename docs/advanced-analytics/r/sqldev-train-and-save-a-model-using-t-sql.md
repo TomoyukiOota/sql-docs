@@ -1,3 +1,98 @@
+# Lesson 5: T-SQLを使用したモデルのトレーニングと保存
+
+この記事は、SQL開発者のための In-Database R 分析（チュートリアル） の一部です。
+
+このレッスンでは、Rを使用して、機械学習モデルをトレーニングする方法を学習します。作成したデータ特徴を使用してモデルをトレーニングし、訓練されたモデルをSQL Serverのテーブルに保存します。
+Rパッケージは既にR Services(In-Database)と共にインストールされているため、SQLからすべて実行できます。
+
+## ストアドプロシージャを作成する
+
+T-SQLからRを呼び出すときは、システムストアドプロシージャ[sp_execute_external_script](../../relational-databases/system-stored-procedures/sp-execute-external-script-transact-sql.md)を使用します。ただし、モデルの再学習など、頻繁に繰り返すプロセスでは、別のストアドプロシージャで`sp_execute_exernal_script`の呼び出しをカプセル化する方が簡単です。
+
+1.  まず、チップ予測モデルを構築するためのRコードを含むストアドプロシージャを作成します。Management Studioで、新しいクエリウィンドウを開き、次のステートメントを実行してストアドプロシージャ_TrainTipPredictionModel_を作成します。 このストアドプロシージャは入力データを定義し、Rパッケージを使用してロジスティック回帰モデルを作成します。
+
+    ```SQL
+    CREATE PROCEDURE [dbo].[TrainTipPredictionModel]
+    
+    AS
+    BEGIN
+      DECLARE @inquery nvarchar(max) = N'
+        select tipped, fare_amount, passenger_count,trip_time_in_secs,trip_distance,
+        pickup_datetime, dropoff_datetime,
+        dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) as direct_distance
+        from nyctaxi_sample
+        tablesample (70 percent) repeatable (98052)
+    '
+      -- Insert the trained model into a database table
+      INSERT INTO nyc_taxi_models
+      EXEC sp_execute_external_script @language = N'R',
+                                      @script = N'
+    
+    ## Create model
+    logitObj <- rxLogit(tipped ~ passenger_count + trip_distance + trip_time_in_secs + direct_distance, data = InputDataSet)
+    summary(logitObj)
+    
+    ## Serialize model and put it in data frame
+    trained_model <- data.frame(model=as.raw(serialize(logitObj, NULL)));
+    ',
+      @input_data_1 = @inquery,
+      @output_data_1_name = N'trained_model'
+      ;
+    
+    END
+    GO
+    ```
+
+    - ただし、モデルをテストするために一部のデータが残っていることを確認するために、データの70％がタクシーデータテーブルからランダムに選択されます。
+    - SELECTクエリはカスタムスカラ関数_fnCalculateDistance_を使用して、乗車位置と降車位置の間の直接距離を計算します。クエリの結果はデフォルトのR入力変数`InputDataset`に格納されます。
+    - Rスクリプトは、R Services (In-Database)に含まれているrxLogit関数を呼び出して、ロジスティック回帰モデルを作成します。
+        tippedを目的変数に、passenger_count、trip_distance、trip_time_in_secs、およびdirect_distanceを説明変数としてモデルを作成します。
+    - R変数`logitObj`で示される訓練済みモデルはシリアライズされ出力パラメータとして返ります。この出力をnyc_taxi_modelsテーブルに登録することで、将来の予測に繰り返し使用することができます。
+
+2.  ストアドプロシージャがまだ作成されていない場合はステートメントを実行して作成します。
+
+## ストアドプロシージャを使用してRモデルを生成する
+
+ストアドプロシージャにはすでに入力データの定義が含まれているため、入力クエリを提供する必要はありません。
+
+1. Rモデルを生成するには、他のパラメータを使用せずにストアドプロシージャを呼び出します
+
+    ```SQL
+    EXEC TrainTipPredictionModel
+    ```
+2. Management Studio のメッセージウィンドウでRの標準出力メッセージを確認してください。
+
+    "STDOUT message(s) from external script: Rows Read: 1193025, Total Rows Processed: 1193025, Total Chunk Time: 0.093 seconds"
+
+    個々の関数に固有のメッセージ `rxLogit`が表示され、モデル作成の一部として生成された変数とテストメトリックが表示されます。
+
+3.  ステートメントが完了したら、*nyc_taxi_models*テーブルを開きます。 データの処理とモデルのフィッティングには時間がかかることがあります。
+
+    テーブルに新しいレコードが1つ追加され、シリアライズされたモデルが登録されていることを確認します。
+
+    ```
+    model
+    ------
+    0x580A00000002000302020....
+    ```
+
+次のステップでは、訓練されたモデルを使用して予測を作成します。
+
+## 次のステップ
+
+[Lesson 6: モデルの利用](../tutorials/sqldev-operationalize-the-model.md)
+
+## 前のステップ
+
+[Lesson 4: T-SQLを使用したデータの特徴抽出](../tutorials/sqldev-create-data-features-using-t-sql.md)
+
+
+
+
+
+
+
+<!--
 ---
 title: "Lesson 5: Train and save a model using T-SQL | Microsoft Docs"
 ms.custom: ""
@@ -112,3 +207,4 @@ In the next step you'll use the trained model to create predictions.
 
 [Lesson 4: Create data features using T-SQL](..//tutorials/sqldev-create-data-features-using-t-sql.md)
 
+-->

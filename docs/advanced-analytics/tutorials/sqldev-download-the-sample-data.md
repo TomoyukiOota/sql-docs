@@ -1,3 +1,61 @@
+# Lesson 1: サンプルデータのダウンロード
+
+この記事は、SQL開発者のための In-Database R 分析（チュートリアル） の一部です。
+
+このステップでは、PowerShellスクリプトによってGithubで共有されたサンプルデータセットとスクリプトを選択したローカルディレクトリにダウンロードします。
+
+## 出典
+[Lesson 1: Download the sample data](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-download-the-sample-data)
+
+## データとスクリプトをダウンロードする
+
+1.  Windows PowerShellコマンドコンソールを開きます。
+  
+    宛先ディレクトリを作成したり、指定された宛先にファイルを書き込むために、管理者権限が必要な場合は**管理者として実行**を使用します。
+  
+2.  次のPowerShellコマンドを実行し、パラメータDestDirの値をローカルディレクトリに変更します。ここで使用しているデフォルトは**C:\tempRSQL**です。
+  
+    ```PowerShell:PowerShell
+    $source = ‘https://raw.githubusercontent.com/Azure/Azure-MachineLearning-DataScience/master/Misc/RSQL/Download_Scripts_SQL_Walkthrough.ps1’  
+    $ps1_dest = “$pwd\Download_Scripts_SQL_Walkthrough.ps1”
+    $wc = New-Object System.Net.WebClient
+    $wc.DownloadFile($source, $ps1_dest)
+    .\Download_Scripts_SQL_Walkthrough.ps1 –DestDir ‘C:\tempRSQL’
+    ```
+
+    DestDirで指定したフォルダが存在しない場合は、PowerShellスクリプトによって作成されます。
+    
+    > [!TIP]
+    > エラーが発生した場合は、**Bypass引数**を使用して現在のセッションの変更をスコープすることによって、PowerShellスクリプトの実行ポリシーをこのチュートリアルでのみ一時的に**無制限**に設定できます。
+    >   
+    >````PowerShell:PowerShell
+    > Set\-ExecutionPolicy Bypass \-Scope Process
+    >````
+    > このコマンドを実行しても構成は変更されません。
+
+    インターネット接続によっては、ダウンロードに時間がかかることがあります。
+    
+3.  すべてのファイルがダウンロードされたらPowerShellコマンドプロンプトで次のコマンドを実行し、ダウンロードされたファイルを確認します。
+  
+    ```PowerShell:PowerShell
+    ls
+    ```
+  
+### 結果
+  
+    ★確認★
+    結果の画面ショット
+  
+## 次のステップ
+
+[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)
+
+## 前のステップ
+
+[SQL開発者のための In-Database R 分析](../tutorials/sqldev-in-database-r-for-sql-developers.md)
+
+
+<!--
 ---
 title: "Lesson 1: Download the sample data| Microsoft Docs"
 ms.custom: ""
@@ -71,3 +129,5 @@ In this step, you'll download the sample dataset and the [!INCLUDE[tsql](../../i
 ## Previous lesson
 
 [In-database R analytics for SQL developers](../tutorials/sqldev-in-database-r-for-sql-developers.md)
+
+-->

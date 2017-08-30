@@ -1,3 +1,274 @@
+# Lesson 3: データの探索と可視化
+
+この記事は、SQL開発者のための In-Database R 分析（チュートリアル） の一部です。
+
+このレッスンでは、サンプルデータを探索しR関数を使用していくつかのプロットを生成します。これらのR関数は、すでにRサービス（データベース内）に含まれています。 Transact-SQLからR関数を呼び出すことができます。
+
+## データの確認
+
+データサイエンスソリューション開発には、通常、集中的なデータの探索とデータの可視化が含まれます。まずサンプルデータを確認してください。
+
+元のデータセットにはタクシー識別子と運転記録が別々のファイルで提供されていますが、サンプルデータを使いやすくするために_medallion_、_hack_license_、_pickup_datetime_をキーにジョインしています。また使用するレコードは、元のレコード数の1％でサンプリングしています。サンプリングされたデータセットは1,703,957の行と23の列を持っています。
+
+**タクシー識別子**
+
+- medallion列はタクシーの一意なID番号を示します。
+- hack_license列は運転手の匿名化された運転免許証番号を示します。
+
+**運転記録および運賃記録**
+
+- 各運転記録には、乗車と降車の場所と時間、および運転距離が含まれます。
+- 各運賃記録には、支払タイプ、合計支払い額、チップ金額などの支払情報が含まれます。
+- 最後の3つの列は、さまざまな機械学習タスクに使用できます。
+    - tip_amount列は連続した数値が含まれ、回帰分析のためのラベル列として使用できます。
+    - tipped列は yes / no 値のみがあり、二項分類に使用できます。
+    - tip_class列は複数の**クラスラベル**があり、多項分類のためのラベル列として使用できます。
+
+- ラベル列として使用される値はtip_amount列に基づいています。
+  
+    |派生列|ルール|
+    |-|-|
+     |tipped|If tip_amount > 0, tipped = 1, otherwise tipped = 0|
+    |tip_class|Class 0: tip_amount = $0<br /><br />Class 1: tip_amount > $0 and tip_amount <= $5<br /><br />Class 2: tip_amount > $5 and tip_amount <= $10<br /><br />Class 3: tip_amount > $10 and tip_amount <= $20<br /><br />Class 4: tip_amount > $20|
+
+## T-SQL内のRでプロットを作成する
+
+可視化はデータと異常値の分布を理解するために重要で、Rにはデータ可視化のための多くのパッケージが提供されています。Rの標準ディストリビューションは、ヒストグラム、散布図、箱ひげ図、およびその他のデータ探索グラフを作成するための多くの機能を含む人気のライブラリです。
+
+Rは典型的にグラフィック出力用のRデバイスを用いて画像を生成します。このデバイスの出力をキャプチャして、アプリケーションを** varbinary **データ型で保存してアプリケーションでレンダリングするか、サポートファイル形式（.JPG、.PDFなど）に保存できます。
+
+このセクションでは、ストアドプロシージャを使用して各タイプの出力を操作する方法を学習します。全体の流れは次のとおりです。
+
+- varbinaryデータとしてRプロットを生成するストアドプロシージャを作成する
+
+- プロットを生成して画像ファイルに保存する
+
+- ストアドプロシージャを使用してバイナリプロットデータをJPGまたはPDFファイルに変換する
+
+### ストアドプロシージャPlotHistogramを作成する
+
+1. プロットを生成するには、R Services（In-Database）で提供される拡張R関数の1つであるrxHistogramを使用して、Transact-SQLクエリのデータに基づいてヒストグラムをプロットします。
+
+    Management Studioで以下のクエリを実行します。
+
+2. チュートリアルデータを含むデータベースで、次のステートメントを使用してストアドプロシージャを作成します。
+
+    ```SQL
+    CREATE PROCEDURE [dbo].[PlotHistogram]
+    AS
+    BEGIN
+      SET NOCOUNT ON;
+      DECLARE @query nvarchar(max) =  
+      N'SELECT tipped FROM nyctaxi_sample'  
+      EXECUTE sp_execute_external_script @language = N'R',  
+                                         @script = N'  
+       image_file = tempfile();  
+       jpeg(filename = image_file);  
+       #Plot histogram  
+       rxHistogram(~tipped, data=InputDataSet, col=''lightgreen'',   
+       title = ''Tip Histogram'', xlab =''Tipped or not'', ylab =''Counts'');  
+       dev.off();  
+       OutputDataSet <- data.frame(data=readBin(file(image_file, "rb"), what=raw(), n=1e6));  
+       ',  
+       @input_data_1 = @query  
+       WITH RESULT SETS ((plot varbinary(max)));  
+    END
+    GO
+    ```
+
+    必要に応じて、正しいテーブル名に修正してください。
+  
+    -   変数 `@query`は、スクリプト入力変数`@input_data_1`への引数としてRスクリプトに渡されるクエリテキスト(`'SELECT tipped FROM nyctaxi_sample'`)を定義します。
+  
+    -   Rスクリプトはかなり簡単です。R変数(`image_file`)がイメージを格納するように定義されていて、次に`rxHistogram`関数が呼び出されてプロットが生成されます。
+  
+    -   Rデバイスは**off**に設定されます。
+  
+        Rではハイレベルのプロットコマンドを発行すると、*device*と呼ばれるグラフィックスウィンドウが開きます。ウィンドウのサイズや色などを変更することができます。また、ファイルへの書き込みや別の方法で出力したい場合はデバイスをオフにすることができます。
+  
+    -   Rグラフィックスオブジェクトは、出力のためにR data.frameにシリアル化されます。
+
+### グラフィックスデータを生成しファイルに保存します。
+
+ストアドプロシージャは、画像をvarbinaryデータのストリームとして返します。これは明らかに直接表示できません。 ただし、** bcp **ユーティリティを使用してvarbinaryデータを取得し、クライアントコンピュータにイメージファイルとして保存することができます。
+
+1.  Management Studioで以下のクエリを実行します。
+  
+    ```SQL
+    EXEC [dbo].[PlotHistogram]
+    ```
+  
+    **結果**
+    
+    *plot*
+    *0xFFD8FFE000104A4649...*
+
+2.  PowerShellコマンドプロンプトを使用し、適切なインスタンス名、データベース名、ユーザー名、資格情報を指定して次のコマンドを実行します。
+  
+     ```PowerShell
+     bcp "exec PlotHistogram" queryout "plot.jpg" -S <SQL Server instance name> -d  <database name>  -U <user name> -P <password>
+     ```
+
+    > [!NOTE]
+    > bcpのコマンドスイッチでは大文字と小文字が区別されます。
+
+3.  接続に成功すると、グラフィックファイルに関する詳細情報の入力が求められます。これらの変更を除き各プロンプトでENTERを押します。
+  
+    -   **prefix-length of field plot**に0を入力します。
+  
+    -   出力パラメータを保存する場合は、**Y**を入力します。
+    
+    ```
+    Enter the file storage type of field plot [varbinary(max)]:
+    Enter prefix-length of field plot [8]: 0
+    Enter length of field plot [0]:
+    Enter field terminator [none]:
+  
+    Do you want to save this format information in a file? [Y/n]
+    Host filename [bcp.fmt]:
+    ```
+
+    **結果**
+
+    ```
+    Starting copy...
+    1 rows copied.
+    Network packet size (bytes): 4096
+    Clock Time (ms.) Total     : 3922   Average : (0.25 rows per sec.)
+    ```
+
+    > [!TIP]
+    > フォーマット情報をファイル（bcp.fmt）に保存すると、** bcp **ユーティリティはフォーマット定義を生成します。このフォーマット定義は、将来グラフィックファイルフォーマットオプションを要求されることなく同様のコマンドに適用できます。 書式ファイルを使用するには、コマンドラインの末尾に `-f bcp.fmt`をパスワード引数の後に追加します。
+
+4.  出力ファイルは、PowerShellコマンドを実行した同じディレクトリに作成されます。 プロットを表示するには、plot.jpgファイルを開きます。
+  
+    ![taxi trips with and without tips](media/rsql-devtut-tippedornot.jpg "taxi trips with and without tips")  
+  
+### 表示可能なファイルにプロットデータをエクスポートします。
+
+Rプロットをバイナリデータ型に出力することは、アプリケーションでの使用には便利ですが、データ探索段階でレンダリングされたプロットを必要とするデータ分析者にとってはあまり役に立ちません。一般的にデータ分析者は様々な視点からデータへの洞察を得るために、複数のデータ視覚化を生成します。
+
+ユーザーのグラフを生成するには、.JPG、.PDF、.PNGなどの一般的な形式でRの出力を作成するストアドプロシージャを使用できます。ストアドプロシージャがグラフィックを作成したら、ファイルを開いてプロットを視覚化するだけです。
+
+1. ヒストグラム、散布図、およびその他のRグラフィックスを.JPGおよび.PDF形式に書き込むストアドプロシージャ_PlotInOutputFiles_を作成します。
+
+    Management Studioを使用して次のクエリを実行します。
+
+    ```SQL
+    CREATE PROCEDURE [dbo].[PlotInOutputFiles]  
+    AS  
+    BEGIN  
+      SET NOCOUNT ON;  
+      DECLARE @query nvarchar(max) =  
+      N'SELECT cast(tipped as int) as tipped, tip_amount, fare_amount FROM [dbo].[nyctaxi_sample]'  
+      EXECUTE sp_execute_external_script @language = N'R',  
+      @script = N'  
+       # Set output directory for files and check for existing files with same names   
+        mainDir <- ''C:\\temp\\plots''  
+        dir.create(mainDir, recursive = TRUE, showWarnings = FALSE)  
+        setwd(mainDir);  
+        print("Creating output plot files:", quote=FALSE)
+        
+        # Open a jpeg file and output histogram of tipped variable in that file.  
+        dest_filename = tempfile(pattern = ''rHistogram_Tipped_'', tmpdir = mainDir)  
+        dest_filename = paste(dest_filename, ''.jpg'',sep="")  
+        print(dest_filename, quote=FALSE);  
+        jpeg(filename=dest_filename);  
+        hist(InputDataSet$tipped, col = ''lightgreen'', xlab=''Tipped'',   
+            ylab = ''Counts'', main = ''Histogram, Tipped'');  
+         dev.off();  
+
+        # Open a pdf file and output histograms of tip amount and fare amount.   
+        # Outputs two plots in one row  
+        dest_filename = tempfile(pattern = ''rHistograms_Tip_and_Fare_Amount_'', tmpdir = mainDir)  
+        dest_filename = paste(dest_filename, ''.pdf'',sep="")  
+        print(dest_filename, quote=FALSE);  
+        pdf(file=dest_filename, height=4, width=7);  
+        par(mfrow=c(1,2));  
+        hist(InputDataSet$tip_amount, col = ''lightgreen'',   
+            xlab=''Tip amount ($)'',   
+            ylab = ''Counts'',   
+            main = ''Histogram, Tip amount'', xlim = c(0,40), 100);  
+        hist(InputDataSet$fare_amount, col = ''lightgreen'',   
+            xlab=''Fare amount ($)'',   
+            ylab = ''Counts'',   
+            main = ''Histogram,   
+            Fare amount'',   
+            xlim = c(0,100), 100);  
+       dev.off();  
+  
+        # Open a pdf file and output an xyplot of tip amount vs. fare amount using lattice;  
+        # Only 10,000 sampled observations are plotted here, otherwise file is large.  
+        dest_filename = tempfile(pattern = ''rXYPlots_Tip_vs_Fare_Amount_'', tmpdir = mainDir)  
+        dest_filename = paste(dest_filename, ''.pdf'',sep="")  
+        print(dest_filename, quote=FALSE);  
+        pdf(file=dest_filename, height=4, width=4);  
+        plot(tip_amount ~ fare_amount,   
+            data = InputDataSet[sample(nrow(InputDataSet), 10000), ],   
+            ylim = c(0,50),   
+            xlim = c(0,150),   
+            cex=.5,   
+            pch=19,   
+            col=''darkgreen'',    
+            main = ''Tip amount by Fare amount'',   
+            xlab=''Fare Amount ($)'',   
+            ylab = ''Tip Amount ($)'');   
+        dev.off();',  
+     @input_data_1 = @query  
+     END
+    ```
+
+    -   ストアドプロシージャ内のSELECTクエリの出力は、デフォルトのRデータフレーム、 `InputDataSet`に格納されます。 様々なRプロット関数を呼び出して、実際のグラフィックスファイルを生成することができます。
+  
+        組み込まれたRスクリプトのほとんどは `plot`や` hist`のようなグラフィック関数のオプションを表します。
+  
+    -   すべてのファイルはローカルフォルダ_C:\temp\Plots\\_に保存されます。 コピー先フォルダは、ストアドプロシージャの一部としてRスクリプトに提供される引数によって定義されます。 変数 `mainDir`の値を変更することで、保存先フォルダを変更することができます。
+
+2.  次のステートメントを実行してストアドプロシージャを作成します。
+
+    ```SQL
+    EXEC PlotInOutputFiles
+    ```
+
+    **結果**
+
+    ```
+    STDOUT message(s) from external script:
+    [1] Creating output plot files:[1] C:\temp\plots\rHistogram_Tipped_18887f6265d4.jpg[1] 
+    
+    C:\temp\plots\rHistograms_Tip_and_Fare_Amount_1888441e542c.pdf[1]
+    
+    C:\temp\plots\rXYPlots_Tip_vs_Fare_Amount_18887c9d517b.pdf
+    ```
+
+    ファイル名の数字はランダムに生成され、既存のファイルに書き込むときにエラーが発生しないようにします。
+
+3. プロットを表示するには、保存先フォルダを開き、ストアドプロシージャのRコードによって作成されたファイルを確認します。
+
+    + `rHistogram_Tipped.jpg`ファイルには、ヒントがある旅行の数とヒントがない旅行の数が表示されます。 （このヒストグラムは、前の手順で生成したヒストグラムによく似ています）。
+
+    + `rHistograms_Tip_and_Fare_Amount.pdf`ファイルは、料金の金額に対してプロットされたチップ金額の分布を示しています。
+    
+    ![histogram showing tip_amount and fare_amount](media/rsql-devtut-tipamtfareamt.PNG "histogram showing tip_amount and fare_amount")
+
+    + `rXYPlots_Tip_vs_Fare_Amount.pdf`ファイルは、x軸上に料金金額、y軸上にチップ金額とした散布図です。
+
+    ![tip amount plotted over fare amount](media/rsql-devtut-tipamtbyfareamt.PNG "tip amount plotted over fare amount")
+
+4.  ファイルを別のフォルダに出力するには、ストアドプロシージャに埋め込まれたRスクリプトの `mainDir`変数の値を変更します。 スクリプトを変更して、異なる形式やファイルなどを出力することもできます。
+
+## 次のステップ
+
+[Lesson 4: T-SQLを使用したデータの特徴抽出](../tutorials/sqldev-create-data-features-using-t-sql.md)
+
+## 前のステップ
+
+[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)
+
+
+
+
+<!--
 ---
 title: "Lesson 3: Explore and visualize the data | Microsoft Docs"
 ms.custom: ""
@@ -288,3 +559,4 @@ To generate graphs for users, you can use a stored procedure that creates the ou
 ## Previous lesson
 
 [Lesson 2: Import data to SQL Server using PowerShell](../r/sqldev-import-data-to-sql-server-using-powershell.md)
+-->

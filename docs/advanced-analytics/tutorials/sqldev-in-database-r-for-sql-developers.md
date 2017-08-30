@@ -1,3 +1,68 @@
+# SQL開発者のための In-Database R 分析（チュートリアル）
+
+このチュートリアルの目的は、SQLプログラマーにSQL Serverで機械学習ソリューションを構築する実践的な体験を提供することです。このチュートリアルでは、ストアドプロシージャにRコードを追加することで、RをアプリケーションあるいはBIソリューションに組み込む方法を学習します。
+
+> [!NOTE]
+> 同様のチュートリアルのPython版です。SQL Server 2017が必要です。こちら[SQL開発者のための In-Database Python 分析](../tutorials/sqldev-in-database-python-for-sql-developers.md)
+
+## 出典
+[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
+
+## 概要
+エンドツーエンドソリューションを構築するプロセスは通常、データの取得とクレンジング、データの探索と特徴エンジニアリング、モデルのトレーニングとチューニング、そして最終的には本番環境へのモデル展開で構成されます。実際のコーディング、デバッグ、テストは、R用の統合開発環境（IDE）を使用するのが最適です。例えばRであれば、RStudioもしくはR Tools for Visual Studioです。
+
+Rでソリューションを作成してテストした後、RコードをTransact-SQLストアドプロシージャとしてSQL Serverに展開します。このチュートリアルでは、必要なすべてのRコードを提供します。
+
+- [Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+
+    サンプルデータセットとすべてのスクリプトファイルをローカルコンピュータにダウンロードします。
+
+- [Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)
+
+    指定したインスタンス上にデータベースとテーブルを作成し、サンプルデータをテーブルにロードするPowerShellスクリプトを実行します。
+
+- [Lesson 3: データの探索と可視化](../tutorials/sqldev-explore-and-visualize-the-data.md)
+
+    Transact-SQLストアドプロシージャからRを実行し、基本的なデータの探索と可視化を実行します。
+
+- [Lesson 4: T-SQLを使用したデータの特徴抽出](../tutorials/sqldev-create-data-features-using-t-sql.md)
+
+    ユーザ定義関数を活用しデータの特徴抽出を行います。
+  
+- [Lesson 5: T-SQLを使用したモデルのトレーニングと保存](../r/sqldev-train-and-save-a-model-using-t-sql.md)
+
+    ストアドプロシージャ化したRコードにより機械学習モデルを構築して保存します。
+  
+- [Lesson 6: モデルの利用](../tutorials/sqldev-operationalize-the-model.md)
+
+    モデルをデータベースに保存した後、Transact-SQLを使用して予測のためにモデルを呼び出します。
+
+### シナリオ
+
+このチュートリアルでは、よく知られているNYC Taxiデータセットを使用します。このチュートリアルをすばやく簡単にするために、データはサンプリングして利用します。このデータセットの、時刻、距離、ピックアップ場所などの列に基づき、特定の乗車においてチップが得られるかどうかを予測するバイナリ分類モデルを作成します。
+
+### 要件
+
+このチュートリアルは、データベースやテーブルの作成、テーブルへのデータのインポート、SQLクエリの作成など、基本的なデータベース操作に慣れているユーザーを対象としています。
+
+すべてのRコードが提供されています。経験豊富なSQLプログラマは、SQL Server Management StudioでTransact-SQLを使用するか、または提供されているPowerShellスクリプトを実行することで、このチュートリアルを完了できます。
+
+チュートリアルを開始する前に、次の準備を完了する必要があります。:
+
+- SQL Server 2016のRサービスへの接続、あるいはSQL Server 2017のMachine Learning ServicesでRを有効化します。
+- チュートリアルで使用するログインにデータベースやその他オブジェクトの作成、データのアップロード、データの選択、ストアドプロシージャの実行の権限が必要です。
+
+> [!NOTE]
+> ストアドプロシージャに埋め込まれたコードに問題がある場合、ストアドプロシージャから返される情報は通常、エラーの原因を理解するには不十分であるため、RコードのテストはPython用の統合開発環境（IDE）を使用することをお勧めします。
+> 
+> デバッグでは、R Tools for Visual StudioやRStudioなどのツールを使用することを推奨します。このチュートリアルで提供されているRスクリプトは、従来のRツールを使用して開発・デバッグされています。
+
+## 次のステップ
+
+[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+
+
+<!--
 ---
 title: "In-database R analytics for SQL developers (tutorial)| Microsoft Docs"
 ms.custom: ""
@@ -81,3 +146,6 @@ However, before starting the tutorial, you must complete these preparations:
 ## Next lesson
 
 [Lesson 1: Download the sample data](../tutorials/sqldev-download-the-sample-data.md)
+
+
+-->

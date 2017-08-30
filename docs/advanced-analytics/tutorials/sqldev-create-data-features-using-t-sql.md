@@ -1,3 +1,119 @@
+# Lesson 4: T-SQLを使用したデータの特徴抽出
+
+この記事は、SQL開発者のための In-Database R 分析（チュートリアル） の一部です。
+
+このステップでは、Transact-SQL関数を使用して生データから特徴抽出を行う方法を学習します。その後、ストアドプロシージャからその関数を呼び出して、特徴値を含むテーブルを作成します。
+
+## 特徴抽出について
+
+データの探索後、データからいくつかの洞察を収集し特徴エンジニアリングに移ります。生データから特徴抽出を行うプロセスは、高度な分析モデリングの重要なステップです。
+
+元データに記録されたメーター距離値は地理的距離または移動距離を表すものになっていない場合があるため、このデータセットで利用可能な座標を使用して乗車位置と降車位置の間の直接距離を計算します。これを行うためにカスタムTransact-SQL関数で[Haversine式](https://en.wikipedia.org/wiki/Haversine_formula)を使用します。
+
+T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnEngineerFeatures`はすべての特徴を含むテーブルを作成します。
+
+全体の流れは次のとおりです。
+
+- 計算を実行するT-SQL関数を作成する
+
+- 特徴値を生成する関数を呼び出す
+
+- 特徴値をテーブルに保存する
+
+## fnCalculateDistanceを使用して移動距離を計算する
+
+関数fnCalculateDistanceは、このチュートリアルの準備の一部としてSQL Serverにダウンロードされ、登録されている必要があります。 コードを確認してください。
+
+1. Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[スカラー値関数]の順に展開します。
+
+2. `fnCalculateDistance`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+
+    ```SQL
+    CREATE FUNCTION [dbo].[fnCalculateDistance] (@Lat1 float, @Long1 float, @Lat2 float, @Long2 float)  
+    -- User-defined function that calculates the direct distance between two geographical coordinates.  
+    RETURNS float  
+    AS  
+    BEGIN  
+      DECLARE @distance decimal(28, 10)  
+      -- Convert to radians  
+      SET @Lat1 = @Lat1 / 57.2958  
+      SET @Long1 = @Long1 / 57.2958  
+      SET @Lat2 = @Lat2 / 57.2958  
+      SET @Long2 = @Long2 / 57.2958  
+      -- Calculate distance  
+      SET @distance = (SIN(@Lat1) * SIN(@Lat2)) + (COS(@Lat1) * COS(@Lat2) * COS(@Long2 - @Long1))  
+      --Convert to miles  
+      IF @distance <> 0  
+      BEGIN  
+        SET @distance = 3958.75 * ATAN(SQRT(1 - POWER(@distance, 2)) / @distance);  
+      END  
+      RETURN @distance  
+    END
+    GO
+    ```
+
+    - この関数はスカラー値関数であり、事前定義された型の単一のデータ値を返します。
+    - 乗車位置と降車位置の場所から得られた緯度と経度の値が入力として使用されます。Haversine式は、位置をラジアンに変換し、これらの値を使用して、2つの場所の間の直接距離を計算します。
+
+
+## fnEngineerFeaturesを使用して特徴値を保存する
+
+`fnEngineerFeatures`は複数の列を入力として使用し複数の特徴値列を返すテーブル値関数です。`fnEngineerFeatures`の目的は、モデル構築に使用する特徴値セットを作成することです。`fnEngineerFeatures`は乗車位置と降車位置の間の直線距離を得るために`fnCalculateDistance`を呼び出します。
+
+1. このチュートリアルの準備の一環として、カスタムのT-SQL関数_fnEngineerFeatures_のコードを確認してください。
+
+    ```SQL
+    CREATE FUNCTION [dbo].[fnEngineerFeatures] (  
+    @passenger_count int = 0,  
+    @trip_distance float = 0,  
+    @trip_time_in_secs int = 0,  
+    @pickup_latitude float = 0,  
+    @pickup_longitude float = 0,  
+    @dropoff_latitude float = 0,  
+    @dropoff_longitude float = 0)  
+    RETURNS TABLE  
+    AS
+      RETURN
+      (
+      -- Add the SELECT statement with parameter references here
+      SELECT
+        @passenger_count AS passenger_count,
+        @trip_distance AS trip_distance,
+        @trip_time_in_secs AS trip_time_in_secs,
+        [dbo].[fnCalculateDistance](@pickup_latitude, @pickup_longitude, @dropoff_latitude, @dropoff_longitude) AS direct_distance
+  
+      )
+    GO
+    ```
+
+    + このテーブル値関数は、複数の列を入力し、複数の特徴値の列を含むテーブルを出力する。
+    + この関数の目的は、モデルを構築するための新しい特徴値を作成することです。
+
+2.  これが機能することを確認するために、乗車位置と降車位置の場所が異なる運転にもかかわらずメーター距離値が0に設定された記録に対して地理的距離を計算してみます。
+
+    ```SQL
+        SELECT tipped, fare_amount, passenger_count,(trip_time_in_secs/60) as TripMinutes,
+        trip_distance, pickup_datetime, dropoff_datetime,
+        dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) AS direct_distance
+        FROM nyctaxi_sample
+        WHERE pickup_longitude != dropoff_longitude and pickup_latitude != dropoff_latitude and trip_distance = 0
+        ORDER BY trip_time_in_secs DESC
+    ```
+    この通りメーターによって報告された距離は、必ずしも地理的距離を示すものとして記録されているとは限りません。こうした前処理が特徴エンジニアリングが重要な理由です。
+
+次のステップでは、これらの機能を使用して、Rを使用して機械学習モデルを作成し、トレーニングする方法を学習します。
+
+## 次のステップ
+
+[Lesson 5: T-SQLを使用したモデルのトレーニングと保存](../r/sqldev-train-and-save-a-model-using-t-sql.md)
+
+## 前のステップ
+
+[Lesson 3: データの探索と可視化](../tutorials/sqldev-explore-and-visualize-the-data.md)
+
+
+
+<!--
 ---
 title: "Lesson 4: Create data features using T-SQL  | Microsoft Docs"
 ms.custom: ""
@@ -132,3 +248,4 @@ To add the computed values to a table that can be used for training the model, y
 ## Previous lesson
 
 [Lesson 3: Explore and visualize the data](../tutorials/sqldev-explore-and-visualize-the-data.md)
+-->
