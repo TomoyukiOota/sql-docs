@@ -12,7 +12,8 @@
 
 ## 基本的なスコアリング
 
-ストアドプロシージャ_PredictTip_は、ストアドプロシージャ内の予測コールをラップするための基本的な構文を示しています。
+ストアドプロシージャ`PredictTip`は、ストアドプロシージャ内から予測呼び出しをラップするための基本的な構文を示しています。
+ストアドプロシージャ`PredictTip`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTip`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
 ```SQL
 CREATE PROCEDURE [dbo].[PredictTip] @inquery nvarchar(max)  
@@ -77,16 +78,20 @@ GO
 
     **サンプル結果**
 
-    ```
-    passenger_count   trip_time_in_secs    trip_distance  dropoff_datetime   direct_distance
-    1  283 0.7 2013-03-27 14:54:50.000   0.5427964547
-    1  289 0.7 2013-02-24 12:55:29.000   0.3797099614
-    1  214 0.7 2013-06-26 13:28:10.000   0.6970098661
-    ```
+    ★問題点★
+    　バッチスコアリングの「トップ10」のリストを作成する上記クエリ実行でエラー。
+    ★問題点★    　
+    ★スクショ★
+    　12_バッチスコアリングの「トップ10」のリストを作成するクエリ実行でエラー.png
+    ★スクショ★
 
-    このクエリは、ダウンロードの一部として提供されるストアドプロシージャの_PredictTipBatchMode_への入力として使用できます。
+    このクエリは、ダウンロードの一部として提供されるストアドプロシージャの`PredictTipBatchMode`への入力として使用できます。
 
 2. Management Studioを使用してストアドプロシージャPredictTipBatchModeのコードを確認してください。
+
+    ★問題点★
+    　[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)でPredictTipBatchModeストアドプロシージャが作成されていない。
+    ★問題点★
 
     ```SQL
     /****** Object:  StoredProcedure [dbo].[PredictTipBatchMode]  ******/
@@ -151,7 +156,7 @@ GO
 
 このセクションでは、ストアドプロシージャを使用して単一の予測を作成する方法を学習します。
 
-1. ダウンロードの一部として含まれていたストアドプロシージャ_PredictTipSingleMode_のコードを確認してください。
+1. ダウンロードの一部として含まれていたストアドプロシージャ`PredictTipSingleMode`のコードを確認してください。
 
     ```SQL
     CREATE PROCEDURE [dbo].[PredictTipSingleMode] @passenger_count int = 0,
@@ -206,7 +211,7 @@ GO
 
 2. 手動で値を入力して試してみてください
 
-    新しい**クエリ**ウィンドウを開き、各パラメータの値を提供するストアドプロシージャを呼び出します。 パラメータは、モデルによって使用される特徴列を表し、必須です。
+    新しい**クエリ**ウィンドウを開き、各パラメータの値を提供するストアドプロシージャを呼び出します。 パラメータは、モデルによって使用される特徴列を表し必須です。
 
     ```
     EXEC [dbo].[PredictTipSingleMode] @passenger_count = 0,
@@ -218,11 +223,21 @@ GO
     @dropoff_longitude float = 73.977303
     ```
 
-    または、ストアドプロシージャのパラメータでサポートされているこの短い形式を使用します
+    または、ストアドプロシージャを以下のパラメータで実行します
 
     ```SQL
     EXEC [dbo].[PredictTipSingleMode] 1, 2.5, 631, 40.763958,-73.973373, 40.782139,-73.977303
     ```
+    
+    ★問題点★
+    　前者クエリも後者ストアドプロシージャもエラー。エラー内容は以下のスクショを参照。
+    ★問題点★
+    
+    ★スクショ★
+    　13_Single-rowスコアリングのクエリ実行でエラー（SSMS）.png
+    　14_Single-rowスコアリングのストアドプロシージャ実行でエラー（SSMS）.png
+    ★スクショ★
+    
 
 3. 結果は、これらの上位10回の旅行では、すべてが一人旅客であるため、ヒントを得る確率が非常に低いことを示しています。
 
@@ -234,6 +249,13 @@ GO
 
 [Lesson 5: T-SQLを使用したモデルのトレーニングと保存](../r/sqldev-train-and-save-a-model-using-t-sql.md)
 
+## はじめから
+
+[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+
+## 関連項目
+
+[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
 
 
 

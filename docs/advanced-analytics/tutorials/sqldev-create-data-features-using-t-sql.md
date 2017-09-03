@@ -20,9 +20,9 @@ T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnE
 
 - 特徴値をテーブルに保存する
 
-## fnCalculateDistanceを使用して移動距離を計算する
+## 関数fnCalculateDistanceを使用して移動距離を計算する
 
-関数fnCalculateDistanceは、このチュートリアルの準備の一部としてSQL Serverにダウンロードされ、登録されている必要があります。 コードを確認してください。
+T-SQL関数`fnCalculateDistance`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
 1. Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[スカラー値関数]の順に展開します。
 
@@ -56,11 +56,12 @@ T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnE
     - 乗車位置と降車位置の場所から得られた緯度と経度の値が入力として使用されます。Haversine式は、位置をラジアンに変換し、これらの値を使用して、2つの場所の間の直接距離を計算します。
 
 
-## fnEngineerFeaturesを使用して特徴値を保存する
+## 関数fnEngineerFeaturesを使用して特徴値を保存する
 
 `fnEngineerFeatures`は複数の列を入力として使用し複数の特徴値列を返すテーブル値関数です。`fnEngineerFeatures`の目的は、モデル構築に使用する特徴値セットを作成することです。`fnEngineerFeatures`は乗車位置と降車位置の間の直線距離を得るために`fnCalculateDistance`を呼び出します。
 
-1. このチュートリアルの準備の一環として、カスタムのT-SQL関数_fnEngineerFeatures_のコードを確認してください。
+1. T-SQL関数`fnEngineerFeatures`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[スカラー値関数]の順に展開し、`fnEngineerFeatures`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+
 
     ```SQL
     CREATE FUNCTION [dbo].[fnEngineerFeatures] (  
@@ -99,6 +100,14 @@ T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnE
         WHERE pickup_longitude != dropoff_longitude and pickup_latitude != dropoff_latitude and trip_distance = 0
         ORDER BY trip_time_in_secs DESC
     ```
+    
+    ★問題点★
+    　地理的距離の計算クエリの実行で出力結果が空
+    ★問題点★
+    ★スクショ★
+    　9_地理的距離の計算クエリの実行で出力結果が空（SSMS）.png
+    ★スクショ★
+    
     この通りメーターによって報告された距離は、必ずしも地理的距離を示すものとして記録されているとは限りません。こうした前処理が特徴エンジニアリングが重要な理由です。
 
 次のステップでは、これらの機能を使用して、Rを使用して機械学習モデルを作成し、トレーニングする方法を学習します。
@@ -111,6 +120,13 @@ T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnE
 
 [Lesson 3: データの探索と可視化](../tutorials/sqldev-explore-and-visualize-the-data.md)
 
+## はじめから
+
+[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+
+## 関連項目
+
+[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
 
 
 <!--

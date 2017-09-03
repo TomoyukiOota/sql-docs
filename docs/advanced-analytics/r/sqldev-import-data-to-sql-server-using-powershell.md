@@ -31,31 +31,38 @@
     - 作成するデータベースの名前
     - 対象のSQL Serverのユーザー名とパスワード。このユーザは、データベース、テーブル、ストアドプロシージャ、関数の作成権限、およびテーブルへのデータロード権限が必要です。ユーザー名とパスワードを省略した場合は現在のWindowsユーザによってログインします。
     - ダウンロードしたファイル群の中のサンプルデータファイル`nyctaxi1pct.csv`のパス。例えば、`C:\tempRSQL\nyctaxi1pct.csv`です。
+    
+    ★スクショ★
+    　2_データインポートSTART（PWS）
+    　3_データインポートEND（PWS）
+    ★スクショ★
 
 2.  上記手順の一環で指定したデータベース名とユーザー名をプレースホルダに置き換えるように、すべてのT-SQLスクリプトが変更されています。
 
     T-SQLスクリプトによって作成されるストアドプロシージャと関数がデータベース内に作成されていることを確認します。
+    
+    ★問題点★
+    　ストアドプロシージャPersistModelが作成されていない
+    　ストアドプロシージャPredictBatchModeが作成されていない
+    ★問題点★
 
     |**T-SQLスクリプトファイル**|**ストアドプロシージャ／関数**|
     |-|-|
     |create-db-tb-upload-data.sql|データベースと2つのテーブルを作成します。<br /><br />テーブル`nyctaxi_sample`: メインとなるNYC Taxiデータセットが登録されます。ロードされるデータはNYC Taxiデータセットの1％のサンプルです。クラスタ化カラムストアインデックスの定義によってストレージ効率とクエリパフォーマンスを向上させています。<br /><br />テーブル`nyc_taxi_models`: 訓練された高度な分析モデルが登録されます。|
     |fnCalculateDistance.sql|乗車位置と降車位置の間の直接距離を計算するスカラー値関数`fnCalculateDistance`を作成します。|
     |fnEngineerFeatures.sql|モデルトレーニング用の新しい特徴抽出を作成するテーブル値関数`fnEngineerFeatures`を作成します。|
-    |PersistModel.sql|モデルを保存するために呼び出すことができるストアドプロシージャを作成します。 ストアドプロシージャは、varbinaryデータ型でシリアル化されたモデルを取得し、指定されたテーブルに書き込みます。|
+    |PersistModel.sql|モデルを保存するために呼び出すことができるストアドプロシージャ`PersistModel`を作成します。 ストアドプロシージャは、varbinaryデータ型でシリアル化されたモデルを取得し、指定されたテーブルに書き込みます。|
     |PredictTipBatchMode.sql|モデルを使用した予測のために、訓練されたモデルを呼び出すストアドプロシージャ`PredictTipBatchMode`を作成します。ストアドプロシージャは、入力パラメータとして問合せを受け入れ、入力行のスコアを含む数値の列を戻します。|
     |PredictTipSingleMode.sql|モデルを使用した予測のために、訓練されたモデルを呼び出すストアドプロシージャ`PredictTipSingleMode`を作成します。このストアドプロシージャは新しい観測値を入力として、個々の特徴値はインラインパラメータとして受け取り、新しい観測値に対する予測値を返します。|
-
-    チュートリアルの後半で追加のストアドプロシージャをいくつか作成します:
-
-    |**SQL script file name**|**Function**|
-    |------|------|
-    |PlotHistogram.sql|データ探索用のストアドプロシージャを作成します。 このストアドプロシージャは、R関数を呼び出して変数のヒストグラムをプロットし、プロットをバイナリオブジェクトとして返します。|
-    |PlotInOutputFiles.sql|データ探索用のストアドプロシージャを作成します。 このストアドプロシージャは、R関数を使用してグラフィックを作成し、ローカルPDFファイルとして保存します。|
-    |TrainTipPredictionModel.sql|Rパッケージを呼び出すことによってロジスティック回帰モデルを訓練するストアドプロシージャを作成します。 このモデルは、転倒した列の値を予測し、ランダムに選択された70％のデータを使用して訓練されます。 ストアドプロシージャの出力は訓練されたモデルであり、テーブルnyc_taxi_modelsに保存されます。|
+    |PlotHistogram.sql|データ探索用のストアドプロシージャ`PlotHistogram`を作成します。 このストアドプロシージャは、R関数を呼び出して変数のヒストグラムをプロットし、プロットをバイナリオブジェクトとして返します。|
+    |PlotInOutputFiles.sql|データ探索用のストアドプロシージャ`PlotInOutputFiles`を作成します。 このストアドプロシージャは、R関数を使用してグラフィックを作成し、ローカルPDFファイルとして保存します。|
+    |TrainTipPredictionModel.sql|Rパッケージを呼び出すことによってロジスティック回帰モデルを訓練するストアドプロシージャ`TrainTipPredictionModel`を作成します。 このモデルは、転倒した列の値を予測し、ランダムに選択された70％のデータを使用して訓練されます。 ストアドプロシージャの出力は訓練されたモデルであり、テーブルnyc_taxi_modelsに保存されます。|
 
 3.  SQL Server Management Studioを使用してSQL Serverへログインし、作成されたデータベース、テーブル、関数、およびストアドプロシージャを確認します。
 
-    ![rsql_devtut_BrowseTables](media/rsql-devtut-browsetables.png "rsql_devtut_BrowseTables")
+    ★スクショ★
+    　4_データインポート後のオブジェクトエクスプローラー（SSMS）
+    ★スクショ★
   
     > [!NOTE]
     > T-SQLスクリプトはデータベースオブジェクトを再作成しないため、すでに存在する場合にはデータが重複して登録されます。そのため、スクリプトを再実行する場合は事前に既存オブジェクトを削除してください。
@@ -68,6 +75,13 @@
 
 [Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
 
+## はじめから
+
+[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+
+## 関連項目
+
+[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
 
 
 <!--

@@ -7,9 +7,7 @@ RƒpƒbƒP[ƒW‚ÍŠù‚ÉR Services(In-Database)‚Æ‹¤‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚½‚ßASQL‚©‚
 
 ## ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ğì¬‚·‚é
 
-T-SQL‚©‚çR‚ğŒÄ‚Ño‚·‚Æ‚«‚ÍAƒVƒXƒeƒ€ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ[sp_execute_external_script](../../relational-databases/system-stored-procedures/sp-execute-external-script-transact-sql.md)‚ğg—p‚µ‚Ü‚·B‚½‚¾‚µAƒ‚ƒfƒ‹‚ÌÄŠwK‚È‚ÇA•p”É‚ÉŒJ‚è•Ô‚·ƒvƒƒZƒX‚Å‚ÍA•Ê‚ÌƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚Å`sp_execute_exernal_script`‚ÌŒÄ‚Ño‚µ‚ğƒJƒvƒZƒ‹‰»‚·‚é•û‚ªŠÈ’P‚Å‚·B
-
-1.  ‚Ü‚¸Aƒ`ƒbƒv—\‘ªƒ‚ƒfƒ‹‚ğ\’z‚·‚é‚½‚ß‚ÌRƒR[ƒh‚ğŠÜ‚ŞƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ğì¬‚µ‚Ü‚·BManagement Studio‚ÅAV‚µ‚¢ƒNƒGƒŠƒEƒBƒ“ƒhƒE‚ğŠJ‚«AŸ‚ÌƒXƒe[ƒgƒƒ“ƒg‚ğÀs‚µ‚ÄƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ_TrainTipPredictionModel_‚ğì¬‚µ‚Ü‚·B ‚±‚ÌƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚Í“ü—Íƒf[ƒ^‚ğ’è‹`‚µARƒpƒbƒP[ƒW‚ğg—p‚µ‚ÄƒƒWƒXƒeƒBƒbƒN‰ñ‹Aƒ‚ƒfƒ‹‚ğì¬‚µ‚Ü‚·B
+ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ`TrainTipPredictionModel`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf[ƒ^ƒCƒ“ƒ|[ƒg](../r/sqldev-import-data-to-sql-server-using-powershell.md)‚ğ’Ê‚¶‚ÄSQL Server‚É’è‹`‚³‚ê‚Ä‚¢‚Ü‚·BManagement Studio‚ÌƒIƒuƒWƒFƒNƒgƒGƒNƒXƒvƒ[ƒ‰‚ÅA[ƒvƒƒOƒ‰ƒ~ƒ“ƒO]A[ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ]‚Ì‡‚É“WŠJ‚µ‚Ü‚·B`TrainTipPredictionModel`‚ğ‰EƒNƒŠƒbƒN‚µA[•ÏX] ‚ğ‘I‘ğ‚µ‚ÄV‚µ‚¢ƒNƒGƒŠƒEƒBƒ“ƒhƒE‚ÅTransact-SQLƒXƒNƒŠƒvƒg‚ğŠJ‚«‚Ü‚·B
 
     ```SQL
     CREATE PROCEDURE [dbo].[TrainTipPredictionModel]
@@ -44,12 +42,11 @@ T-SQL‚©‚çR‚ğŒÄ‚Ño‚·‚Æ‚«‚ÍAƒVƒXƒeƒ€ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ[sp_execute_external_scr
     ```
 
     - ‚½‚¾‚µAƒ‚ƒfƒ‹‚ğƒeƒXƒg‚·‚é‚½‚ß‚Éˆê•”‚Ìƒf[ƒ^‚ªc‚Á‚Ä‚¢‚é‚±‚Æ‚ğŠm”F‚·‚é‚½‚ß‚ÉAƒf[ƒ^‚Ì70“‚ªƒ^ƒNƒV[ƒf[ƒ^ƒe[ƒuƒ‹‚©‚çƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ‚³‚ê‚Ü‚·B
-    - SELECTƒNƒGƒŠ‚ÍƒJƒXƒ^ƒ€ƒXƒJƒ‰ŠÖ”_fnCalculateDistance_‚ğg—p‚µ‚ÄAæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌŠÔ‚Ì’¼Ú‹——£‚ğŒvZ‚µ‚Ü‚·BƒNƒGƒŠ‚ÌŒ‹‰Ê‚ÍƒfƒtƒHƒ‹ƒg‚ÌR“ü—Í•Ï”`InputDataset`‚ÉŠi”[‚³‚ê‚Ü‚·B
+    - SELECTƒNƒGƒŠ‚ÍƒJƒXƒ^ƒ€ƒXƒJƒ‰ŠÖ”`fnCalculateDistance`‚ğg—p‚µ‚ÄAæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌŠÔ‚Ì’¼Ú‹——£‚ğŒvZ‚µ‚Ü‚·BƒNƒGƒŠ‚ÌŒ‹‰Ê‚ÍƒfƒtƒHƒ‹ƒg‚ÌR“ü—Í•Ï”`InputDataset`‚ÉŠi”[‚³‚ê‚Ü‚·B
     - RƒXƒNƒŠƒvƒg‚ÍAR Services (In-Database)‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚érxLogitŠÖ”‚ğŒÄ‚Ño‚µ‚ÄAƒƒWƒXƒeƒBƒbƒN‰ñ‹Aƒ‚ƒfƒ‹‚ğì¬‚µ‚Ü‚·B
         tipped‚ğ–Ú“I•Ï”‚ÉApassenger_countAtrip_distanceAtrip_time_in_secsA‚¨‚æ‚Ñdirect_distance‚ğà–¾•Ï”‚Æ‚µ‚Äƒ‚ƒfƒ‹‚ğì¬‚µ‚Ü‚·B
     - R•Ï”`logitObj`‚Å¦‚³‚ê‚éŒP—ûÏ‚İƒ‚ƒfƒ‹‚ÍƒVƒŠƒAƒ‰ƒCƒY‚³‚êo—Íƒpƒ‰ƒ[ƒ^‚Æ‚µ‚Ä•Ô‚è‚Ü‚·B‚±‚Ìo—Í‚ğnyc_taxi_modelsƒe[ƒuƒ‹‚É“o˜^‚·‚é‚±‚Æ‚ÅA«—ˆ‚Ì—\‘ª‚ÉŒJ‚è•Ô‚µg—p‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-2.  ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ª‚Ü‚¾ì¬‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍƒXƒe[ƒgƒƒ“ƒg‚ğÀs‚µ‚Äì¬‚µ‚Ü‚·B
 
 ## ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ğg—p‚µ‚ÄRƒ‚ƒfƒ‹‚ğ¶¬‚·‚é
 
@@ -60,6 +57,15 @@ T-SQL‚©‚çR‚ğŒÄ‚Ño‚·‚Æ‚«‚ÍAƒVƒXƒeƒ€ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ[sp_execute_external_scr
     ```SQL
     EXEC TrainTipPredictionModel
     ```
+    **Œ‹‰Ê**
+    
+    š–â‘è“_š
+    @TrainTipPredictionModelƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ÌÀs‚ÅƒGƒ‰[
+    š–â‘è“_š
+    šƒXƒNƒVƒ‡š
+    @10_TrainTipPredictionModelƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ÌÀsŒ‹‰ÊiSSMSj.png
+    šƒXƒNƒVƒ‡š
+
 2. Management Studio ‚ÌƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ÅR‚Ì•W€o—ÍƒƒbƒZ[ƒW‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
 
     "STDOUT message(s) from external script: Rows Read: 1193025, Total Rows Processed: 1193025, Total Chunk Time: 0.093 seconds"
@@ -70,11 +76,16 @@ T-SQL‚©‚çR‚ğŒÄ‚Ño‚·‚Æ‚«‚ÍAƒVƒXƒeƒ€ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ[sp_execute_external_scr
 
     ƒe[ƒuƒ‹‚ÉV‚µ‚¢ƒŒƒR[ƒh‚ª1‚Â’Ç‰Á‚³‚êAƒVƒŠƒAƒ‰ƒCƒY‚³‚ê‚½ƒ‚ƒfƒ‹‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğŠm”F‚µ‚Ü‚·B
 
-    ```
-    model
-    ------
-    0x580A00000002000302020....
-    ```
+    **Œ‹‰Ê**
+    
+    š–â‘è“_š
+    @TrainTipPredictionModelƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ÌÀsŒãnyc_taxi_modeƒe[ƒuƒ‹‚ª‹ó‚Ìó‘Ô
+    š–â‘è“_š
+    
+    šƒXƒNƒVƒ‡š
+    @11_TrainTipPredictionModelƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ÌÀsŒãnyc_taxi_modelsƒe[ƒuƒ‹‚ª‹óiSSMSj.png
+    šƒXƒNƒVƒ‡š
+
 
 Ÿ‚ÌƒXƒeƒbƒv‚Å‚ÍAŒP—û‚³‚ê‚½ƒ‚ƒfƒ‹‚ğg—p‚µ‚Ä—\‘ª‚ğì¬‚µ‚Ü‚·B
 
@@ -86,6 +97,13 @@ T-SQL‚©‚çR‚ğŒÄ‚Ño‚·‚Æ‚«‚ÍAƒVƒXƒeƒ€ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ[sp_execute_external_scr
 
 [Lesson 4: T-SQL‚ğg—p‚µ‚½ƒf[ƒ^‚Ì“Á’¥’Šo](../tutorials/sqldev-create-data-features-using-t-sql.md)
 
+## ‚Í‚¶‚ß‚©‚ç
+
+[Lesson 1: ƒTƒ“ƒvƒ‹ƒf[ƒ^‚Ìƒ_ƒEƒ“ƒ[ƒh](../tutorials/sqldev-download-the-sample-data.md)
+
+## ŠÖ˜A€–Ú
+
+[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
 
 
 

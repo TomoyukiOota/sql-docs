@@ -50,10 +50,29 @@ Rでソリューションを作成してテストした後、RコードをTransact-SQLストアドプロシージ
 チュートリアルを開始する前に、次の準備を完了する必要があります。:
 
 - SQL Server 2016のRサービスへの接続、あるいはSQL Server 2017のMachine Learning ServicesでRを有効化します。
-- チュートリアルで使用するログインにデータベースやその他オブジェクトの作成、データのアップロード、データの選択、ストアドプロシージャの実行の権限が必要です。
+- SQL Server 2017 内でR（およびPython）実行するにはsp_configureでexternal scripts enabledの設定変更が必要です。またexternal scripts enabledパラメータは設定変更の反映にSQL Server 2017の再起動が必要です。
+
+    1. 外部スクリプト実行機能の有効化
+
+        ```SQL:T-SQL
+        EXEC sp_configure 'external scripts enabled', 1;
+        ```
+
+    2. SQL Server 2017の再起動
+
+        ```cmd:cmd
+        net stop "SQL Server Launchpad (MSSQLSERVER)"
+        net stop "SQL Server (MSSQLSERVER)"
+        net start "SQL Server (MSSQLSERVER)"
+        net start "SQL Server Launchpad (MSSQLSERVER)"
+        ```
+
+        netコマンドに渡すインスタンス名は環境に応じて変更してください。またSQL Server AgentサービスなどSQL Serverサービスに依存するサービスがある場合には明示的に再開してください。
+
+- このチュートリアルで使用するSQL Serverログインには、データベースやその他のオブジェクトの作成、データの更新、データの参照、ストアドプロシージャの実行の権限を付与してください。
 
 > [!NOTE]
-> ストアドプロシージャに埋め込まれたコードに問題がある場合、ストアドプロシージャから返される情報は通常、エラーの原因を理解するには不十分であるため、RコードのテストはPython用の統合開発環境（IDE）を使用することをお勧めします。
+> ストアドプロシージャに埋め込まれたコードに問題がある場合、ストアドプロシージャから返される情報は通常、エラーの原因を理解するには不十分であるため、RコードのテストはR用の統合開発環境（IDE）を使用することをお勧めします。
 > 
 > デバッグでは、R Tools for Visual StudioやRStudioなどのツールを使用することを推奨します。このチュートリアルで提供されているRスクリプトは、従来のRツールを使用して開発・デバッグされています。
 

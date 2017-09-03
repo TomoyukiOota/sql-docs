@@ -43,8 +43,9 @@
   
 ### 結果
   
-    ★確認★
-    結果の画面ショット
+    ★スクショ★
+    　1_データロード完了（PWS）.png
+    ★スクショ★
   
 ## 次のステップ
 
@@ -53,6 +54,14 @@
 ## 前のステップ
 
 [SQL開発者のための In-Database R 分析](../tutorials/sqldev-in-database-r-for-sql-developers.md)
+
+## はじめから
+
+[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+
+## 関連項目
+
+[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
 
 
 <!--

@@ -35,7 +35,7 @@
 
 可視化はデータと異常値の分布を理解するために重要で、Rにはデータ可視化のための多くのパッケージが提供されています。Rの標準ディストリビューションは、ヒストグラム、散布図、箱ひげ図、およびその他のデータ探索グラフを作成するための多くの機能を含む人気のライブラリです。
 
-Rは典型的にグラフィック出力用のRデバイスを用いて画像を生成します。このデバイスの出力をキャプチャして、アプリケーションを** varbinary **データ型で保存してアプリケーションでレンダリングするか、サポートファイル形式（.JPG、.PDFなど）に保存できます。
+Rは典型的に画像出力用のRデバイスを用いて画像を生成します。このデバイスの出力をキャプチャして、アプリケーションをvarbinaryデータ型で保存してアプリケーションでレンダリングするか、サポートファイル形式（.JPG、.PDFなど）に保存できます。
 
 このセクションでは、ストアドプロシージャを使用して各タイプの出力を操作する方法を学習します。全体の流れは次のとおりです。
 
@@ -47,11 +47,9 @@ Rは典型的にグラフィック出力用のRデバイスを用いて画像を
 
 ### ストアドプロシージャPlotHistogramを作成する
 
-1. プロットを生成するには、R Services（In-Database）で提供される拡張R関数の1つであるrxHistogramを使用して、Transact-SQLクエリのデータに基づいてヒストグラムをプロットします。
+1.  ストアドプロシージャ`PlotHistogram`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studioで以下のクエリを実行します。
-
-2. チュートリアルデータを含むデータベースで、次のステートメントを使用してストアドプロシージャを作成します。
+        Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PlotHistogram`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
     ```SQL
     CREATE PROCEDURE [dbo].[PlotHistogram]
@@ -76,23 +74,21 @@ Rは典型的にグラフィック出力用のRデバイスを用いて画像を
     GO
     ```
 
-    必要に応じて、正しいテーブル名に修正してください。
+**Notes:**
   
     -   変数 `@query`は、スクリプト入力変数`@input_data_1`への引数としてRスクリプトに渡されるクエリテキスト(`'SELECT tipped FROM nyctaxi_sample'`)を定義します。
-  
     -   Rスクリプトはかなり簡単です。R変数(`image_file`)がイメージを格納するように定義されていて、次に`rxHistogram`関数が呼び出されてプロットが生成されます。
-  
     -   Rデバイスは**off**に設定されます。
   
         Rではハイレベルのプロットコマンドを発行すると、*device*と呼ばれるグラフィックスウィンドウが開きます。ウィンドウのサイズや色などを変更することができます。また、ファイルへの書き込みや別の方法で出力したい場合はデバイスをオフにすることができます。
   
     -   Rグラフィックスオブジェクトは、出力のためにR data.frameにシリアル化されます。
 
-### グラフィックスデータを生成しファイルに保存します。
+### 画像ファイルを生成しファイルに保存します
 
-ストアドプロシージャは、画像をvarbinaryデータのストリームとして返します。これは明らかに直接表示できません。 ただし、** bcp **ユーティリティを使用してvarbinaryデータを取得し、クライアントコンピュータにイメージファイルとして保存することができます。
+ストアドプロシージャは、画像をvarbinaryデータのストリームとして返します。これは明らかに直接表示できません。 ただし、**bcp**ユーティリティを使用してvarbinaryデータを取得し、クライアントコンピュータにイメージファイルとして保存することができます。
 
-1.  Management Studioで以下のクエリを実行します。
+2.  Management Studioで以下のクエリを実行します。
   
     ```SQL
     EXEC [dbo].[PlotHistogram]
@@ -100,10 +96,16 @@ Rは典型的にグラフィック出力用のRデバイスを用いて画像を
   
     **結果**
     
-    *plot*
-    *0xFFD8FFE000104A4649...*
+    ★問題点★
+    　上記ストアドプロシージャPlotHistogramの実行でエラー
+    ★問題点★
+    
+    ★スクショ★
+    　5_PlotHistogramストアドプロシージャの実行結果（SSMS）
+    ★スクショ★
 
-2.  PowerShellコマンドプロンプトを使用し、適切なインスタンス名、データベース名、ユーザー名、資格情報を指定して次のコマンドを実行します。
+
+3.  PowerShellコマンドプロンプトを使用し、適切なインスタンス名、データベース名、ユーザー名、資格情報を指定して次のコマンドを実行します。
   
      ```PowerShell
      bcp "exec PlotHistogram" queryout "plot.jpg" -S <SQL Server instance name> -d  <database name>  -U <user name> -P <password>
@@ -112,7 +114,7 @@ Rは典型的にグラフィック出力用のRデバイスを用いて画像を
     > [!NOTE]
     > bcpのコマンドスイッチでは大文字と小文字が区別されます。
 
-3.  接続に成功すると、グラフィックファイルに関する詳細情報の入力が求められます。これらの変更を除き各プロンプトでENTERを押します。
+4.  接続に成功すると、画像ファイルに関する詳細情報の入力が求められます。次の変更を除きENTERで進みます。
   
     -   **prefix-length of field plot**に0を入力します。
   
@@ -130,29 +132,34 @@ Rは典型的にグラフィック出力用のRデバイスを用いて画像を
 
     **結果**
 
-    ```
-    Starting copy...
-    1 rows copied.
-    Network packet size (bytes): 4096
-    Clock Time (ms.) Total     : 3922   Average : (0.25 rows per sec.)
-    ```
+    ★問題点★
+    　上記bcpコマンドの実行でエラー
+    ★問題点★
+
+    ★スクショ★
+    　6_bcpコマンドでの画像ファイルの出力結果（PWS）.png
+    ★スクショ★
 
     > [!TIP]
-    > フォーマット情報をファイル（bcp.fmt）に保存すると、** bcp **ユーティリティはフォーマット定義を生成します。このフォーマット定義は、将来グラフィックファイルフォーマットオプションを要求されることなく同様のコマンドに適用できます。 書式ファイルを使用するには、コマンドラインの末尾に `-f bcp.fmt`をパスワード引数の後に追加します。
+    > フォーマット情報をファイル（bcp.fmt）に保存すると、**bcp**ユーティリティはフォーマット定義を生成します。このフォーマット定義は、将来画像ファイルフォーマットオプションを要求されることなく同様のコマンドに適用できます。 書式ファイルを使用するには、コマンドラインの末尾に `-f bcp.fmt`をパスワード引数の後に追加します。
 
-4.  出力ファイルは、PowerShellコマンドを実行した同じディレクトリに作成されます。 プロットを表示するには、plot.jpgファイルを開きます。
+5.  出力ファイルは、PowerShellコマンドを実行した同じディレクトリに作成されます。 plot.jpgファイルを開きます。
   
-    ![taxi trips with and without tips](media/rsql-devtut-tippedornot.jpg "taxi trips with and without tips")  
+    ★スクショ★
+    　7_bcpコマンドで出力した画像（plot.jpg）.png
+    ★スクショ★
   
 ### 表示可能なファイルにプロットデータをエクスポートします。
 
 Rプロットをバイナリデータ型に出力することは、アプリケーションでの使用には便利ですが、データ探索段階でレンダリングされたプロットを必要とするデータ分析者にとってはあまり役に立ちません。一般的にデータ分析者は様々な視点からデータへの洞察を得るために、複数のデータ視覚化を生成します。
 
-ユーザーのグラフを生成するには、.JPG、.PDF、.PNGなどの一般的な形式でRの出力を作成するストアドプロシージャを使用できます。ストアドプロシージャがグラフィックを作成したら、ファイルを開いてプロットを視覚化するだけです。
+ユーザーのグラフを生成するには、.JPG、.PDF、.PNGなどの一般的な形式でRの出力を作成するストアドプロシージャを使用できます。ストアドプロシージャが画像を作成したら、画像ファイルを開いてプロットを確認します。
 
-1. ヒストグラム、散布図、およびその他のRグラフィックスを.JPGおよび.PDF形式に書き込むストアドプロシージャ_PlotInOutputFiles_を作成します。
+1. ヒストグラム、散布図、およびその他のR画像ファイルを.JPGおよび.PDF形式に書き込むストアドプロシージャ`PlotInOutputFiles`を作成します。
 
-    Management Studioを使用して次のクエリを実行します。
+    `PlotInOutputFiles`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
+    
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PlotInOutputFiles`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
     ```SQL
     CREATE PROCEDURE [dbo].[PlotInOutputFiles]  
@@ -218,13 +225,13 @@ Rプロットをバイナリデータ型に出力することは、アプリケ�
      END
     ```
 
-    -   ストアドプロシージャ内のSELECTクエリの出力は、デフォルトのRデータフレーム、 `InputDataSet`に格納されます。 様々なRプロット関数を呼び出して、実際のグラフィックスファイルを生成することができます。
+    -   ストアドプロシージャ内のSELECTクエリの出力は、デフォルトのRデータフレーム、 `InputDataSet`に格納されます。 様々なRプロット関数を呼び出して、実際の画像ファイルを生成することができます。
   
         組み込まれたRスクリプトのほとんどは `plot`や` hist`のようなグラフィック関数のオプションを表します。
   
     -   すべてのファイルはローカルフォルダ_C:\temp\Plots\\_に保存されます。 コピー先フォルダは、ストアドプロシージャの一部としてRスクリプトに提供される引数によって定義されます。 変数 `mainDir`の値を変更することで、保存先フォルダを変更することができます。
 
-2.  次のステートメントを実行してストアドプロシージャを作成します。
+2.  Management Studio で以下のクエリを実行します。
 
     ```SQL
     EXEC PlotInOutputFiles
@@ -232,28 +239,36 @@ Rプロットをバイナリデータ型に出力することは、アプリケ�
 
     **結果**
 
-    ```
-    STDOUT message(s) from external script:
-    [1] Creating output plot files:[1] C:\temp\plots\rHistogram_Tipped_18887f6265d4.jpg[1] 
+    ★問題点★
+    　PlotInOutputFilesストアドプロシージャの実行でエラー
+    ★問題点★
     
-    C:\temp\plots\rHistograms_Tip_and_Fare_Amount_1888441e542c.pdf[1]
+    ★スクショ★
+    　8_PlotInOutputFilesストアドプロシージャの実行結果（SSMS）.png
+    ★スクショ★
     
-    C:\temp\plots\rXYPlots_Tip_vs_Fare_Amount_18887c9d517b.pdf
-    ```
-
+    
     ファイル名の数字はランダムに生成され、既存のファイルに書き込むときにエラーが発生しないようにします。
 
 3. プロットを表示するには、保存先フォルダを開き、ストアドプロシージャのRコードによって作成されたファイルを確認します。
 
     + `rHistogram_Tipped.jpg`ファイルには、ヒントがある旅行の数とヒントがない旅行の数が表示されます。 （このヒストグラムは、前の手順で生成したヒストグラムによく似ています）。
 
+    ★スクショ★
+    　画像データ生成されていない（rHistogram_Tipped.jpg）
+    ★スクショ★
+
     + `rHistograms_Tip_and_Fare_Amount.pdf`ファイルは、料金の金額に対してプロットされたチップ金額の分布を示しています。
     
-    ![histogram showing tip_amount and fare_amount](media/rsql-devtut-tipamtfareamt.PNG "histogram showing tip_amount and fare_amount")
+    ★スクショ★
+    　画像データ生成されていない（rHistograms_Tip_and_Fare_Amount.pdf）
+    ★スクショ★
 
-    + `rXYPlots_Tip_vs_Fare_Amount.pdf`ファイルは、x軸上に料金金額、y軸上にチップ金額とした散布図です。
+    + `rXYPlots_Tip_vs_Fare_Amount.pdf`ファイルは、x軸上に料金、y軸上にチップ金額とした散布図です。
 
-    ![tip amount plotted over fare amount](media/rsql-devtut-tipamtbyfareamt.PNG "tip amount plotted over fare amount")
+    ★スクショ★
+    　画像データ生成されていない（rXYPlots_Tip_vs_Fare_Amount.pdf）
+    ★スクショ★
 
 4.  ファイルを別のフォルダに出力するには、ストアドプロシージャに埋め込まれたRスクリプトの `mainDir`変数の値を変更します。 スクリプトを変更して、異なる形式やファイルなどを出力することもできます。
 
@@ -265,6 +280,13 @@ Rプロットをバイナリデータ型に出力することは、アプリケ�
 
 [Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)
 
+## はじめから
+
+[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+
+## 関連項目
+
+[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
 
 
 
