@@ -1,81 +1,85 @@
-# Lesson 2: PowerShellを使用したSQL Serverへのデータインポート
+# Lesson 2: PowerShell���g�p����SQL Server�ւ̃f�[�^�C���|�[�g
 
-この記事は、SQL開発者のための In-Database R 分析（チュートリアル） の一部です。
+���̋L���́ASQL�J���҂̂��߂� In-Database R ���́i�`���[�g���A���j �̈ꕔ�ł��B
 
-このステップでは、ダウンロードしたスクリプトの1つを実行して、チュートリアルに必要なデータベースオブジェクトを作成します。このスクリプトは、使用するストアドプロシージャのほとんどを作成し、指定したデータベースのテーブルにサンプルデータをロードします。
-ンロードしたファイル群の中のサンプルデータファイル`nyctaxi1pct.csv`のパス。例えば、`C:\tempRSQL\nyctaxi1pct.csv`です。
-    
-    ★スクショ★
-    　2_データインポートSTART（PWS）
-    　3_データインポートEND（PWS）
-    ★スクショ★
+���̃X�e�b�v�ł́A�_�E�����[�h�����X�N���v�g��1�����s���āA�`���[�g���A���ɕK�v�ȃf�[�^�x�[�X�I�u�W�F�N�g���쐬���܂��B���̃X�N���v�g�́A�g�p����X�g�A�h�v���V�[�W���̂قƂ�ǂ��쐬���A�w�肵���f�[�^�x�[�X�̃e�[�u���ɃT���v���f�[�^�����[�h���܂��B
 
-2.  上記手順の一環で指定したデータベース名とユーザー名をプレースホルダに置き換えるように、すべてのT-SQLスクリプトが変更されています。
-
-    T-SQLスクリプトによって作成されるストアドプロシージャと関数がデータベース内に作成されていることを確認します。
-    
-## 出典
+## �o�T
 [Lesson 2: Import data to SQL Server using PowerShell](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sqldev-import-data-to-sql-server-using-powershell)
 
-## オブジェクト作成
+## �I�u�W�F�N�g�쐬
 
-ダウンロードしたファイル群の中のPowerShellスクリプト`RunSQL_SQL_Walkthrough.ps1`を実行し、チュートリアル環境を準備します。このスクリプトは次のアクションを実行します：
+�_�E�����[�h�����t�@�C���Q�̒���PowerShell�X�N���v�g`RunSQL_SQL_Walkthrough.ps1`�����s���A�`���[�g���A�������������܂��B���̃X�N���v�g�͎��̃A�N�V���������s���܂��F
 
-- SQL Native ClientおよびSQLコマンドラインユーティリティがインストールされていない場合はインストールします。これらは、bcpを使用してデータをバルクロードするために必要です。
+- SQL Native Client�����SQL�R�}���h���C�����[�e�B���e�B���C���X�g�[������Ă��Ȃ��ꍇ�̓C���X�g�[�����܂��B�����́Abcp���g�p���ăf�[�^���o���N���[�h���邽�߂ɕK�v�ł��B
 
-- SQL Serverインスタンスにデータベースとテーブルを作成し、そこへデータをバルクロードします。
+- SQL Server�C���X�^���X�Ƀf�[�^�x�[�X�ƃe�[�u�����쐬���A�����փf�[�^���o���N���[�h���܂��B
 
-- さらに複数の関数とストアドプロシージャを作成します。
+- ����ɕ����̊֐��ƃX�g�A�h�v���V�[�W�����쐬���܂��B
 
-## スクリプトの実行
+## �X�N���v�g�̎��s
 
-1.  管理者としてPowerShellコマンドプロンプトを開き、次のコマンドを実行します。
+1.  �Ǘ��҂Ƃ���PowerShell�R�}���h�v�����v�g���J���A���̃R�}���h�����s���܂��B
   
     ```PowerShell:PowerShell
     .\RunSQL_SQL_Walkthrough.ps1
     ```
   
-    次の情報を入力するよう求められます。
+    ���̏�����͂���悤���߂��܂��B
   
-    - SQL Server 2017 R Serviceがインストールされているサーバ名またはアドレス。
-    - 作成するデータベースの名前
-    - 対象のSQL Serverのユーザー名とパスワード。このユーザは、データベース、テーブル、ストアドプロシージャ、関数の作成権限、およびテーブルへのデータロード権限が必要です。ユーザー名とパスワードを省略した場合は現在のWindowsユーザによってログインします。
-    - ダウ
+    - SQL Server 2017 R Service���C���X�g�[������Ă���T�[�o���܂��̓A�h���X�B
+    - �쐬����f�[�^�x�[�X�̖��O
+    - �Ώۂ�SQL Server�̃��[�U�[���ƃp�X���[�h�B���̃��[�U�́A�f�[�^�x�[�X�A�e�[�u���A�X�g�A�h�v���V�[�W���A�֐��̍쐬�����A����уe�[�u���ւ̃f�[�^���[�h�������K�v�ł��B���[�U�[���ƃp�X���[�h���ȗ������ꍇ�͌��݂�Windows���[�U�ɂ���ă��O�C�����܂��B
+    - �_�E�����[�h�����t�@�C���Q�̒��̃T���v���f�[�^�t�@�C��`nyctaxi1pct.csv`�̃p�X�B�Ⴆ�΁A`C:\tempRSQL\nyctaxi1pct.csv`�ł��B
+    
+    ���X�N�V����
+    �@2_�f�[�^�C���|�[�gSTART�iPWS�j
+    �@3_�f�[�^�C���|�[�gEND�iPWS�j
+    ���X�N�V����
 
-    |**T-SQLスクリプトファイル**|**ストアドプロシージャ／関数**|
+2.  ��L�菇�̈�Ŏw�肵���f�[�^�x�[�X���ƃ��[�U�[�����v���[�X�z���_�ɒu��������悤�ɁA���ׂĂ�T-SQL�X�N���v�g���ύX����Ă��܂��B
+
+    T-SQL�X�N���v�g�ɂ���č쐬�����X�g�A�h�v���V�[�W���Ɗ֐����f�[�^�x�[�X���ɍ쐬����Ă��邱�Ƃ��m�F���܂��B
+    
+    �����_��
+    �@�X�g�A�h�v���V�[�W��PersistModel���쐬����Ă��Ȃ�
+    �@�X�g�A�h�v���V�[�W��PredictBatchMode���쐬����Ă��Ȃ�
+    �����_��
+
+    |**T-SQL�X�N���v�g�t�@�C��**|**�X�g�A�h�v���V�[�W���^�֐�**|
     |-|-|
-    |create-db-tb-upload-data.sql|データベースと2つのテーブルを作成します。<br /><br />テーブル`nyctaxi_sample`: メインとなるNYC Taxiデータセットが登録されます。ロードされるデータはNYC Taxiデータセットの1％のサンプルです。クラスタ化カラムストアインデックスの定義によってストレージ効率とクエリパフォーマンスを向上させています。<br /><br />テーブル`nyc_taxi_models`: 訓練された高度な分析モデルが登録されます。|
-    |fnCalculateDistance.sql|乗車位置と降車位置の間の直接距離を計算するスカラー値関数`fnCalculateDistance`を作成します。|
-    |fnEngineerFeatures.sql|モデルトレーニング用の新しい特徴抽出を作成するテーブル値関数`fnEngineerFeatures`を作成します。|
-    |PredictTip.sql|モデルを使用した予測のために、訓練されたモデルを呼び出すストアドプロシージャ`PredictTip`を作成します。ストアドプロシージャは、入力パラメータとして問合せを受け入れ、入力行のスコアを含む数値の列を戻します。|
-    |PredictTipBatchMode.sql|モデルを使用した予測のために、訓練されたモデルを呼び出すストアドプロシージャ`PredictTipBatchMode`を作成します。ストアドプロシージャは、入力パラメータとして問合せを受け入れ、入力行のスコアを含む数値の列を戻します。|
-    |PredictTipSingleMode.sql|モデルを使用した予測のために、訓練されたモデルを呼び出すストアドプロシージャ`PredictTipSingleMode`を作成します。このストアドプロシージャは新しい観測値を入力として、個々の特徴値はインラインパラメータとして受け取り、新しい観測値に対する予測値を返します。|
-    |PlotHistogram.sql|データ探索用のストアドプロシージャ`PlotHistogram`を作成します。 このストアドプロシージャは、R関数を呼び出して変数のヒストグラムをプロットし、プロットをバイナリオブジェクトとして返します。|
-    |PlotInOutputFiles.sql|データ探索用のストアドプロシージャ`PlotInOutputFiles`を作成します。 このストアドプロシージャは、R関数を使用してグラフィックを作成し、ローカルPDFファイルとして保存します。|
-    |TrainTipPredictionModel.sql|Rパッケージを呼び出すことによってロジスティック回帰モデルを訓練するストアドプロシージャ`TrainTipPredictionModel`を作成します。 このモデルは、転倒した列の値を予測し、ランダムに選択された70％のデータを使用して訓練されます。 ストアドプロシージャの出力は訓練されたモデルであり、テーブルnyc_taxi_modelsに保存されます。|
+    |create-db-tb-upload-data.sql|�f�[�^�x�[�X��2�̃e�[�u�����쐬���܂��B<br /><br />�e�[�u��`nyctaxi_sample`: ���C���ƂȂ�NYC Taxi�f�[�^�Z�b�g���o�^����܂��B���[�h�����f�[�^��NYC Taxi�f�[�^�Z�b�g��1���̃T���v���ł��B�N���X�^���J�����X�g�A�C���f�b�N�X�̒�`�ɂ���ăX�g���[�W�����ƃN�G���p�t�H�[�}���X�����コ���Ă��܂��B<br /><br />�e�[�u��`nyc_taxi_models`: �P�����ꂽ���x�ȕ��̓��f�����o�^����܂��B|
+    |fnCalculateDistance.sql|��Ԉʒu�ƍ~�Ԉʒu�̊Ԃ̒��ڋ������v�Z����X�J���[�l�֐�`fnCalculateDistance`���쐬���܂��B|
+    |fnEngineerFeatures.sql|���f���g���[�j���O�p�̐V�����������o���쐬����e�[�u���l�֐�`fnEngineerFeatures`���쐬���܂��B|
+    |PersistModel.sql|���f����ۑ����邽�߂ɌĂяo�����Ƃ��ł���X�g�A�h�v���V�[�W��`PersistModel`���쐬���܂��B �X�g�A�h�v���V�[�W���́Avarbinary�f�[�^�^�ŃV���A�������ꂽ���f�����擾���A�w�肳�ꂽ�e�[�u���ɏ������݂܂��B|
+    |PredictTipBatchMode.sql|���f�����g�p�����\���̂��߂ɁA�P�����ꂽ���f�����Ăяo���X�g�A�h�v���V�[�W��`PredictTipBatchMode`���쐬���܂��B�X�g�A�h�v���V�[�W���́A���̓p�����[�^�Ƃ��Ė⍇�����󂯓���A���͍s�̃X�R�A���܂ސ��l�̗��߂��܂��B|
+    |PredictTipSingleMode.sql|���f�����g�p�����\���̂��߂ɁA�P�����ꂽ���f�����Ăяo���X�g�A�h�v���V�[�W��`PredictTipSingleMode`���쐬���܂��B���̃X�g�A�h�v���V�[�W���͐V�����ϑ��l����͂Ƃ��āA�X�̓����l�̓C�����C���p�����[�^�Ƃ��Ď󂯎��A�V�����ϑ��l�ɑ΂���\���l��Ԃ��܂��B|
+    |PlotHistogram.sql|�f�[�^�T���p�̃X�g�A�h�v���V�[�W��`PlotHistogram`���쐬���܂��B ���̃X�g�A�h�v���V�[�W���́AR�֐����Ăяo���ĕϐ��̃q�X�g�O�������v���b�g���A�v���b�g���o�C�i���I�u�W�F�N�g�Ƃ��ĕԂ��܂��B|
+    |PlotInOutputFiles.sql|�f�[�^�T���p�̃X�g�A�h�v���V�[�W��`PlotInOutputFiles`���쐬���܂��B ���̃X�g�A�h�v���V�[�W���́AR�֐����g�p���ăO���t�B�b�N���쐬���A���[�J��PDF�t�@�C���Ƃ��ĕۑ����܂��B|
+    |TrainTipPredictionModel.sql|R�p�b�P�[�W���Ăяo�����Ƃɂ���ă��W�X�e�B�b�N��A���f�����P������X�g�A�h�v���V�[�W��`TrainTipPredictionModel`���쐬���܂��B ���̃��f���́A�]�|������̒l��\�����A�����_���ɑI�����ꂽ70���̃f�[�^���g�p���ČP������܂��B �X�g�A�h�v���V�[�W���̏o�͂͌P�����ꂽ���f���ł���A�e�[�u��nyc_taxi_models�ɕۑ�����܂��B|
 
-3.  SQL Server Management Studioを使用してSQL Serverへログインし、作成されたデータベース、テーブル、関数、およびストアドプロシージャを確認します。
+3.  SQL Server Management Studio���g�p����SQL Server�փ��O�C�����A�쐬���ꂽ�f�[�^�x�[�X�A�e�[�u���A�֐��A����уX�g�A�h�v���V�[�W�����m�F���܂��B
 
-    ★スクショ★
-    　4_データインポート後のオブジェクトエクスプローラー（SSMS）
-    ★スクショ★
+    ���X�N�V����
+    �@4_�f�[�^�C���|�[�g��̃I�u�W�F�N�g�G�N�X�v���[���[�iSSMS�j
+    ���X�N�V����
   
     > [!NOTE]
-    > T-SQLスクリプトはデータベースオブジェクトを再作成しないため、すでに存在する場合にはデータが重複して登録されます。そのため、スクリプトを再実行する場合は事前に既存オブジェクトを削除してください。
+    > T-SQL�X�N���v�g�̓f�[�^�x�[�X�I�u�W�F�N�g���č쐬���Ȃ����߁A���łɑ��݂���ꍇ�ɂ̓f�[�^���d�����ēo�^����܂��B���̂��߁A�X�N���v�g���Ď��s����ꍇ�͎��O�Ɋ����I�u�W�F�N�g���폜���Ă��������B
 
-## 次のステップ
+## ���̃X�e�b�v
 
-[Lesson 3: データの探索と可視化](../tutorials/sqldev-explore-and-visualize-the-data.md)
+[Lesson 3: �f�[�^�̒T���Ɖ���](../tutorials/sqldev-explore-and-visualize-the-data.md)
 
-## 前のステップ
+## �O�̃X�e�b�v
 
-[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+[Lesson 1: �T���v���f�[�^�̃_�E�����[�h](../tutorials/sqldev-download-the-sample-data.md)
 
-## はじめから
+## �͂��߂���
 
-[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+[Lesson 1: �T���v���f�[�^�̃_�E�����[�h](../tutorials/sqldev-download-the-sample-data.md)
 
-## 関連項目
+## �֘A����
 
 [In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
 
