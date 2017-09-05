@@ -97,7 +97,7 @@ Rは典型的に画像出力用のRデバイスを用いて画像を生成しま
 3.  コマンドプロンプトを使用し、適切なインスタンス名、データベース名、ユーザー名、資格情報を指定して次のコマンドを実行します。
   
      ```CMD
-     bcp "exec PlotHistogram" queryout "plot.jpg" -S <SQL Server instance name> -d  <database name>  -U <user name> -P <password>
+     bcp "exec PlotHistogram" queryout "plot.jpg" -S <SQL Server instance name> -d <database name> -U <user name> -P <password>
      ```
 
     > [!NOTE]
@@ -107,12 +107,12 @@ Rは典型的に画像出力用のRデバイスを用いて画像を生成しま
   
     - **prefix-length of field plot**に0を入力します。
   
-    - 出力パラメータを保存する場合は、**Y**を入力します。
+    - フォーマットファイルを保存する場合は、**Y**を入力します。
     
     ![result](media/sqldev-r-step3-2-gho9o9.png "result")
     
     > [!TIP]
-    > フォーマット情報をファイル（bcp.fmt）に保存すると、**bcp**ユーティリティはフォーマット定義を生成します。このフォーマット定義は、将来画像ファイルフォーマットオプションを要求されることなく同様のコマンドに適用できます。 書式ファイルを使用するには、コマンドラインに `-f bcp.fmt`を追加します。
+    > フォーマットファイル（bcp.fmt）の保存を指定すると**bcp**ユーティリティはフォーマット定義を生成します。このフォーマット定義は、将来画像ファイルフォーマットオプションを要求されることなく同様のコマンドに適用できます。 書式ファイルを使用するには、コマンドラインに `-f bcp.fmt`を追加します。
 
 5.  出力ファイル（plot.jpg）は、コマンドを実行したディレクトリに作成されます。
   
@@ -203,41 +203,26 @@ Rプロットをバイナリデータ型に出力することは、アプリケ�
 2.  Management Studio で以下のクエリを実行します。
 
     ```SQL
-    EXEC PlotInOutputFiles
+    EXEC [dbo].[PlotInOutputFiles]
     ```
 
-    **結果**
-
-    ★問題点★
-    　PlotInOutputFilesストアドプロシージャの実行でエラー
-    ★問題点★
+    ![result](media/sqldev-r-step3-3-gho9o9.jpg "result")
     
-    ★スクショ★
-    　8_PlotInOutputFilesストアドプロシージャの実行結果（SSMS）.png
-    ★スクショ★
-    
-    
-    ファイル名の数字はランダムに生成され、既存のファイルに書き込むときにエラーが発生しないようにします。
+    ファイル名の数字はランダムに生成され、既存のファイルに書き込むときにエラーが発生しないようにしています。
 
 3. プロットを表示するには、保存先フォルダを開き、ストアドプロシージャのRコードによって作成されたファイルを確認します。
 
     + `rHistogram_Tipped.jpg`ファイルには、ヒントがある旅行の数とヒントがない旅行の数が表示されます。 （このヒストグラムは、前の手順で生成したヒストグラムによく似ています）。
 
-    ★スクショ★
-    　画像データ生成されていない（rHistogram_Tipped.jpg）
-    ★スクショ★
+    ![result](media/sqldev-r-step3-4-gho9o9.jpg "result")
 
     + `rHistograms_Tip_and_Fare_Amount.pdf`ファイルは、料金の金額に対してプロットされたチップ金額の分布を示しています。
     
-    ★スクショ★
-    　画像データ生成されていない（rHistograms_Tip_and_Fare_Amount.pdf）
-    ★スクショ★
+    ![result](media/sqldev-r-step3-5-gho9o9.png "result")
 
     + `rXYPlots_Tip_vs_Fare_Amount.pdf`ファイルは、x軸上に料金、y軸上にチップ金額とした散布図です。
 
-    ★スクショ★
-    　画像データ生成されていない（rXYPlots_Tip_vs_Fare_Amount.pdf）
-    ★スクショ★
+    ![result](media/sqldev-r-step3-6-gho9o9.png "result")
 
 4.  ファイルを別のフォルダに出力するには、ストアドプロシージャに埋め込まれたRスクリプトの `mainDir`変数の値を変更します。 スクリプトを変更して、異なる形式やファイルなどを出力することもできます。
 
