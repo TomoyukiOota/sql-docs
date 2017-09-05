@@ -91,8 +91,6 @@
     データ処理とモデルのフィッティングには数分かかります。Pythonのstdoutストリームにパイプされるメッセージは、Management Studioのメッセージウィンドウに表示されます。
     
     ![result5-2](media/sqldev-python-step5-2-gho9o9.png "result5-2")
-    
-    ![result5-2_error](media/sqldev-python-step5-2_error-gho9o9.png "result5-2_error")
 
 3. nyc_taxi_modelsテーブルに新しいレコードが1つ追加され、シリアライズされたモデルが登録されていることを確認します。
 

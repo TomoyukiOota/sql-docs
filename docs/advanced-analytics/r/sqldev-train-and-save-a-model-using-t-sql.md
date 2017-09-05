@@ -1,15 +1,20 @@
 # Lesson 5: T-SQL‚ğg—p‚µ‚½ƒ‚ƒfƒ‹‚ÌƒgƒŒ[ƒjƒ“ƒO‚Æ•Û‘¶
 
-‚±‚Ì‹L–‚ÍASQLŠJ”­Ò‚Ì‚½‚ß‚Ì In-Database R •ªÍiƒ`ƒ…[ƒgƒŠƒAƒ‹j ‚Ìˆê•”‚Å‚·B
-
 ‚±‚ÌƒŒƒbƒXƒ“‚Å‚ÍAR‚ğg—p‚µ‚ÄA‹@ŠBŠwKƒ‚ƒfƒ‹‚ğƒgƒŒ[ƒjƒ“ƒO‚·‚é•û–@‚ğŠwK‚µ‚Ü‚·Bì¬‚µ‚½ƒf[ƒ^“Á’¥‚ğg—p‚µ‚Äƒ‚ƒfƒ‹‚ğƒgƒŒ[ƒjƒ“ƒO‚µAŒP—û‚³‚ê‚½ƒ‚ƒfƒ‹‚ğSQL Server‚Ìƒe[ƒuƒ‹‚É•Û‘¶‚µ‚Ü‚·B
+
 RƒpƒbƒP[ƒW‚ÍŠù‚ÉR Services(In-Database)‚Æ‹¤‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚½‚ßASQL‚©‚ç‚·‚×‚ÄÀs‚Å‚«‚Ü‚·B
 
-## ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ğì¬‚·‚é
+## ƒ‚ƒfƒ‹‚ÌƒgƒŒ[ƒjƒ“ƒO‚Ì‚½‚ß‚ÌƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ğì¬‚·‚é
 
-ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ`TrainTipPredictionModel`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf[ƒ^ƒCƒ“ƒ|[ƒg](../r/sqldev-import-data-to-sql-server-using-powershell.md)‚ğ’Ê‚¶‚ÄSQL Server‚É’è‹`‚³‚ê‚Ä‚¢‚Ü‚·BManagement Studio‚ÌƒIƒuƒWƒFƒNƒgƒGƒNƒXƒvƒ[ƒ‰‚ÅA[ƒvƒƒOƒ‰ƒ~ƒ“ƒO]A[ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ]‚Ì‡‚É“WŠJ‚µ‚Ü‚·B`TrainTipPredictionModel`‚ğ‰EƒNƒŠƒbƒN‚µA[•ÏX] ‚ğ‘I‘ğ‚µ‚ÄV‚µ‚¢ƒNƒGƒŠƒEƒBƒ“ƒhƒE‚ÅTransact-SQLƒXƒNƒŠƒvƒg‚ğŠJ‚«‚Ü‚·B
+T-SQL‚©‚çR‚ğŒÄ‚Ño‚·‚Æ‚«‚ÍAƒVƒXƒeƒ€ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒsp_execute_external_script‚ğg—p‚µ‚Ü‚·B‚±‚±‚Å‚Íƒ‚ƒfƒ‹ƒgƒŒ[ƒjƒ“ƒO‚ğŒJ‚è•Ô‚·‚±‚Æ‚ğ”O“ª‚ÉAsp_execute_exernal_script‚ğƒJƒvƒZƒ‹‰»‚µ‚½•Ê‚ÌƒXƒgƒAƒhEƒvƒƒV[ƒWƒƒ`TrainTipPredictionModel`‚ğì¬‚µ‚Ü‚·B
 
-    ```SQL
+ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ`TrainTipPredictionModel`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf[ƒ^ƒCƒ“ƒ|[ƒg](../r/sqldev-import-data-to-sql-server-using-powershell.md)‚ğ’Ê‚¶‚ÄSQL Server‚É’è‹`‚³‚ê‚Ä‚¢‚Ü‚·B
+
+1. Management Studio‚ÌƒIƒuƒWƒFƒNƒgƒGƒNƒXƒvƒ[ƒ‰‚ÅA[ƒvƒƒOƒ‰ƒ~ƒ“ƒO]A[ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ]‚Ì‡‚É“WŠJ‚µ‚Ü‚·B
+
+2. `TrainTipPredictionModel`‚ğ‰EƒNƒŠƒbƒN‚µA[•ÏX] ‚ğ‘I‘ğ‚µ‚ÄV‚µ‚¢ƒNƒGƒŠƒEƒBƒ“ƒhƒE‚ÅTransact-SQLƒXƒNƒŠƒvƒg‚ğŠJ‚«‚Ü‚·B
+
+    ```SQL:T-SQL
     CREATE PROCEDURE [dbo].[TrainTipPredictionModel]
     
     AS
@@ -41,12 +46,10 @@ RƒpƒbƒP[ƒW‚ÍŠù‚ÉR Services(In-Database)‚Æ‹¤‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚½‚ßASQL‚©‚
     GO
     ```
 
-    - ‚½‚¾‚µAƒ‚ƒfƒ‹‚ğƒeƒXƒg‚·‚é‚½‚ß‚Éˆê•”‚Ìƒf[ƒ^‚ªc‚Á‚Ä‚¢‚é‚±‚Æ‚ğŠm”F‚·‚é‚½‚ß‚ÉAƒf[ƒ^‚Ì70“‚ªƒ^ƒNƒV[ƒf[ƒ^ƒe[ƒuƒ‹‚©‚çƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ‚³‚ê‚Ü‚·B
-    - SELECTƒNƒGƒŠ‚ÍƒJƒXƒ^ƒ€ƒXƒJƒ‰ŠÖ”`fnCalculateDistance`‚ğg—p‚µ‚ÄAæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌŠÔ‚Ì’¼Ú‹——£‚ğŒvZ‚µ‚Ü‚·BƒNƒGƒŠ‚ÌŒ‹‰Ê‚ÍƒfƒtƒHƒ‹ƒg‚ÌR“ü—Í•Ï”`InputDataset`‚ÉŠi”[‚³‚ê‚Ü‚·B
-    - RƒXƒNƒŠƒvƒg‚ÍAR Services (In-Database)‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚érxLogitŠÖ”‚ğŒÄ‚Ño‚µ‚ÄAƒƒWƒXƒeƒBƒbƒN‰ñ‹Aƒ‚ƒfƒ‹‚ğì¬‚µ‚Ü‚·B
-        tipped‚ğ–Ú“I•Ï”‚ÉApassenger_countAtrip_distanceAtrip_time_in_secsA‚¨‚æ‚Ñdirect_distance‚ğà–¾•Ï”‚Æ‚µ‚Äƒ‚ƒfƒ‹‚ğì¬‚µ‚Ü‚·B
-    - R•Ï”`logitObj`‚Å¦‚³‚ê‚éŒP—ûÏ‚İƒ‚ƒfƒ‹‚ÍƒVƒŠƒAƒ‰ƒCƒY‚³‚êo—Íƒpƒ‰ƒ[ƒ^‚Æ‚µ‚Ä•Ô‚è‚Ü‚·B‚±‚Ìo—Í‚ğnyc_taxi_modelsƒe[ƒuƒ‹‚É“o˜^‚·‚é‚±‚Æ‚ÅA«—ˆ‚Ì—\‘ª‚ÉŒJ‚è•Ô‚µg—p‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
-
+- ƒ‚ƒfƒ‹‚ğƒeƒXƒg‚·‚é‚½‚ß‚Éˆê•”‚Ìƒf[ƒ^‚ªc‚Á‚Ä‚¢‚é‚±‚Æ‚ğŠm”F‚·‚é‚½‚ß‚ÉAƒf[ƒ^‚Ì70“‚ªƒ^ƒNƒV[ƒf[ƒ^ƒe[ƒuƒ‹‚©‚çƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ‚³‚ê‚Ü‚·B
+- SELECTƒNƒGƒŠ‚ÍƒJƒXƒ^ƒ€ƒXƒJƒ‰ŠÖ”`fnCalculateDistance`‚ğg—p‚µ‚ÄAæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌŠÔ‚Ì’¼Ú‹——£‚ğŒvZ‚µ‚Ü‚·BƒNƒGƒŠ‚ÌŒ‹‰Ê‚ÍƒfƒtƒHƒ‹ƒg‚ÌR“ü—Í•Ï”`InputDataset`‚ÉŠi”[‚³‚ê‚Ü‚·B
+- RƒXƒNƒŠƒvƒg‚ÍAR Services (In-Database)‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚érxLogitŠÖ”‚ğŒÄ‚Ño‚µ‚ÄAƒƒWƒXƒeƒBƒbƒN‰ñ‹Aƒ‚ƒfƒ‹‚ğì¬‚µ‚Ü‚·Btipped‚ğ–Ú“I•Ï”‚ÉApassenger_countAtrip_distanceAtrip_time_in_secsA‚¨‚æ‚Ñdirect_distance‚ğà–¾•Ï”‚Æ‚µ‚Äƒ‚ƒfƒ‹‚ğì¬‚µ‚Ü‚·B
+- R•Ï”`logitObj`‚Å¦‚³‚ê‚éŒP—ûÏ‚İƒ‚ƒfƒ‹‚ÍƒVƒŠƒAƒ‰ƒCƒY‚³‚êo—Íƒpƒ‰ƒ[ƒ^‚Æ‚µ‚Ä•Ô‚è‚Ü‚·B‚±‚Ìo—Í‚ğnyc_taxi_modelsƒe[ƒuƒ‹‚É“o˜^‚·‚é‚±‚Æ‚ÅA«—ˆ‚Ì—\‘ª‚ÉŒJ‚è•Ô‚µg—p‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
 ## ƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ğg—p‚µ‚ÄRƒ‚ƒfƒ‹‚ğ¶¬‚·‚é
 
@@ -55,37 +58,22 @@ RƒpƒbƒP[ƒW‚ÍŠù‚ÉR Services(In-Database)‚Æ‹¤‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚½‚ßASQL‚©‚
 1. Rƒ‚ƒfƒ‹‚ğ¶¬‚·‚é‚É‚ÍA‘¼‚Ìƒpƒ‰ƒ[ƒ^‚ğg—p‚¹‚¸‚ÉƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ğŒÄ‚Ño‚µ‚Ü‚·
 
     ```SQL
-    EXEC TrainTipPredictionModel
+    EXEC [dbo].[TrainTipPredictionModel]
     ```
-    **Œ‹‰Ê**
     
-    š–â‘è“_š
-    @TrainTipPredictionModelƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ÌÀs‚ÅƒGƒ‰[
-    š–â‘è“_š
-    šƒXƒNƒVƒ‡š
-    @10_TrainTipPredictionModelƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ÌÀsŒ‹‰ÊiSSMSj.png
-    šƒXƒNƒVƒ‡š
+    ![result](media/sqldev-r-step5-1-gho9o9.png "result")
 
 2. Management Studio ‚ÌƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ÅR‚Ì•W€o—ÍƒƒbƒZ[ƒW‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
 
-    "STDOUT message(s) from external script: Rows Read: 1193025, Total Rows Processed: 1193025, Total Chunk Time: 0.093 seconds"
+    "STDOUT message(s) from external script: Rows Read: 1703957, Total Rows Processed: 1703957, Total Chunk Time: 0.049 seconds "
 
     ŒÂX‚ÌŠÖ”‚ÉŒÅ—L‚ÌƒƒbƒZ[ƒW `rxLogit`‚ª•\¦‚³‚êAƒ‚ƒfƒ‹ì¬‚Ìˆê•”‚Æ‚µ‚Ä¶¬‚³‚ê‚½•Ï”‚ÆƒeƒXƒgƒƒgƒŠƒbƒN‚ª•\¦‚³‚ê‚Ü‚·B
 
-3.  ƒXƒe[ƒgƒƒ“ƒg‚ªŠ®—¹‚µ‚½‚çA*nyc_taxi_models*ƒe[ƒuƒ‹‚ğŠJ‚«‚Ü‚·B ƒf[ƒ^‚Ìˆ—‚Æƒ‚ƒfƒ‹‚ÌƒtƒBƒbƒeƒBƒ“ƒO‚É‚ÍŠÔ‚ª‚©‚©‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B
+3. ƒXƒe[ƒgƒƒ“ƒg‚ªŠ®—¹‚µ‚½‚çA*nyc_taxi_models*ƒe[ƒuƒ‹‚ğŠJ‚«‚Ü‚·B ƒf[ƒ^‚Ìˆ—‚Æƒ‚ƒfƒ‹‚ÌƒtƒBƒbƒeƒBƒ“ƒO‚É‚ÍŠÔ‚ª‚©‚©‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B
 
     ƒe[ƒuƒ‹‚ÉV‚µ‚¢ƒŒƒR[ƒh‚ª1‚Â’Ç‰Á‚³‚êAƒVƒŠƒAƒ‰ƒCƒY‚³‚ê‚½ƒ‚ƒfƒ‹‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğŠm”F‚µ‚Ü‚·B
 
-    **Œ‹‰Ê**
-    
-    š–â‘è“_š
-    @TrainTipPredictionModelƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ÌÀsŒãnyc_taxi_modeƒe[ƒuƒ‹‚ª‹ó‚Ìó‘Ô
-    š–â‘è“_š
-    
-    šƒXƒNƒVƒ‡š
-    @11_TrainTipPredictionModelƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚ÌÀsŒãnyc_taxi_modelsƒe[ƒuƒ‹‚ª‹óiSSMSj.png
-    šƒXƒNƒVƒ‡š
-
+    ![result](media/sqldev-r-step5-2-gho9o9.png "result")
 
 Ÿ‚ÌƒXƒeƒbƒv‚Å‚ÍAŒP—û‚³‚ê‚½ƒ‚ƒfƒ‹‚ğg—p‚µ‚Ä—\‘ª‚ğì¬‚µ‚Ü‚·B
 
@@ -103,11 +91,7 @@ RƒpƒbƒP[ƒW‚ÍŠù‚ÉR Services(In-Database)‚Æ‹¤‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚½‚ßASQL‚©‚
 
 ## ŠÖ˜A€–Ú
 
-[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
-
-
-
-
+[Machine Learning Services with R](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sql-server-r-services)
 
 
 <!--

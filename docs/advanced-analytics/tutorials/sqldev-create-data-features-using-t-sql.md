@@ -1,7 +1,5 @@
 # Lesson 4: T-SQLを使用したデータの特徴抽出
 
-この記事は、SQL開発者のための In-Database R 分析（チュートリアル） の一部です。
-
 このステップでは、Transact-SQL関数を使用して生データから特徴抽出を行う方法を学習します。その後、ストアドプロシージャからその関数を呼び出して、特徴値を含むテーブルを作成します。
 
 ## 特徴抽出について
@@ -62,7 +60,9 @@ T-SQL関数`fnEngineerFeatures`は[Lesson 2: PowerShellを使用したSQL Serverへのデー
 
 `fnEngineerFeatures`は複数の列を入力として使用し複数の特徴値列を返すテーブル値関数です。`fnEngineerFeatures`の目的は、モデル構築に使用する特徴値セットを作成することです。`fnEngineerFeatures`は乗車位置と降車位置の間の直線距離を得るために`fnCalculateDistance`を呼び出します。
 
-1. Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[スカラー値関数]の順に展開し、`fnEngineerFeatures`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+1. Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[テーブル値関数]の順に展開します。
+
+2. `fnEngineerFeatures`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
     ```SQL:T-SQL
     CREATE FUNCTION [dbo].[fnEngineerFeatures] (  
@@ -91,7 +91,7 @@ T-SQL関数`fnEngineerFeatures`は[Lesson 2: PowerShellを使用したSQL Serverへのデー
     + このテーブル値関数は、複数の列を入力し、複数の特徴値の列を含むテーブルを出力する。
     + この関数の目的は、モデルを構築するための新しい特徴値を作成することです。
 
-2.  これが機能することを確認するために、乗車位置と降車位置の場所が異なる運転にもかかわらずメーター距離値が0に設定された記録に対して地理的距離を計算してみます。
+3. これが機能することを確認するために、乗車位置と降車位置の場所が異なる運転にもかかわらずメーター距離値が0に設定された記録に対して地理的距離を計算してみます。
 
     ```SQL:T-SQL
     SELECT tipped, fare_amount, passenger_count,(trip_time_in_secs/60) as TripMinutes,
