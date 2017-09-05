@@ -1,19 +1,47 @@
 # Lesson 6: モデルの利用
 
-この記事は、SQL開発者のための In-Database R 分析（チュートリアル） の一部です。
-
 このステップでは、ストアドプロシージャを使用してモデルを利用する方法を学びます。このストアドプロシージャは、他のアプリケーションから直接呼び出され、新しい観測値の予測を行うことができます。 このチュートリアルでは、ストアドプロシージャのRモデルを使用してスコアリングを実行する2つの方法を示します。
 
 - **バッチスコアリングモード**：SELECTクエリをストアドプロシージャの入力として使用します。ストアドプロシージャは入力に対応する観測値のテーブルを戻します
 
 - **個々のスコアリングモード**：個々のパラメータ値のセットを入力として渡します。ストアドプロシージャは単一のレコードまたは値を返します。
 
-まず、スコアリングがどのように機能するかを見てみましょう。
+## バッチスコアリング
 
-## 基本的なスコアリング
+バッチスコアリングの仕組みを見ていきましょう。
 
-ストアドプロシージャ`PredictTip`は、ストアドプロシージャ内から予測呼び出しをラップするための基本的な構文を示しています。
-ストアドプロシージャ`PredictTip`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PredictTip`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+1. より小さな入力データセットを扱うことから始めます。このクエリは、予測を行うために必要な乗客数および他の特徴を備えた「トップ10」のトリップリストを作成します。
+
+```SQL
+SELECT TOP 10 a.passenger_count AS passenger_count,
+    a.trip_time_in_secs AS trip_time_in_secs, 
+    a.trip_distance AS trip_distance, 
+    a.dropoff_datetime AS dropoff_datetime, 
+    dbo.fnCalculateDistance(pickup_latitude, pickup_longitude, dropoff_latitude,dropoff_longitude) AS direct_distance
+FROM
+(
+    SELECT medallion, hack_license, pickup_datetime, passenger_count,trip_time_in_secs,trip_distance,
+     dropoff_datetime, pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude FROM nyctaxi_sample) AS a
+LEFT OUTER JOIN
+(
+SELECT medallion, hack_license, pickup_datetime
+FROM nyctaxi_sample
+TABLESAMPLE (70 percent) REPEATABLE (98052)
+) AS b
+ON a.medallion=b.medallion AND a.hack_license=b.hack_license 
+AND a.pickup_datetime=b.pickup_datetime  
+WHERE b.medallion IS NULL
+```
+
+![result](media/sqldev-r-step6-1-gho9o9.png "result")
+
+このクエリはストアドプロシージャ`PredictTip`への入力として使用できます。
+
+ストアドプロシージャ`PredictTip`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
+
+2.  Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。
+
+3. `PredictTip`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
 ```SQL
 CREATE PROCEDURE [dbo].[PredictTip] @inquery nvarchar(max)  
@@ -40,6 +68,7 @@ END
   
 GO
 ```
+
 - SELECT文はデータベースからシリアライズされたモデルが取り出され、Rを使用してさらに処理するためにモデルをR変数の `mod`に格納します。
 - スコアリングの新しいケースは、ストアドプロシージャの最初のパラメータである@inqueryで指定されたTransact-SQLクエリから取得されます。 クエリデータが読み込まれると、行はデフォルトデータフレームInputDataSetに保存されます。 このデータフレームは、スコアを生成するRのrxPredict関数に渡されます。
 
@@ -49,197 +78,111 @@ GO
 
 - `rxPredict`関数によって返される値は、**float**です。これは、ドライバが任意の量のヒントを得る確率を表します。
 
-## バッチスコアリング
+4.  変数にクエリテキストを指定し、ストアドプロシージャのパラメータとして渡します
 
-では、バッチスコアリングの仕組みを見ていきましょう。
+```SQL
+-- Define the input data
+DECLARE @query_string nvarchar(max)
+SET @query_string='SELECT TOP 10 a.passenger_count AS passenger_count,
+    a.trip_time_in_secs AS trip_time_in_secs, 
+    a.trip_distance AS trip_distance, 
+    a.dropoff_datetime AS dropoff_datetime, 
+    dbo.fnCalculateDistance(pickup_latitude, pickup_longitude, dropoff_latitude,dropoff_longitude) AS direct_distance
+FROM
+(
+    SELECT medallion, hack_license, pickup_datetime, passenger_count,trip_time_in_secs,trip_distance,
+     dropoff_datetime, pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude FROM nyctaxi_sample) as a
+LEFT OUTER JOIN
+(
+SELECT medallion, hack_license, pickup_datetime
+FROM nyctaxi_sample
+TABLESAMPLE (70 percent) REPEATABLE (98052)
+) as b
+ON a.medallion=b.medallion AND a.hack_license=b.hack_license 
+AND a.pickup_datetime=b.pickup_datetime  
+WHERE b.medallion IS NULL'
 
-1.  より小さな入力データセットを扱うことから始めましょう。 このクエリは、予測を行うために必要な乗客数および他の特徴を備えた「トップ10」のトリップリストを作成します。
+-- Call the stored procedure for scoring and pass the input data
+EXEC [dbo].[PredictTip] @inquery = @query_string;
+```
 
-    ```SQL
-    SELECT TOP 10 a.passenger_count AS passenger_count,
-        a.trip_time_in_secs AS trip_time_in_secs, 
-        a.trip_distance AS trip_distance, 
-        a.dropoff_datetime AS dropoff_datetime, 
-        dbo.fnCalculateDistance(pickup_latitude, pickup_longitude, dropoff_latitude,dropoff_longitude) AS direct_distance
-    FROM
-    (
-        SELECT medallion, hack_license, pickup_datetime, passenger_count,trip_time_in_secs,trip_distance,
-         dropoff_datetime, pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude FROM nyctaxi_sample)a
-    LEFT OUTERJOIN
-    (
-    SELECT medallion, hack_license, pickup_datetime
-    FROM nyctaxi_sample
-    TABLESAMPLE (70 percent) REPEATABLE (98052)
-    )b
-    ON a.medallion=b.medallion AND a.hack_license=b.hack_license 
-    AND a.pickup_datetime=b.pickup_datetime  
-    WHERE b.medallion IS NULL
-    ```
+![result](media/sqldev-r-step6-2-gho9o9.png "result")
 
-    **サンプル結果**
-
-    ★問題点★
-    　バッチスコアリングの「トップ10」のリストを作成する上記クエリ実行でエラー。
-    ★問題点★    　
-    ★スクショ★
-    　12_バッチスコアリングの「トップ10」のリストを作成するクエリ実行でエラー.png
-    ★スクショ★
-
-    このクエリは、ダウンロードの一部として提供されるストアドプロシージャの`PredictTipBatchMode`への入力として使用できます。
-
-2. Management Studioを使用してストアドプロシージャPredictTipBatchModeのコードを確認してください。
-
-    ★問題点★
-    　[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)でPredictTipBatchModeストアドプロシージャが作成されていない。
-    ★問題点★
-
-    ```SQL
-    /****** Object:  StoredProcedure [dbo].[PredictTipBatchMode]  ******/
-    CREATE PROCEDURE [dbo].[PredictTipBatchMode] @inquery nvarchar(max)
-    AS
-    BEGIN
-      DECLARE @lmodel2 varbinary(max) = (SELECT TOP 1 model
-      FROM nyc_taxi_models);
-      EXEC sp_execute_external_script @language = N'R',
-        @script = N'
-          mod <- unserialize(as.raw(model));
-          print(summary(mod))
-          OutputDataSet<-rxPredict(modelObject = mod, data = InputDataSet, outData = NULL, predVarNames = "Score", type = "response", writeModelVars = FALSE, overwrite = TRUE);
-          str(OutputDataSet)
-          print(OutputDataSet)
-        ',
-      @input_data_1 = @inquery,
-      @params = N'@model varbinary(max)',
-      @model = @lmodel2
-      WITH RESULT SETS ((Score float));
-    END
-    ```
-
-3.  変数にクエリテキストを指定し、ストアドプロシージャのパラメータとして渡します
-
-    ```SQL
-    -- Define the input data
-    DECLARE @query_string nvarchar(max)
-    SET @query_string='
-    select top 10 a.passenger_count as passenger_count,
-        a.trip_time_in_secs as trip_time_in_secs,
-        a.trip_distance as trip_distance,
-        a.dropoff_datetime as dropoff_datetime,
-        dbo.fnCalculateDistance(pickup_latitude, pickup_longitude, dropoff_latitude,dropoff_longitude) as direct_distance
-    from
-        select medallion, hack_license, pickup_datetime, passenger_count,trip_time_in_secs,trip_distance,
-            dropoff_datetime, pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude
-        from nyctaxi_sample
-    )a  
-    LEFT OUTER JOIN
-    (
-    SELECT medallion, hack_license, pickup_datetime
-    FROM nyctaxi_sample  
-    TABLESAMPLE (70 percent) REPEATABLE (98052)
-    )b 
-    ON a.medallion=b.medallion AND a.hack_license=b.hack_license AND a.pickup_datetime=b.pickup_datetime  
-    WHERE b.medallion is null'
-
-    -- Call the stored procedure for scoring and pass the input data
-    EXEC [dbo].[PredictTip] @inquery = @query_string;
-    ```
-
-4. ストアドプロシージャは、トップ10の各トリップの予測を表す一連の値を返します。 しかし、トップトリップは、旅行距離が比較的短い片道旅でもあり、そのために運転手はチップを得ることはほとんどありません。
-
-> [!TIP]
-> 
-> yes-tip / no-tipの結果だけを返すのではなく、予測の確率スコアを返し、_Score_列の値にWHERE句を適用して、スコアを「ヒントになる可能性が高い」または「そう思わない」として分類することもできます 0.5または0.7のような閾値を使用して、「先端」と呼ばれる。 この手順はストアドプロシージャには含まれていませんが、実装は簡単です。
-
-## Single-row スコアリング
+## 個々のスコアリング
 
 場合によっては、アプリケーションから個々の値を渡して、それらの値に基づいて単一の結果を得たい場合もあります。 たとえば、ストアドプロシージャを呼び出し、ユーザーが入力または選択した、Excelワークシート、Webアプリケーション、またはReporting Servicesレポートを設定できます。
 
-このセクションでは、ストアドプロシージャを使用して単一の予測を作成する方法を学習します。
+このセクションでは、ストアドプロシージャ`PredictTipSingleMode`を使用して単一の予測を作成する方法を学習します。
 
-1. ダウンロードの一部として含まれていたストアドプロシージャ`PredictTipSingleMode`のコードを確認してください。
+ストアドプロシージャ`PredictTipSingleMode`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    ```SQL
-    CREATE PROCEDURE [dbo].[PredictTipSingleMode] @passenger_count int = 0,
-    @trip_distance float = 0,
-    @trip_time_in_secs int = 0,
-    @pickup_latitude float = 0,
-    @pickup_longitude float = 0,
-    @dropoff_latitude float = 0,
-    @dropoff_longitude float = 0
-    AS  
-    BEGIN  
-      DECLARE @inquery nvarchar(max) = N'  
-      SELECT * FROM [dbo].[fnEngineerFeatures](@passenger_count,  
-    @trip_distance,  
-    @trip_time_in_secs,  
-    @pickup_latitude,  
-    @pickup_longitude,  
-    @dropoff_latitude,  
-    @dropoff_longitude)  
-        '  
-      DECLARE @lmodel2 varbinary(max) = (SELECT TOP 1 model  
-      FROM nyc_taxi_models);  
-      EXEC sp_execute_external_script @language = N'R',  
-                                      @script = N'  
-    mod <- unserialize(as.raw(model));  
-    print(summary(mod))  
-    OutputDataSet<-rxPredict(modelObject = mod, data = InputDataSet, outData = NULL,   
-              predVarNames = "Score", type = "response", writeModelVars = FALSE, overwrite = TRUE);  
-    str(OutputDataSet)  
-    print(OutputDataSet)  
-    ',  
-    @input_data_1 = @inquery,  
-    @params = N'@model varbinary(max),@passenger_count int,@trip_distance float,@trip_time_in_secs int ,  
-    @pickup_latitude float ,@pickup_longitude float ,@dropoff_latitude float ,@dropoff_longitude float',  
-    @model = @lmodel2,  
-    @passenger_count =@passenger_count ,  
-    @trip_distance=@trip_distance,  
-    @trip_time_in_secs=@trip_time_in_secs,    
-    @pickup_latitude=@pickup_latitude,  
-    @pickup_longitude=@pickup_longitude,  
-    @dropoff_latitude=@dropoff_latitude,  
-    @dropoff_longitude=@dropoff_longitude  
-      WITH RESULT SETS ((Score float));  
-    END
-    ```
+1.  Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。
 
-    - このストアドプロシージャは、乗客数、旅行距離などの複数の単一値を入力として受け取ります。
+2. `PredictTipSingleMode`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
-        ストアドプロシージャを外部アプリケーションから呼び出す場合は、データがRモデルの要件と一致していることを確認してください。 これには、入力データをキャストしてRデータ型に変換したり、データ型とデータ長を検証することができます。 詳細については、[Working with R Data Types](https://msdn.microsoft.com/library/mt590948.aspx)を参照してください。
+```SQL
+CREATE PROCEDURE [dbo].[PredictTipSingleMode] @passenger_count int = 0,
+@trip_distance float = 0,
+@trip_time_in_secs int = 0,
+@pickup_latitude float = 0,
+@pickup_longitude float = 0,
+@dropoff_latitude float = 0,
+@dropoff_longitude float = 0
+AS  
+BEGIN  
+  DECLARE @inquery nvarchar(max) = N'  
+  SELECT * FROM [dbo].[fnEngineerFeatures](@passenger_count,  
+@trip_distance,  
+@trip_time_in_secs,  
+@pickup_latitude,  
+@pickup_longitude,  
+@dropoff_latitude,  
+@dropoff_longitude)  
+    '  
+  DECLARE @lmodel2 varbinary(max) = (SELECT TOP 1 model  
+  FROM nyc_taxi_models);  
+  EXEC sp_execute_external_script @language = N'R',  
+                                  @script = N'  
+mod <- unserialize(as.raw(model));  
+print(summary(mod))  
+OutputDataSet<-rxPredict(modelObject = mod, data = InputDataSet, outData = NULL,   
+          predVarNames = "Score", type = "response", writeModelVars = FALSE, overwrite = TRUE);  
+str(OutputDataSet)  
+print(OutputDataSet)  
+',  
+@input_data_1 = @inquery,  
+@params = N'@model varbinary(max),@passenger_count int,@trip_distance float,@trip_time_in_secs int ,  
+@pickup_latitude float ,@pickup_longitude float ,@dropoff_latitude float ,@dropoff_longitude float',  
+@model = @lmodel2,  
+@passenger_count =@passenger_count ,  
+@trip_distance=@trip_distance,  
+@trip_time_in_secs=@trip_time_in_secs,    
+@pickup_latitude=@pickup_latitude,  
+@pickup_longitude=@pickup_longitude,  
+@dropoff_latitude=@dropoff_latitude,  
+@dropoff_longitude=@dropoff_longitude  
+  WITH RESULT SETS ((Score float));  
+END
+```
 
-    -   ストアドプロシージャは、格納されたRモデルに基づいてスコアを作成します。
+- このストアドプロシージャは、乗客数、旅行距離などの複数の単一値を入力として受け取ります。
 
-2. 手動で値を入力して試してみてください
+    ストアドプロシージャを外部アプリケーションから呼び出す場合は、データがRモデルの要件と一致していることを確認してください。 これには、入力データをキャストしてRデータ型に変換したり、データ型とデータ長を検証することができます。 詳細については、[Working with R Data Types](https://msdn.microsoft.com/library/mt590948.aspx)を参照してください。
 
-    新しい**クエリ**ウィンドウを開き、各パラメータの値を提供するストアドプロシージャを呼び出します。 パラメータは、モデルによって使用される特徴列を表し必須です。
+- ストアドプロシージャは、格納されたRモデルに基づいてスコアを作成します。
 
-    ```
-    EXEC [dbo].[PredictTipSingleMode] @passenger_count = 0,
-    @trip_distance float = 2.5,
-    @trip_time_in_secs int = 631,
-    @pickup_latitude float = 40.763958,
-    @pickup_longitude float = -73.973373,
-    @dropoff_latitude float =  40.782139,
-    @dropoff_longitude float = 73.977303
-    ```
+2. 手動で値を入力します
 
-    または、ストアドプロシージャを以下のパラメータで実行します
-
-    ```SQL
-    EXEC [dbo].[PredictTipSingleMode] 1, 2.5, 631, 40.763958,-73.973373, 40.782139,-73.977303
-    ```
-    
-    ★問題点★
-    　前者クエリも後者ストアドプロシージャもエラー。エラー内容は以下のスクショを参照。
-    ★問題点★
-    
-    ★スクショ★
-    　13_Single-rowスコアリングのクエリ実行でエラー（SSMS）.png
-    　14_Single-rowスコアリングのストアドプロシージャ実行でエラー（SSMS）.png
-    ★スクショ★
-    
-
-3. 結果は、これらの上位10回の旅行では、すべてが一人旅客であるため、ヒントを得る確率が非常に低いことを示しています。
+```
+EXEC [dbo].[PredictTipSingleMode]
+@passenger_count = 1,
+@trip_distance = 2.5,
+@trip_time_in_secs = 631,
+@pickup_latitude = 40.763958,
+@pickup_longitude = -73.973373,
+@dropoff_latitude =  40.782139,
+@dropoff_longitude = -73.977303
+```
 
 ## 結論
 
@@ -255,8 +198,7 @@ GO
 
 ## 関連項目
 
-[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
-
+[Machine Learning Services with R](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sql-server-r-services)
 
 
 
