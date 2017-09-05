@@ -8,6 +8,4 @@ _themes.VS.Modern/
 
 .openpublishing.buildcore.ps1
 docs/advanced-analytics/tutorials/assets/tempPythonSQL/nyctaxi1pct.csv
-
-docs/advanced-analytics/tutorials/assets/tempRSQL/nyctaxi1pct.csv
 docs/advanced-analytics/tutorials/assets/tempRSQL/nyctaxi1pct.csv
