@@ -51,7 +51,7 @@ Rは典型的に画像出力用のRデバイスを用いて画像を生成しま
 
     Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PlotHistogram`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
     
-    ```SQL
+    ```SQL:T-SQL
     CREATE PROCEDURE [dbo].[PlotHistogram]
     AS
     BEGIN
@@ -88,7 +88,7 @@ Rは典型的に画像出力用のRデバイスを用いて画像を生成しま
 
 2.  Management Studioで以下のクエリを実行します。
   
-    ```SQL
+    ```SQL:T-SQL
     EXEC [dbo].[PlotHistogram]
     ```
   
@@ -130,7 +130,7 @@ Rプロットをバイナリデータ型に出力することは、アプリケ�
     
     Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PlotInOutputFiles`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
 
-    ```SQL
+    ```SQL:T-SQL
     CREATE PROCEDURE [dbo].[PlotInOutputFiles]  
     AS  
     BEGIN  
@@ -202,7 +202,7 @@ Rプロットをバイナリデータ型に出力することは、アプリケ�
 
 2.  Management Studio で以下のクエリを実行します。
 
-    ```SQL
+    ```SQL:T-SQL
     EXEC [dbo].[PlotInOutputFiles]
     ```
 

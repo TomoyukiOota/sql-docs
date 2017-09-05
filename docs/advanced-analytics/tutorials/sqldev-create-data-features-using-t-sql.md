@@ -28,7 +28,7 @@ T-SQLŠÖ”`fnCalculateDistance`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf
 
 2. `fnCalculateDistance`‚ğ‰EƒNƒŠƒbƒN‚µA[•ÏX] ‚ğ‘I‘ğ‚µ‚ÄV‚µ‚¢ƒNƒGƒŠƒEƒBƒ“ƒhƒE‚ÅTransact-SQLƒXƒNƒŠƒvƒg‚ğŠJ‚«‚Ü‚·B
 
-    ```SQL
+    ```SQL:T-SQL
     CREATE FUNCTION [dbo].[fnCalculateDistance] (@Lat1 float, @Long1 float, @Lat2 float, @Long2 float)  
     -- User-defined function that calculates the direct distance between two geographical coordinates.  
     RETURNS float  
@@ -58,12 +58,13 @@ T-SQLŠÖ”`fnCalculateDistance`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf
 
 ## ŠÖ”fnEngineerFeatures‚ğg—p‚µ‚Ä“Á’¥’l‚ğ•Û‘¶‚·‚é
 
+T-SQLŠÖ”`fnEngineerFeatures`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf[ƒ^ƒCƒ“ƒ|[ƒg](../r/sqldev-import-data-to-sql-server-using-powershell.md)‚ğ’Ê‚¶‚ÄSQL Server‚É’è‹`‚³‚ê‚Ä‚¢‚Ü‚·B
+
 `fnEngineerFeatures`‚Í•¡”‚Ì—ñ‚ğ“ü—Í‚Æ‚µ‚Äg—p‚µ•¡”‚Ì“Á’¥’l—ñ‚ğ•Ô‚·ƒe[ƒuƒ‹’lŠÖ”‚Å‚·B`fnEngineerFeatures`‚Ì–Ú“I‚ÍAƒ‚ƒfƒ‹\’z‚Ég—p‚·‚é“Á’¥’lƒZƒbƒg‚ğì¬‚·‚é‚±‚Æ‚Å‚·B`fnEngineerFeatures`‚ÍæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌŠÔ‚Ì’¼ü‹——£‚ğ“¾‚é‚½‚ß‚É`fnCalculateDistance`‚ğŒÄ‚Ño‚µ‚Ü‚·B
 
-1. T-SQLŠÖ”`fnEngineerFeatures`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf[ƒ^ƒCƒ“ƒ|[ƒg](../r/sqldev-import-data-to-sql-server-using-powershell.md)‚ğ’Ê‚¶‚ÄSQL Server‚É’è‹`‚³‚ê‚Ä‚¢‚Ü‚·BManagement Studio‚ÌƒIƒuƒWƒFƒNƒgƒGƒNƒXƒvƒ[ƒ‰‚ÅA[ƒvƒƒOƒ‰ƒ~ƒ“ƒO]A[ŠÖ”]A[ƒXƒJƒ‰[’lŠÖ”]‚Ì‡‚É“WŠJ‚µA`fnEngineerFeatures`‚ğ‰EƒNƒŠƒbƒN‚µA[•ÏX] ‚ğ‘I‘ğ‚µ‚ÄV‚µ‚¢ƒNƒGƒŠƒEƒBƒ“ƒhƒE‚ÅTransact-SQLƒXƒNƒŠƒvƒg‚ğŠJ‚«‚Ü‚·B
+1. Management Studio‚ÌƒIƒuƒWƒFƒNƒgƒGƒNƒXƒvƒ[ƒ‰‚ÅA[ƒvƒƒOƒ‰ƒ~ƒ“ƒO]A[ŠÖ”]A[ƒXƒJƒ‰[’lŠÖ”]‚Ì‡‚É“WŠJ‚µA`fnEngineerFeatures`‚ğ‰EƒNƒŠƒbƒN‚µA[•ÏX] ‚ğ‘I‘ğ‚µ‚ÄV‚µ‚¢ƒNƒGƒŠƒEƒBƒ“ƒhƒE‚ÅTransact-SQLƒXƒNƒŠƒvƒg‚ğŠJ‚«‚Ü‚·B
 
-
-    ```SQL
+    ```SQL:T-SQL
     CREATE FUNCTION [dbo].[fnEngineerFeatures] (  
     @passenger_count int = 0,  
     @trip_distance float = 0,  
@@ -92,21 +93,16 @@ T-SQLŠÖ”`fnCalculateDistance`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf
 
 2.  ‚±‚ê‚ª‹@”\‚·‚é‚±‚Æ‚ğŠm”F‚·‚é‚½‚ß‚ÉAæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌêŠ‚ªˆÙ‚È‚é‰^“]‚É‚à‚©‚©‚í‚ç‚¸ƒ[ƒ^[‹——£’l‚ª0‚Éİ’è‚³‚ê‚½‹L˜^‚É‘Î‚µ‚Ä’n—“I‹——£‚ğŒvZ‚µ‚Ä‚İ‚Ü‚·B
 
-    ```SQL
-        SELECT tipped, fare_amount, passenger_count,(trip_time_in_secs/60) as TripMinutes,
-        trip_distance, pickup_datetime, dropoff_datetime,
-        dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) AS direct_distance
-        FROM nyctaxi_sample
-        WHERE pickup_longitude != dropoff_longitude and pickup_latitude != dropoff_latitude and trip_distance = 0
-        ORDER BY trip_time_in_secs DESC
+    ```SQL:T-SQL
+    SELECT tipped, fare_amount, passenger_count,(trip_time_in_secs/60) as TripMinutes,
+    trip_distance, pickup_datetime, dropoff_datetime,
+    dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) AS direct_distance
+    FROM nyctaxi_sample
+    WHERE pickup_longitude != dropoff_longitude and pickup_latitude != dropoff_latitude and trip_distance = 0
+    ORDER BY trip_time_in_secs DESC
     ```
     
-    š–â‘è“_š
-    @’n—“I‹——£‚ÌŒvZƒNƒGƒŠ‚ÌÀs‚Åo—ÍŒ‹‰Ê‚ª‹ó
-    š–â‘è“_š
-    šƒXƒNƒVƒ‡š
-    @9_’n—“I‹——£‚ÌŒvZƒNƒGƒŠ‚ÌÀs‚Åo—ÍŒ‹‰Ê‚ª‹óiSSMSj.png
-    šƒXƒNƒVƒ‡š
+    ![result](media/sqldev-r-step4-1-gho9o9.png "result")
     
     ‚±‚Ì’Ê‚èƒ[ƒ^[‚É‚æ‚Á‚Ä•ñ‚³‚ê‚½‹——£‚ÍA•K‚¸‚µ‚à’n—“I‹——£‚ğ¦‚·‚à‚Ì‚Æ‚µ‚Ä‹L˜^‚³‚ê‚Ä‚¢‚é‚Æ‚ÍŒÀ‚è‚Ü‚¹‚ñB‚±‚¤‚µ‚½‘Oˆ—‚ª“Á’¥ƒGƒ“ƒWƒjƒAƒŠƒ“ƒO‚ªd—v‚È——R‚Å‚·B
 
@@ -126,7 +122,7 @@ T-SQLŠÖ”`fnCalculateDistance`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf
 
 ## ŠÖ˜A€–Ú
 
-[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
+[Machine Learning Services with R](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sql-server-r-services)
 
 
 <!--
