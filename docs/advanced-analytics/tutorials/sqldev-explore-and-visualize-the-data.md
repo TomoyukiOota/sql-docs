@@ -92,20 +92,11 @@ Rは典型的に画像出力用のRデバイスを用いて画像を生成しま
     EXEC [dbo].[PlotHistogram]
     ```
   
-    **結果**
-    
-    ★問題点★
-    　上記ストアドプロシージャPlotHistogramの実行でエラー
-    ★問題点★
-    
-    ★スクショ★
-    　5_PlotHistogramストアドプロシージャの実行結果（SSMS）
-    ★スクショ★
+    ![result](media/sqldev-r-step3-1-gho9o9.png "result")
 
-
-3.  PowerShellコマンドプロンプトを使用し、適切なインスタンス名、データベース名、ユーザー名、資格情報を指定して次のコマンドを実行します。
+3.  コマンドプロンプトを使用し、適切なインスタンス名、データベース名、ユーザー名、資格情報を指定して次のコマンドを実行します。
   
-     ```PowerShell
+     ```CMD
      bcp "exec PlotHistogram" queryout "plot.jpg" -S <SQL Server instance name> -d  <database name>  -U <user name> -P <password>
      ```
 
@@ -114,38 +105,18 @@ Rは典型的に画像出力用のRデバイスを用いて画像を生成しま
 
 4.  接続に成功すると、画像ファイルに関する詳細情報の入力が求められます。次の変更を除きENTERで進みます。
   
-    -   **prefix-length of field plot**に0を入力します。
+    - **prefix-length of field plot**に0を入力します。
   
-    -   出力パラメータを保存する場合は、**Y**を入力します。
+    - 出力パラメータを保存する場合は、**Y**を入力します。
     
-    ```
-    Enter the file storage type of field plot [varbinary(max)]:
-    Enter prefix-length of field plot [8]: 0
-    Enter length of field plot [0]:
-    Enter field terminator [none]:
-  
-    Do you want to save this format information in a file? [Y/n]
-    Host filename [bcp.fmt]:
-    ```
-
-    **結果**
-
-    ★問題点★
-    　上記bcpコマンドの実行でエラー
-    ★問題点★
-
-    ★スクショ★
-    　6_bcpコマンドでの画像ファイルの出力結果（PWS）.png
-    ★スクショ★
-
+    ![result](media/sqldev-r-step3-2-gho9o9.png "result")
+    
     > [!TIP]
-    > フォーマット情報をファイル（bcp.fmt）に保存すると、**bcp**ユーティリティはフォーマット定義を生成します。このフォーマット定義は、将来画像ファイルフォーマットオプションを要求されることなく同様のコマンドに適用できます。 書式ファイルを使用するには、コマンドラインの末尾に `-f bcp.fmt`をパスワード引数の後に追加します。
+    > フォーマット情報をファイル（bcp.fmt）に保存すると、**bcp**ユーティリティはフォーマット定義を生成します。このフォーマット定義は、将来画像ファイルフォーマットオプションを要求されることなく同様のコマンドに適用できます。 書式ファイルを使用するには、コマンドラインに `-f bcp.fmt`を追加します。
 
-5.  出力ファイルは、PowerShellコマンドを実行した同じディレクトリに作成されます。 plot.jpgファイルを開きます。
+5.  出力ファイル（plot.jpg）は、コマンドを実行したディレクトリに作成されます。
   
-    ★スクショ★
-    　7_bcpコマンドで出力した画像（plot.jpg）.png
-    ★スクショ★
+    ![result](media/sqldev-r-step3-3-gho9o9.jpg "result")
   
 ### 表示可能なファイルにプロットデータをエクスポートします。
 
