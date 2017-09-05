@@ -1,6 +1,6 @@
 # Lesson 4: T-SQL‚ğg—p‚µ‚½ƒf[ƒ^‚Ì“Á’¥’Šo
 
-‚±‚ÌƒXƒeƒbƒv‚Å‚ÍATransact-SQLŠÖ”‚ğg—p‚µ‚Ä¶ƒf[ƒ^‚©‚ç“Á’¥’Šo‚ğs‚¤•û–@‚ğŠwK‚µ‚Ü‚·B‚»‚ÌŒãAƒXƒgƒAƒhƒvƒƒV[ƒWƒƒ‚©‚ç‚»‚ÌŠÖ”‚ğŒÄ‚Ño‚µ‚ÄA“Á’¥’l‚ğŠÜ‚Şƒe[ƒuƒ‹‚ğì¬‚µ‚Ü‚·B
+‚±‚ÌƒXƒeƒbƒv‚Å‚ÍATransact-SQLŠÖ”‚ğg—p‚µ‚Ä¶ƒf[ƒ^‚©‚ç“Á’¥’Šo‚ğs‚¤•û–@‚ğŠwK‚µ‚Ü‚·B
 
 ## “Á’¥’Šo‚É‚Â‚¢‚Ä
 
@@ -8,15 +8,7 @@
 
 Œ³ƒf[ƒ^‚É‹L˜^‚³‚ê‚½ƒ[ƒ^[‹——£’l‚Í’n—“I‹——£‚Ü‚½‚ÍˆÚ“®‹——£‚ğ•\‚·‚à‚Ì‚É‚È‚Á‚Ä‚¢‚È‚¢ê‡‚ª‚ ‚é‚½‚ßA‚±‚Ìƒf[ƒ^ƒZƒbƒg‚Å—˜—p‰Â”\‚ÈÀ•W‚ğg—p‚µ‚ÄæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌŠÔ‚Ì’¼Ú‹——£‚ğŒvZ‚µ‚Ü‚·B‚±‚ê‚ğs‚¤‚½‚ß‚ÉƒJƒXƒ^ƒ€Transact-SQLŠÖ”‚Å[Haversine®](https://en.wikipedia.org/wiki/Haversine_formula)‚ğg—p‚µ‚Ü‚·B
 
-T-SQLŠÖ”`fnCalculateDistance`‚ÍHaversine®‚ğg—p‚µ‚Ä‹——£‚ğŒvZ‚µAT-SQLŠÖ”`fnEngineerFeatures`‚Í‚·‚×‚Ä‚Ì“Á’¥‚ğŠÜ‚Şƒe[ƒuƒ‹‚ğì¬‚µ‚Ü‚·B
-
-‘S‘Ì‚Ì—¬‚ê‚ÍŸ‚Ì‚Æ‚¨‚è‚Å‚·B
-
-- ŒvZ‚ğÀs‚·‚éT-SQLŠÖ”‚ğì¬‚·‚é
-
-- “Á’¥’l‚ğ¶¬‚·‚éŠÖ”‚ğŒÄ‚Ño‚·
-
-- “Á’¥’l‚ğƒe[ƒuƒ‹‚É•Û‘¶‚·‚é
+T-SQLŠÖ”`fnCalculateDistance`‚ÍHaversine®‚ğg—p‚µ‚Ä‹——£‚ğŒvZ‚µAT-SQLŠÖ”`fnEngineerFeatures`‚Í‚·‚×‚Ä‚Ì“Á’¥‚ğŠÜ‚Şƒf[ƒ^ƒZƒbƒg‚ğì¬‚µ‚Ü‚·B
 
 ## ŠÖ”fnCalculateDistance‚ğg—p‚µ‚ÄˆÚ“®‹——£‚ğŒvZ‚·‚é
 
@@ -50,7 +42,7 @@ T-SQLŠÖ”`fnCalculateDistance`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf
     GO
     ```
 
-    - ‚±‚ÌŠÖ”‚ÍƒXƒJƒ‰[’lŠÖ”‚Å‚ ‚èA–‘O’è‹`‚³‚ê‚½Œ^‚Ì’Pˆê‚Ìƒf[ƒ^’l‚ğ•Ô‚µ‚Ü‚·B
+    - ‚±‚ÌŠÖ”‚ÍƒXƒJƒ‰[’lŠÖ”‚Å‚ ‚èA’Pˆêƒf[ƒ^’l‚ğ•Ô‚µ‚Ü‚·B
     - æÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌêŠ‚©‚ç“¾‚ç‚ê‚½ˆÜ“x‚ÆŒo“x‚Ì’l‚ª“ü—Í‚Æ‚µ‚Äg—p‚³‚ê‚Ü‚·BHaversine®‚ÍAˆÊ’u‚ğƒ‰ƒWƒAƒ“‚É•ÏŠ·‚µA‚±‚ê‚ç‚Ì’l‚ğg—p‚µ‚ÄA2‚Â‚ÌêŠ‚ÌŠÔ‚Ì’¼Ú‹——£‚ğŒvZ‚µ‚Ü‚·B
 
 
@@ -58,7 +50,7 @@ T-SQLŠÖ”`fnCalculateDistance`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf
 
 T-SQLŠÖ”`fnEngineerFeatures`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf[ƒ^ƒCƒ“ƒ|[ƒg](../r/sqldev-import-data-to-sql-server-using-powershell.md)‚ğ’Ê‚¶‚ÄSQL Server‚É’è‹`‚³‚ê‚Ä‚¢‚Ü‚·B
 
-`fnEngineerFeatures`‚Í•¡”‚Ì—ñ‚ğ“ü—Í‚Æ‚µ‚Äg—p‚µ•¡”‚Ì“Á’¥’l—ñ‚ğ•Ô‚·ƒe[ƒuƒ‹’lŠÖ”‚Å‚·B`fnEngineerFeatures`‚Ì–Ú“I‚ÍAƒ‚ƒfƒ‹\’z‚Ég—p‚·‚é“Á’¥’lƒZƒbƒg‚ğì¬‚·‚é‚±‚Æ‚Å‚·B`fnEngineerFeatures`‚ÍæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌŠÔ‚Ì’¼ü‹——£‚ğ“¾‚é‚½‚ß‚É`fnCalculateDistance`‚ğŒÄ‚Ño‚µ‚Ü‚·B
+`fnEngineerFeatures`‚Í•¡”‚Ì—ñ‚ğ“ü—Í‚Æ‚µ‚Äg—p‚µ•¡”‚Ì“Á’¥’l—ñ‚ğ•Ô‚·ƒe[ƒuƒ‹’lŠÖ”‚ÅA•¡”‚Ì—ñ‚ğ“ü—Í‚É•¡”‚Ì“Á’¥’l‚Ì—ñ‚ğŠÜ‚Şƒf[ƒ^ƒZƒbƒg‚ğo—Í‚µ‚Ü‚·B`fnEngineerFeatures`‚Ì–Ú“I‚ÍAƒ‚ƒfƒ‹\’z‚Ég—p‚·‚é“Á’¥’l—ñià–¾•Ï”j‚ğì¬‚·‚é‚±‚Æ‚Å‚·B`fnEngineerFeatures`‚ÍæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌŠÔ‚Ì’¼ü‹——£‚ğ“¾‚é‚½‚ß‚É`fnCalculateDistance`‚ğŒÄ‚Ño‚µ‚Ü‚·B
 
 1. Management Studio‚ÌƒIƒuƒWƒFƒNƒgƒGƒNƒXƒvƒ[ƒ‰‚ÅA[ƒvƒƒOƒ‰ƒ~ƒ“ƒO]A[ŠÖ”]A[ƒe[ƒuƒ‹’lŠÖ”]‚Ì‡‚É“WŠJ‚µ‚Ü‚·B
 
@@ -88,10 +80,7 @@ T-SQLŠÖ”`fnEngineerFeatures`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf[
     GO
     ```
 
-    + ‚±‚Ìƒe[ƒuƒ‹’lŠÖ”‚ÍA•¡”‚Ì—ñ‚ğ“ü—Í‚µA•¡”‚Ì“Á’¥’l‚Ì—ñ‚ğŠÜ‚Şƒe[ƒuƒ‹‚ğo—Í‚·‚éB
-    + ‚±‚ÌŠÖ”‚Ì–Ú“I‚ÍAƒ‚ƒfƒ‹‚ğ\’z‚·‚é‚½‚ß‚ÌV‚µ‚¢“Á’¥’l‚ğì¬‚·‚é‚±‚Æ‚Å‚·B
-
-3. ‚±‚ê‚ª‹@”\‚·‚é‚±‚Æ‚ğŠm”F‚·‚é‚½‚ß‚ÉAæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌêŠ‚ªˆÙ‚È‚é‰^“]‚É‚à‚©‚©‚í‚ç‚¸ƒ[ƒ^[‹——£’l‚ª0‚Éİ’è‚³‚ê‚½‹L˜^‚É‘Î‚µ‚Ä’n—“I‹——£‚ğŒvZ‚µ‚Ä‚İ‚Ü‚·B
+3. “®ìŠm”F‚Æ‚µ‚ÄAæÔˆÊ’u‚Æ~ÔˆÊ’u‚ÌêŠ‚ªˆÙ‚È‚é‰^“]‚É‚à‚©‚©‚í‚ç‚¸ƒ[ƒ^[‹——£’l‚ª0‚Éİ’è‚³‚ê‚½‹L˜^‚É‘Î‚µ‚Ä’n—“I‹——£‚ğŒvZ‚µ‚Ä‚İ‚Ü‚·B
 
     ```SQL:T-SQL
     SELECT tipped, fare_amount, passenger_count,(trip_time_in_secs/60) as TripMinutes,

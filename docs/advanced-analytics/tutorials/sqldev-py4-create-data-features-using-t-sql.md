@@ -2,13 +2,13 @@
 
 データの探索後、データからいくつかの洞察を収集し特徴エンジニアリングに移ります。生データから特徴抽出を行うプロセスは、高度な分析モデリングの重要なステップです。
 
-このステップでは、Transact-SQL関数を使用して生データから特徴抽出を行う方法を学習します。その後、ストアドプロシージャからその関数を呼び出して、特徴値を含むテーブルを作成します。
+このステップでは、Transact-SQL関数を使用して生データから特徴抽出を行う方法を学習します。
 
 ## 関数の定義
 
 元データに記録されたメーター距離値は地理的距離または移動距離を表すものになっていない場合があるため、このデータセットで利用可能な座標を使用して乗車位置と降車位置の間の直接距離を計算します。これを行うためにカスタムTransact-SQL関数で[Haversine式](https://en.wikipedia.org/wiki/Haversine_formula)を使用します。
 
-T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnEngineerFeatures`はすべての特徴を含むテーブルを作成します。
+T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し、T-SQL関数`fnEngineerFeatures`はすべての特徴を含むデータセットを作成します。
 
 ### fnCalculateDistanceを使用して移動距離を計算する
 
