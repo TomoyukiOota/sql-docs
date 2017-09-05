@@ -32,8 +32,8 @@
     - 対象のSQL Serverのユーザー名とパスワード。このユーザは、データベース、テーブル、ストアドプロシージャ、関数の作成権限、およびテーブルへのデータロード権限が必要です。ユーザー名とパスワードを省略した場合は現在のWindowsユーザによってログインします。
     - ダウンロードしたファイル群の中のサンプルデータファイル`nyctaxi1pct.csv`のパス。例えば、`C:\tempRSQL\nyctaxi1pct.csv`です。
     
-    ![PowerShell Image 1](./tutorials/media/sqldev-r-ps-1-gho9o9.png "PowerShell Image 1")
-    ![PowerShell Image 2](./tutorials/media/sqldev-r-ps-2-gho9o9.png "PowerShell Image 2")
+    ![PowerShell Image 1](../tutorials/media/sqldev-r-ps-1-gho9o9.png "PowerShell Image 1")
+    ![PowerShell Image 2](../tutorials/media/sqldev-r-ps-2-gho9o9.png "PowerShell Image 2")
 
 2.  上記手順の一環で指定したデータベース名とユーザー名をプレースホルダに置き換えるように、すべてのT-SQLスクリプトが変更されています。
 
@@ -50,7 +50,7 @@
     |PlotInOutputFiles.sql|データ探索用のストアドプロシージャ`PlotInOutputFiles`を作成します。 このストアドプロシージャは、R関数を使用してグラフィックを作成し、ローカルPDFファイルとして保存します。|
     |TrainTipPredictionModel.sql|Rパッケージを呼び出すことによってロジスティック回帰モデルを訓練するストアドプロシージャ`TrainTipPredictionModel`を作成します。 このモデルは、転倒した列の値を予測し、ランダムに選択された70％のデータを使用して訓練されます。 ストアドプロシージャの出力は訓練されたモデルであり、テーブルnyc_taxi_modelsに保存されます。|
 
-    ![browse tables in SSMS](./tutorials/media/sqldev-r-browsetables1-gho9o9.png "view tables in SSMS")
+    ![browse tables in SSMS](../tutorials/media/sqldev-r-browsetables1-gho9o9.png "view tables in SSMS")
   
     > [!NOTE]
     > T-SQLスクリプトはデータベースオブジェクトを再作成しないため、すでに存在する場合にはデータが重複して登録されます。そのため、スクリプトを再実行する場合は事前に既存オブジェクトを削除してください。
