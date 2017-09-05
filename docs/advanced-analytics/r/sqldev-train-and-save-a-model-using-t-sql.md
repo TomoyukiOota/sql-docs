@@ -61,7 +61,7 @@ T-SQLからRを呼び出すときは、システムストアドプロシージャsp_execute_external_scri
     EXEC [dbo].[TrainTipPredictionModel]
     ```
     
-    ![result](media/sqldev-r-step5-1-gho9o9.png "result")
+    ![result](../tutorials/media/sqldev-r-step5-1-gho9o9.png "result")
 
 2. Management Studio のメッセージウィンドウでRの標準出力メッセージを確認してください。
 
@@ -73,7 +73,7 @@ T-SQLからRを呼び出すときは、システムストアドプロシージャsp_execute_external_scri
 
     テーブルに新しいレコードが1つ追加され、シリアライズされたモデルが登録されていることを確認します。
 
-    ![result](media/sqldev-r-step5-2-gho9o9.png "result")
+    ![result](../tutorials/media/sqldev-r-step5-2-gho9o9.png "result")
 
 次のステップでは、訓練されたモデルを使用して予測を作成します。
 
