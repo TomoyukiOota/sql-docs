@@ -99,7 +99,7 @@ RƒpƒbƒP[ƒW‚ÍŠù‚ÉR Services(In-Database)‚Æ‹¤‚ÉƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚½‚ßASQL‚©‚
 
 ## ‚Í‚¶‚ß‚©‚ç
 
-[Lesson 1: ƒTƒ“ƒvƒ‹ƒf[ƒ^‚Ìƒ_ƒEƒ“ƒ[ƒh](../tutorials/sqldev-download-the-sample-data.md)
+[SQLŠJ”­Ò‚Ì‚½‚ß‚Ì In-Database R •ªÍ](../tutorials/sqldev-in-database-r-for-sql-developers.md)
 
 ## ŠÖ˜A€–Ú
 

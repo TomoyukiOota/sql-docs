@@ -36,7 +36,7 @@ Python IDEでソリューションを作成してテストした後、Pythonコ�
 
 - [Step 5: T-SQLを使用したモデルのトレーニングと保存](sqldev-py5-train-and-save-a-model-using-t-sql.md)
 
-   ストアドプロシージャ化したPythonコードにより機械学習モデルを構築して保存します。
+  ストアドプロシージャ化したPythonコードにより機械学習モデルを構築して保存します。
   
 -  [Step 6: モデルの利用](sqldev-py6-operationalize-the-model.md)
 
@@ -53,8 +53,6 @@ Python IDEでソリューションを作成してテストした後、Pythonコ�
 ## 要件
 
 このチュートリアルは、データベースやテーブルの作成、テーブルへのデータのインポート、SQLクエリの作成など、基本的なデータベース操作に慣れているユーザーを対象としています。
-
-すべてのPythonコードが提供されています。経験豊富なSQLプログラマは、SQL Server Management StudioでTransact-SQLを使用するか、または提供されているPowerShellスクリプトを実行することで、このチュートリアルを完了できます。
 
 チュートリアルを開始する前に、次の準備を完了する必要があります。:
 

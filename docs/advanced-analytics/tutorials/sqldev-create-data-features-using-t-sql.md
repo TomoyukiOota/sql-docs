@@ -122,7 +122,7 @@ T-SQLŠÖ”`fnCalculateDistance`‚Í[Lesson 2: PowerShell‚ğg—p‚µ‚½SQL Server‚Ö‚Ìƒf
 
 ## ‚Í‚¶‚ß‚©‚ç
 
-[Lesson 1: ƒTƒ“ƒvƒ‹ƒf[ƒ^‚Ìƒ_ƒEƒ“ƒ[ƒh](../tutorials/sqldev-download-the-sample-data.md)
+[SQLŠJ”­Ò‚Ì‚½‚ß‚Ì In-Database R •ªÍ](../tutorials/sqldev-in-database-r-for-sql-developers.md)
 
 ## ŠÖ˜A€–Ú
 

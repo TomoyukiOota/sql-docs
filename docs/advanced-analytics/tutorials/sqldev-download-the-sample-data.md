@@ -1,7 +1,5 @@
 # Lesson 1: サンプルデータのダウンロード
 
-この記事は、SQL開発者のための In-Database R 分析（チュートリアル） の一部です。
-
 このステップでは、PowerShellスクリプトによってGithubで共有されたサンプルデータセットとスクリプトを選択したローカルディレクトリにダウンロードします。
 
 ## 出典
@@ -16,37 +14,38 @@
 2.  次のPowerShellコマンドを実行し、パラメータDestDirの値をローカルディレクトリに変更します。ここで使用しているデフォルトは**C:\tempRSQL**です。
   
     ```PowerShell:PowerShell
-    $source = ‘https://raw.githubusercontent.com/Azure/Azure-MachineLearning-DataScience/master/Misc/RSQL/Download_Scripts_SQL_Walkthrough.ps1’  
-    $ps1_dest = “$pwd\Download_Scripts_SQL_Walkthrough.ps1”
+    $source = 'https://raw.githubusercontent.com/Azure/Azure-MachineLearning-DataScience/master/Misc/RSQL/Download_Scripts_SQL_Walkthrough.ps1'
+    $ps1_dest = "$pwd\Download_Scripts_SQL_Walkthrough.ps1"
     $wc = New-Object System.Net.WebClient
     $wc.DownloadFile($source, $ps1_dest)
-    .\Download_Scripts_SQL_Walkthrough.ps1 –DestDir ‘C:\tempRSQL’
+    .\Download_Scripts_SQL_Walkthrough.ps1 –DestDir 'C:\tempRSQL'
     ```
-
+    
     DestDirで指定したフォルダが存在しない場合は、PowerShellスクリプトによって作成されます。
     
-    > [!TIP]
-    > エラーが発生した場合は、**Bypass引数**を使用して現在のセッションの変更をスコープすることによって、PowerShellスクリプトの実行ポリシーをこのチュートリアルでのみ一時的に**無制限**に設定できます。
-    >   
-    >````PowerShell:PowerShell
-    > Set\-ExecutionPolicy Bypass \-Scope Process
-    >````
-    > このコマンドを実行しても構成は変更されません。
-
-    インターネット接続によっては、ダウンロードに時間がかかることがあります。
+    エラーが発生した場合は、**Bypass引数**を使用して現在のセッションの変更をスコープすることによって、PowerShellスクリプトの実行ポリシーをこのチュートリアルでのみ一時的に**無制限**に設定できます。
+    
+    ````PowerShell:PowerShell
+     Set\-ExecutionPolicy Bypass \-Scope Process
+    ````
     
 3.  すべてのファイルがダウンロードされたらPowerShellコマンドプロンプトで次のコマンドを実行し、ダウンロードされたファイルを確認します。
   
     ```PowerShell:PowerShell
     ls
     ```
-  
+
 ### 結果
-  
-    ★スクショ★
-    　1_データロード完了（PWS）.png
-    ★スクショ★
-  
+
+![image](media/rsql-devtut-filelist-gho9o9.png "image")
+
+## **重要**：一部ファイルの置き換え
+
+ダウンロードしたファイルを以下のファイルで上書きます。
+**モデルトレーニングに入力しているデータを70%のサンプリングではなく全件を入力するよう修正しています。これは入力データが少なく十分なモデルトレーニングが行われないことを回避するための修正です。**
+
+- [TrainTipPredictionModel.sql](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempRSQL/TrainTipPredictionModel.sql)
+
 ## 次のステップ
 
 [Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)
@@ -55,14 +54,9 @@
 
 [SQL開発者のための In-Database R 分析](../tutorials/sqldev-in-database-r-for-sql-developers.md)
 
-## はじめから
-
-[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
-
 ## 関連項目
 
-[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
-
+[Machine Learning Services with R](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sql-server-r-services)
 
 <!--
 ---

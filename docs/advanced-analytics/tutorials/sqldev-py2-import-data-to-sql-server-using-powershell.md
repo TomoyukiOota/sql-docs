@@ -30,7 +30,7 @@
     - ダウンロードしたファイル群の中のサンプルデータファイル`nyctaxi1pct.csv`のパス。例えば、`C:\tempPythonSQL\nyctaxi1pct.csv`です。
 
     ![PowerShell Image 1](media/sqldev-python-ps-1-gho9o9.png "PowerShell Image 1")
-    ![PowerShell Image 1](media/sqldev-python-ps-2-gho9o9.png "PowerShell Image 1")
+    ![PowerShell Image 2](media/sqldev-python-ps-2-gho9o9.png "PowerShell Image 2")
 
 2. 上記手順の一環で指定したデータベース名とユーザー名をプレースホルダに置き換えるように、すべてのT-SQLスクリプトが変更されています。
   

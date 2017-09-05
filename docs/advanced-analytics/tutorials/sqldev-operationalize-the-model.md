@@ -251,7 +251,7 @@ GO
 
 ## はじめから
 
-[Lesson 1: サンプルデータのダウンロード](../tutorials/sqldev-download-the-sample-data.md)
+[SQL開発者のための In-Database R 分析](../tutorials/sqldev-in-database-r-for-sql-developers.md)
 
 ## 関連項目
 
