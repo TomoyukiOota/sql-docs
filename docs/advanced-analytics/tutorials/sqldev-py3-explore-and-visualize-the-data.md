@@ -7,7 +7,7 @@
 
 ## データの確認
 
-元のデータセットにはタクシー識別子と運転記録が別々のファイルで提供されていますが、サンプルデータを使いやすくするために_medallion_、_hack_license_、_pickup_datetime_をキーにジョインしています。また使用するレコードは、元のレコード数の1％でサンプリングしています。サンプリングされたデータセットは1,703,957の行と23の列を持っています。
+元のデータセットにはタクシー識別子と運転記録が別々のファイルで提供されていますが、サンプルデータを使いやすくするためにmedallion、hack_license、pickup_datetimeをキーにジョインしています。また使用するレコードは、元のレコード数の1％でサンプリングしています。サンプリングされたデータセットは1,703,957の行と23の列を持っています。
 
 **タクシー識別子**
 
@@ -19,12 +19,12 @@
 - 各運転記録には、乗車と降車の場所と時間、および運転距離が含まれます。
 - 各運賃記録には、支払タイプ、合計支払い額、チップ金額などの支払情報が含まれます。
 - 最後の3つの列は、さまざまな機械学習タスクに使用できます。
-    - tip_amount列は連続した数値が含まれ、回帰分析のためのラベル列として使用できます。
-    - tipped列は yes / no 値のみがあり、二項分類に使用できます。
-    - tip_class列は複数の**クラスラベル**があり、多項分類のためのラベル列として使用できます。
+    - tip_amount列は連続した数値が含まれ、回帰分析のためのラベル列（目的変数）として使用できます。
+    - tipped列は yes / no 値のみがあり、二項分類のためのラベル列（目的変数）として使用できます。
+    - tip_class列は複数の**クラスラベル**があり、多項分類のためのラベル列（目的変数）として使用できます。
 - ラベル列として使用される値はtip_amount列に基づいています。
 
-    |派生列|ルール|
+    |列|ルール|
     |-|-|
      |tipped|If tip_amount > 0, tipped = 1, otherwise tipped = 0|
     |tip_class|Class 0: tip_amount = $0<br /><br />Class 1: tip_amount > $0 and tip_amount <= $5<br /><br />Class 2: tip_amount > $5 and tip_amount <= $10<br /><br />Class 3: tip_amount > $10 and tip_amount <= $20<br /><br />Class 4: tip_amount > $20|
@@ -35,13 +35,13 @@
 
 このセクションでは、ストアドプロシージャを使用してプロットを操作する方法を学習します。ここではプロットをvarbinary型のデータとして扱っています。
 
-### プロットをvarbinaryデータ型として格納する
+## プロットをvarbinaryデータ型として格納する
 
 SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの**RevoScalePy**パッケージは、RライブラリのRevoScaleRパッケージに相当します。この例ではrxHistogramを使用し、Transact-SQLクエリの結果データに基づいたヒストグラムをプロットします。簡単にするためにPlotHistogramストアドプロシージャでラップします。
 
 このストアドプロシージャはシリアライズされたPython描画オブジェクトをvarbinaryデータのストリームとして返します。バイナリデータは直接表示することはできませんが、クライアント上でPythonコードを使用してバイナリデータをデシリアライズし、その画像ファイルをクライアントコンピュータに保存します。
 
-### SerializePlotsストアドプロシージャを定義する
+## SerializePlotsストアドプロシージャを定義する
 
 1.  ストアドプロシージャ`SerializePlots`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
@@ -108,7 +108,7 @@ SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの
 - Pythonスクリプトはかなり簡単で、**matplotlibライブラリ**の`figure`によってヒストグラムと散布図を作成し、これらのオブジェクトを**pickleライブラリ**を使用してシリアライズしています。
 - Python描画オブジェクトはアウトプットのために**pandas**データフレームへシリアライズされます。
 
-### varbinaryデータを画像ファイルとして出力する
+## varbinaryデータを画像ファイルとして出力する
 
 1.  Management Studioで以下のクエリを実行します。
   

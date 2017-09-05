@@ -46,7 +46,7 @@
     |PredictTipSingleMode.sql|モデルを使用した予測のために、訓練されたモデルを呼び出すストアドプロシージャ`PredictTipSingleMode`を作成します。このストアドプロシージャは新しい観測値を入力として、個々の特徴値はインラインパラメータとして受け取り、新しい観測値に対する予測値を返します。|
     |PlotHistogram.sql|データ探索用のストアドプロシージャ`PlotHistogram`を作成します。 このストアドプロシージャは、R関数を呼び出して変数のヒストグラムをプロットし、プロットをバイナリオブジェクトとして返します。|
     |PlotInOutputFiles.sql|データ探索用のストアドプロシージャ`PlotInOutputFiles`を作成します。 このストアドプロシージャは、R関数を使用してグラフィックを作成し、ローカルPDFファイルとして保存します。|
-    |TrainTipPredictionModel.sql|Rパッケージを呼び出すことによってロジスティック回帰モデルを訓練するストアドプロシージャ`TrainTipPredictionModel`を作成します。 このモデルは、転倒した列の値を予測し、ランダムに選択された70％のデータを使用して訓練されます。 ストアドプロシージャの出力は訓練されたモデルであり、テーブルnyc_taxi_modelsに保存されます。|
+    |TrainTipPredictionModel.sql|Rパッケージを呼び出すことによってロジスティック回帰モデルを訓練するストアドプロシージャ`TrainTipPredictionModel`を作成します。 このモデルは、tipped 列値を予測します。ストアドプロシージャの出力は訓練されたモデルであり、テーブルnyc_taxi_modelsに保存されます。|
 
     ![browse tables in SSMS](../tutorials/media/sqldev-r-browsetables1-gho9o9.png "view tables in SSMS")
   

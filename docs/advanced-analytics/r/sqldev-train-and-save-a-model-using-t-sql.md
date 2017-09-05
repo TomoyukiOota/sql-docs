@@ -24,7 +24,7 @@ T-SQLからRを呼び出すときは、システムストアドプロシージャsp_execute_external_scri
         pickup_datetime, dropoff_datetime,
         dbo.fnCalculateDistance(pickup_latitude, pickup_longitude,  dropoff_latitude, dropoff_longitude) as direct_distance
         from nyctaxi_sample
-        tablesample (70 percent) repeatable (98052)
+        --tablesample (70 percent) repeatable (98052)
     '
       -- Insert the trained model into a database table
       INSERT INTO nyc_taxi_models
@@ -46,7 +46,6 @@ T-SQLからRを呼び出すときは、システムストアドプロシージャsp_execute_external_scri
     GO
     ```
 
-- モデルをテストするために一部のデータが残っていることを確認するために、データの70％がタクシーデータテーブルからランダムに選択されます。
 - SELECTクエリはカスタムスカラ関数`fnCalculateDistance`を使用して、乗車位置と降車位置の間の直接距離を計算します。クエリの結果はデフォルトのR入力変数`InputDataset`に格納されます。
 - Rスクリプトは、R Services (In-Database)に含まれているrxLogit関数を呼び出して、ロジスティック回帰モデルを作成します。tippedを目的変数に、passenger_count、trip_distance、trip_time_in_secs、およびdirect_distanceを説明変数としてモデルを作成します。
 - R変数`logitObj`で示される訓練済みモデルはシリアライズされ出力パラメータとして返ります。この出力をnyc_taxi_modelsテーブルに登録することで、将来の予測に繰り返し使用することができます。

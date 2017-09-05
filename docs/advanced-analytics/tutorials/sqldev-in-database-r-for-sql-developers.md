@@ -3,7 +3,7 @@
 このチュートリアルの目的は、SQLプログラマーにSQL Serverで機械学習ソリューションを構築する実践的な体験を提供することです。このチュートリアルでは、ストアドプロシージャにRコードを追加することで、RをアプリケーションあるいはBIソリューションに組み込む方法を学習します。
 
 > [!NOTE]
-> 同様のチュートリアルのPython版は[こちら](../tutorials/sqldev-in-database-python-for-sql-developers.md)。R版はSQL Server 2017で動作します。
+> 同様のチュートリアルのPython版は[こちら](../tutorials/sqldev-in-database-python-for-sql-developers.md)。Python版はSQL Server 2017で動作します。
 
 ## 出典
 [In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
@@ -40,11 +40,11 @@ Rでソリューションを作成してテストした後、RコードをTransact-SQLストアドプロシージ
 > [!NOTE]
 > ストアドプロシージャに埋め込まれたコードに問題がある場合、ストアドプロシージャから返される情報は通常、エラーの原因を理解するには不十分であるため、RコードのテストはR用の統合開発環境（IDE）を使用することをお勧めします。
 
-### シナリオ
+## シナリオ
 
 このチュートリアルでは、よく知られているNYC Taxiデータセットを使用します。このチュートリアルをすばやく簡単にするために、データはサンプリングして利用します。このデータセットの、時刻、距離、ピックアップ場所などの列に基づき、特定の乗車においてチップが得られるかどうかを予測するバイナリ分類モデルを作成します。
 
-### 要件
+## 要件
 
 このチュートリアルは、データベースやテーブルの作成、テーブルへのデータのインポート、SQLクエリの作成など、基本的なデータベース操作に慣れているユーザーを対象としています。
 
@@ -80,7 +80,7 @@ Rでソリューションを作成してテストした後、RコードをTransact-SQLストアドプロシージ
 
 [Machine Learning Services with R](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sql-server-r-services)
 
-<!--
+<d0dem0!--
 ---
 title: "In-database R analytics for SQL developers (tutorial)| Microsoft Docs"
 ms.custom: ""
