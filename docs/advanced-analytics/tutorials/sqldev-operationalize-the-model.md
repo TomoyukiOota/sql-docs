@@ -184,6 +184,8 @@ EXEC [dbo].[PredictTipSingleMode]
 @dropoff_longitude = -73.977303
 ```
 
+![result](media/sqldev-r-step6-3-gho9o9.png "result")
+
 ## 結論
 
 これでチュートリアルは終了です。 Rコードをストアドプロシージャに組み込む方法を学んだので、これらの学習を拡張して自分のモデルを構築することができます。 Transact-SQLとの統合により、予測のためにRモデルを展開し、エンタープライズデータワークフローの一部としてモデル再トレーニングを組み込む方がずっと簡単です。
