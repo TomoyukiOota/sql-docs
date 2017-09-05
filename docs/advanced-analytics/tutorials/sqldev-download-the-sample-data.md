@@ -42,9 +42,12 @@
 ## **重要**：一部ファイルの置き換え
 
 ダウンロードしたファイルを以下のファイルで上書きます。
-**モデルトレーニングに入力しているデータを70%のサンプリングではなく全件を入力するよう修正しています。これは入力データが少なく十分なモデルトレーニングが行われないことを回避するための修正です。**
 
-- [TrainTipPredictionModel.sql](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempRSQL/TrainTipPredictionModel.sql)
+- [RunSQL_SQL_Walkthrough.ps1](../assets/tempRSQL/RunSQL_SQL_Walkthrough.ps1)
+**Windows認証で実行する場合の不具合修正です。**
+
+- [TrainTipPredictionModel.sql](../assets/tempRSQL/TrainTipPredictionModel.sql)
+**モデルトレーニングに入力しているデータを70%のサンプリングではなく全件を入力するよう修正しています。これは入力データが少なく十分なモデルトレーニングが行われないことを回避するための修正です。**
 
 ## 次のステップ
 

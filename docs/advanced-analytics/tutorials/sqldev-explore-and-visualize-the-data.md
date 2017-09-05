@@ -49,8 +49,8 @@ Rは典型的に画像出力用のRデバイスを用いて画像を生成しま
 
 1.  ストアドプロシージャ`PlotHistogram`は[Lesson 2: PowerShellを使用したSQL Serverへのデータインポート](../r/sqldev-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-        Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PlotHistogram`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
-
+    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`PlotHistogram`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+    
     ```SQL
     CREATE PROCEDURE [dbo].[PlotHistogram]
     AS
@@ -76,13 +76,11 @@ Rは典型的に画像出力用のRデバイスを用いて画像を生成しま
 
 **Notes:**
   
-    -   変数 `@query`は、スクリプト入力変数`@input_data_1`への引数としてRスクリプトに渡されるクエリテキスト(`'SELECT tipped FROM nyctaxi_sample'`)を定義します。
-    -   Rスクリプトはかなり簡単です。R変数(`image_file`)がイメージを格納するように定義されていて、次に`rxHistogram`関数が呼び出されてプロットが生成されます。
-    -   Rデバイスは**off**に設定されます。
-  
-        Rではハイレベルのプロットコマンドを発行すると、*device*と呼ばれるグラフィックスウィンドウが開きます。ウィンドウのサイズや色などを変更することができます。また、ファイルへの書き込みや別の方法で出力したい場合はデバイスをオフにすることができます。
-  
-    -   Rグラフィックスオブジェクトは、出力のためにR data.frameにシリアル化されます。
+- 変数 `@query`は、スクリプト入力変数`@input_data_1`への引数としてRスクリプトに渡されるクエリテキスト(`'SELECT tipped FROM nyctaxi_sample'`)を定義します。
+- Rスクリプトはかなり簡単です。R変数(`image_file`)がイメージを格納するように定義されていて、次に`rxHistogram`関数が呼び出されてプロットが生成されます。
+- Rデバイスは**off**に設定されます。
+  Rではハイレベルのプロットコマンドを発行すると、*device*と呼ばれるグラフィックスウィンドウが開きます。ウィンドウのサイズや色などを変更することができます。また、ファイルへの書き込みや別の方法で出力したい場合はデバイスをオフにすることができます。
+- Rグラフィックスオブジェクトは、出力のためにR data.frameにシリアル化されます。
 
 ### 画像ファイルを生成しファイルに保存します
 
@@ -286,7 +284,7 @@ Rプロットをバイナリデータ型に出力することは、アプリケ�
 
 ## 関連項目
 
-[In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
+[Machine Learning Services with R](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sql-server-r-services)
 
 
 
