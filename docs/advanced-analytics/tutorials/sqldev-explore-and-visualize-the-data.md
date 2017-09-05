@@ -206,7 +206,7 @@ Rプロットをバイナリデータ型に出力することは、アプリケ�
     EXEC [dbo].[PlotInOutputFiles]
     ```
 
-    ![result](media/sqldev-r-step3-3-gho9o9.jpg "result")
+    ![result](media/sqldev-r-step3-3-gho9o9.png "result")
     
     ファイル名の数字はランダムに生成され、既存のファイルに書き込むときにエラーが発生しないようにしています。
 
