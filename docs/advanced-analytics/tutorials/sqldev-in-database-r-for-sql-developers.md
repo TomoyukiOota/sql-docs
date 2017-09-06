@@ -80,7 +80,7 @@ Rでソリューションを作成してテストした後、RコードをTransact-SQLストアドプロシージ
 
 [Machine Learning Services with R](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sql-server-r-services)
 
-<d0dem0!--
+<--
 ---
 title: "In-database R analytics for SQL developers (tutorial)| Microsoft Docs"
 ms.custom: ""
