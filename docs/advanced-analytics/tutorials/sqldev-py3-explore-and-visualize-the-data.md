@@ -163,13 +163,10 @@ SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの
 
     チップが得られた数と得られなかった数を示します。
     ![result3-1](media/sqldev-python-step3-3-1-gho9o9.png "result3-1")
-    
     チップ金額の分布を示します。
     ![result3-2](media/sqldev-python-step3-3-2-gho9o9.png "result3-2")
-    
     運賃の分布を示します。
     ![result3-3](media/sqldev-python-step3-3-3-gho9o9.png "result3-3")
-    
     x軸上に運賃、y軸上にチップ金額とした散布図です。
     ![result3-4](media/sqldev-python-step3-3-4-gho9o9.png "result3-4")
     
