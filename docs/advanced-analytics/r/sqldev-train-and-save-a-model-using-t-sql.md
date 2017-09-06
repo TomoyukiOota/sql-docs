@@ -46,10 +46,9 @@ T-SQLからRを呼び出すときは、システムストアドプロシージャsp_execute_external_scri
     END
     GO
     ```
-
-- SELECTクエリはカスタムスカラ関数`fnCalculateDistance`を使用して、乗車位置と降車位置の間の直接距離を計算します。クエリの結果はデフォルトのR入力変数`InputDataset`に格納されます。
-- Rスクリプトは、R Services (In-Database)に含まれるRevoScaleRライブラリのrxLogit関数を呼び出して、ロジスティック回帰モデルを作成します。tippedをラベル（目的変数）に、passenger_count、trip_distance、trip_time_in_secs、およびdirect_distanceを特徴値列（説明変数）としてモデルを作成します。
-- R変数`logitObj`で示される訓練済みモデルはシリアライズされ出力パラメータとして返ります。この出力をnyc_taxi_modelsテーブルに登録することで、将来の予測に繰り返し使用することができます。
+    - SELECTクエリはカスタムスカラ関数`fnCalculateDistance`を使用して、乗車位置と降車位置の間の直接距離を計算します。クエリの結果はデフォルトのR入力変数`InputDataset`に格納されます。
+    - Rスクリプトは、R Services (In-Database)に含まれるRevoScaleRライブラリのrxLogit関数を呼び出して、ロジスティック回帰モデルを作成します。tippedをラベル（目的変数）に、passenger_count、trip_distance、trip_time_in_secs、およびdirect_distanceを特徴値列（説明変数）としてモデルを作成します。
+    - R変数`logitObj`で示される訓練済みモデルはシリアライズされ出力パラメータとして返ります。この出力をnyc_taxi_modelsテーブルに登録することで、将来の予測に繰り返し使用することができます。
 
 ## ストアドプロシージャ`TrainTipPredictionModel`を使用してRモデルを生成する
 
