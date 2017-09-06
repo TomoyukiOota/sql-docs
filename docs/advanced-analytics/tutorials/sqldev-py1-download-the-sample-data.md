@@ -29,7 +29,7 @@
     ls
     ```
 
-![image](media/sqldev-python-filelist-gho9o9.png "image")
+    ![image](media/sqldev-python-filelist-gho9o9.png "image")
 
 
 ## 次のステップ
