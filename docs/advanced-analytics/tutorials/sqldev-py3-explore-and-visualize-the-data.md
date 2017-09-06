@@ -31,21 +31,23 @@
 
 ## T-SQL内のPythonでプロットを作成する
 
-可視化はデータと異常値の分布を理解するために重要で、Pythonにはデータ可視化のための多くのパッケージが提供されています。matplotlibモジュールは、ヒストグラム、散布図、箱ひげ図、およびその他のデータ探索グラフを作成するための多くの機能を含む人気のライブラリです。
+可視化はデータと異常値の分布を理解するために重要で、Pythonにはデータ可視化のための多くのパッケージが提供されています。matplotlibモジュールは、ヒストグラム、散布図、箱ひげ図、およびその他のデータ探索グラフを作成するための多くの機能を含みます。
 
 このセクションでは、ストアドプロシージャを使用してプロットを操作する方法を学習します。ここではプロットをvarbinary型のデータとして扱っています。
 
 ## プロットをvarbinaryデータ型として格納する
 
-SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの**RevoScalePy**パッケージは、RライブラリのRevoScaleRパッケージに相当します。この例ではrxHistogramを使用し、Transact-SQLクエリの結果データに基づいたヒストグラムをプロットします。簡単にするためにPlotHistogramストアドプロシージャでラップします。
+SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの**RevoScalePy**パッケージは、RライブラリのRevoScaleRパッケージに相当します。この例ではrxHistogramを使用し、Transact-SQLクエリの結果データに基づいたヒストグラムをプロットします。利用を簡単にするためにPlotHistogramストアドプロシージャでラップします。
 
 このストアドプロシージャはシリアライズされたPython描画オブジェクトをvarbinaryデータのストリームとして返します。バイナリデータは直接表示することはできませんが、クライアント上でPythonコードを使用してバイナリデータをデシリアライズし、その画像ファイルをクライアントコンピュータに保存します。
 
 ## SerializePlotsストアドプロシージャを定義する
 
-1.  ストアドプロシージャ`SerializePlots`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
+ストアドプロシージャ`SerializePlots`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。`SerializePlots`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+1. Management Studioのオブジェクトエクスプローラで、[プログラミング]、[ストアドプロシージャ]の順に展開します。
+
+2. `SerializePlots`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
     
     ```SQL:SerializePlots
     
@@ -102,11 +104,10 @@ SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの
     GO
   
     ```
-**Notes:**
 
-- 変数`@query`は、Pythonコードブロックへのインプット`@input_data_1`として渡されるクエリテキストを定義しています。
-- Pythonスクリプトはかなり簡単で、**matplotlibライブラリ**の`figure`によってヒストグラムと散布図を作成し、これらのオブジェクトを**pickleライブラリ**を使用してシリアライズしています。
-- Python描画オブジェクトはアウトプットのために**pandas**データフレームへシリアライズされます。
+    - 変数`@query`は、Pythonコードブロックへのインプット`@input_data_1`として渡されるクエリテキストを定義しています。
+    - **matplotlibライブラリ**の`figure`によってヒストグラムと散布図を作成し、これらのオブジェクトを**pickleライブラリ**を使用してシリアライズしています。
+    - Python描画オブジェクトはアウトプットのために**pandas**データフレームへシリアライズされます。
 
 ## varbinaryデータを画像ファイルとして出力する
 
@@ -160,9 +161,16 @@ SQL Server 2017 Machine Learning Servicesに含まれるPythonライブラリの
   
 4.  4つのファイルがPythonの作業ディレクトリに作成されます。
 
+    チップが得られた数と得られなかった数を示します。
     ![result3-1](media/sqldev-python-step3-3-1-gho9o9.png "result3-1")
+    
+    チップ金額の分布を示します。
     ![result3-2](media/sqldev-python-step3-3-2-gho9o9.png "result3-2")
+    
+    運賃の分布を示します。
     ![result3-3](media/sqldev-python-step3-3-3-gho9o9.png "result3-3")
+    
+    x軸上に運賃、y軸上にチップ金額とした散布図です。
     ![result3-4](media/sqldev-python-step3-3-4-gho9o9.png "result3-4")
     
 ## 次のステップ

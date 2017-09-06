@@ -9,7 +9,7 @@
 [In-database R analytics for SQL developers (tutorial)](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-in-database-r-for-sql-developers)
 
 ## 概要
-エンドツーエンドソリューションを構築するプロセスは通常、データの取得とクレンジング、データの探索と特徴エンジニアリング、モデルのトレーニングとチューニング、そして最終的には本番環境へのモデル展開で構成されます。実際のコーディング、デバッグ、テストは、R用の統合開発環境（例えば、RStudioやR Tools for Visual Studio）を使用するのが最適です。
+機械学習開発のライフサイクルは一般的に、データの取得とクレンジング、データの探索と特徴エンジニアリング、モデルのトレーニングとチューニング、そして最終的には本番環境へのモデル展開で構成されます。実際のコーディング、デバッグ、テストは、R用の統合開発環境（例えば、RStudioやR Tools for Visual Studio）を使用するのが最適です。
 
 Rでソリューションを作成してテストした後、RコードをTransact-SQLストアドプロシージャとしてSQL Serverに展開します。このチュートリアルでは、必要なすべてのRコードを提供します。
 

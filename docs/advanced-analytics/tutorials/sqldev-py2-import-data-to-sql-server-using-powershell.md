@@ -1,6 +1,6 @@
 # Step 2: PowerShellを使用したSQL Serverへのデータインポート
 
-このステップでは、ダウンロードしたスクリプトの1つを実行して、チュートリアルに必要なデータベースオブジェクトを作成します。このスクリプトは、使用するストアドプロシージャのほとんども作成し、指定したデータベースのテーブルにサンプルデータをロードします。
+このステップでは、ダウンロードしたスクリプト`RunSQL_SQL_Walkthrough.ps1`を実行して、チュートリアルに必要なデータベースオブジェクトを作成とサンプルデータのインポートを行います。
 
 ## 出典
 [Step 2: Import Data to SQL Server using PowerShell](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-py2-import-data-to-sql-server-using-powershell)
@@ -22,7 +22,6 @@
     ```PowerShell:PowerShell
     .\RunSQL_SQL_Walkthrough.ps1
     ```
-
     次の情報を入力するよう求められます。
     - Machine Learning Services（Python）がインストールされているサーバ名またはアドレス。
     - 作成するデータベースの名前
@@ -30,6 +29,7 @@
     - ダウンロードしたファイル群の中のサンプルデータファイル`nyctaxi1pct.csv`のパス。例えば、`C:\tempPythonSQL\nyctaxi1pct.csv`です。
 
     ![PowerShell Image 1](media/sqldev-python-ps-1-gho9o9.png "PowerShell Image 1")
+    
     ![PowerShell Image 2](media/sqldev-python-ps-2-gho9o9.png "PowerShell Image 2")
 
 2. 上記手順の一環で指定したデータベース名とユーザー名をプレースホルダに置き換えるように、すべてのT-SQLスクリプトが変更されています。
@@ -38,9 +38,9 @@
      
     |**T-SQLスクリプトファイル**|**ストアドプロシージャ／関数**|
     |------|------|
-    |create-db-tb-upload-data.sql|データベースと2つのテーブルを作成します。<br /><br />テーブル`nyctaxi_sample`: メインとなるNYC Taxiデータセットが登録されます。ロードされるデータはNYC Taxiデータセットの1％のサンプルです。クラスタ化カラムストアインデックスの定義によってストレージ効率とクエリパフォーマンスを向上させています。<br /><br />テーブル`nyc_taxi_models`: 訓練された高度な分析モデルが登録されます。|
+    |create-db-tb-upload-data.sql|データベースと4つのテーブルを作成します。<br /><br />テーブル`nyctaxi_sample`: メインとなるNYC Taxiデータセットが登録されます。ロードされるデータはNYC Taxiデータセットの1％のサンプルです。クラスタ化カラムストアインデックスの定義によってストレージ効率とクエリパフォーマンスを向上させています。<br /><br />テーブル`nyc_taxi_models`: 訓練された高度な分析モデルが登録されます。<br /><br />テーブル`nyctaxi_sample_training`:モデルのトレーニングに使用するデータセットが登録されます。<br /><br />テーブル`nyctaxi_sample_testing`: モデルのテストに使用するデータセットが登録されます。|
     |fnCalculateDistance.sql|乗車位置と降車位置の間の直接距離を計算するスカラー値関数`fnCalculateDistance`を作成します。|
-    |fnEngineerFeatures.sql|モデルトレーニング用の新しい特徴抽出を作成するテーブル値関数`fnEngineerFeatures`を作成します。|
+    |fnEngineerFeatures.sql|モデルトレーニング用の特徴値セットを返すテーブル値関数`fnEngineerFeatures`を作成します。|
     |TrainingTestingSplit.sql|nyctaxi_sampleテーブルのデータを、nyctaxi_sample_trainingとnyctaxi_sample_testingの2つに分割するプロシージャ`TrainingTestingSplit`を作成します。|
     |PredictTipSciKitPy.sql|モデルを使用した予測のために、scikit-learnで作成した訓練されたモデルを呼び出すプロシージャ`PredictTipSciKitPy`を作成します。プロシージャは、入力パラメータとしてクエリを受け入れ、入力行に対するスコアを含む数値の列を戻します。|
     |PredictTipRxPy.sql|モデルを使用した予測のために、RevoScalePyで作成した訓練されたモデルを呼び出すプロシージャ`PredictTipRxPy`を作成します。プロシージャは、入力パラメータとしてクエリを受け入れ、入力行に対するスコアを含む数値の列を戻します。|
@@ -57,7 +57,7 @@
 
 ## **重要**：一部オブジェクトの再定義
 
-以下のSQLを実行し一部のオブジェクトを再定義します。
+上記の手順を実行後、以下のSQLを実行し一部のオブジェクトを再定義します。
 **SQL Server 2017 CTP から SQL Server 2017 RC にバージョンアップした際にRevoScalePyの仕様が変更されたため、その仕様変更に対応させることがこの再定義の主な理由です。**
 
 - [TrainTipPredictionModelSciKitPy](https://github.com/gho9o9/sql-docs/blob/live/docs/advanced-analytics/tutorials/assets/tempPythonSQL/Alter_TrainTipPredictionModelSciKitPy.sql)

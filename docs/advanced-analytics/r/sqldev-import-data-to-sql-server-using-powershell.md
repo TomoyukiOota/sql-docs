@@ -1,6 +1,6 @@
 # Lesson 2: PowerShellを使用したSQL Serverへのデータインポート
 
-このステップでは、ダウンロードしたスクリプトの1つを実行して、チュートリアルに必要なデータベースオブジェクトを作成します。このスクリプトは、使用するストアドプロシージャのほとんどを作成し、指定したデータベースのテーブルにサンプルデータをロードします。
+このステップでは、ダウンロードしたスクリプト`RunSQL_SQL_Walkthrough.ps1`を実行して、チュートリアルに必要なデータベースオブジェクトを作成とサンプルデータのインポートを行います。
 
 ## 出典
 [Lesson 2: Import data to SQL Server using PowerShell](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sqldev-import-data-to-sql-server-using-powershell)
@@ -22,15 +22,14 @@
     ```PowerShell:PowerShell
     .\RunSQL_SQL_Walkthrough.ps1
     ```
-  
     次の情報を入力するよう求められます。
-  
     - SQL Server 2017 R Serviceがインストールされているサーバ名またはアドレス。
     - 作成するデータベースの名前
     - 対象のSQL Serverのユーザー名とパスワード。このユーザは、データベース、テーブル、ストアドプロシージャ、関数の作成権限、およびテーブルへのデータロード権限が必要です。ユーザー名とパスワードを省略した場合は現在のWindowsユーザによってログインします。
     - ダウンロードしたファイル群の中のサンプルデータファイル`nyctaxi1pct.csv`のパス。例えば、`C:\tempRSQL\nyctaxi1pct.csv`です。
     
     ![PowerShell Image 1](../tutorials/media/sqldev-r-ps-1-gho9o9.png "PowerShell Image 1")
+    
     ![PowerShell Image 2](../tutorials/media/sqldev-r-ps-2-gho9o9.png "PowerShell Image 2")
 
 2.  上記手順の一環で指定したデータベース名とユーザー名をプレースホルダに置き換えるように、すべてのT-SQLスクリプトが変更されています。
@@ -41,7 +40,7 @@
     |-|-|
     |create-db-tb-upload-data.sql|データベースと2つのテーブルを作成します。<br /><br />テーブル`nyctaxi_sample`: メインとなるNYC Taxiデータセットが登録されます。ロードされるデータはNYC Taxiデータセットの1％のサンプルです。クラスタ化カラムストアインデックスの定義によってストレージ効率とクエリパフォーマンスを向上させています。<br /><br />テーブル`nyc_taxi_models`: 訓練された高度な分析モデルが登録されます。|
     |fnCalculateDistance.sql|乗車位置と降車位置の間の直接距離を計算するスカラー値関数`fnCalculateDistance`を作成します。|
-    |fnEngineerFeatures.sql|モデルトレーニング用の新しい特徴抽出を作成するテーブル値関数`fnEngineerFeatures`を作成します。|
+    |fnEngineerFeatures.sql|モデルトレーニング用の特徴値セットを返すテーブル値関数`fnEngineerFeatures`を作成します。|
     |PredictTip.sql|モデルを使用した予測のために、訓練されたモデルを呼び出すストアドプロシージャ`PredictTip`を作成します。ストアドプロシージャは、入力パラメータとして問合せを受け入れ、入力行のスコアを含む数値の列を戻します。|
     |PredictTipSingleMode.sql|モデルを使用した予測のために、訓練されたモデルを呼び出すストアドプロシージャ`PredictTipSingleMode`を作成します。このストアドプロシージャは新しい観測値を入力として、個々の特徴値はインラインパラメータとして受け取り、新しい観測値に対する予測値を返します。|
     |PlotHistogram.sql|データ探索用のストアドプロシージャ`PlotHistogram`を作成します。 このストアドプロシージャは、R関数を呼び出して変数のヒストグラムをプロットし、プロットをバイナリオブジェクトとして返します。|

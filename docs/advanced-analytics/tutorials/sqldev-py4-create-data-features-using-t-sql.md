@@ -12,9 +12,11 @@ T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し
 
 ### fnCalculateDistanceを使用して移動距離を計算する
 
-1.  T-SQL関数`fnCalculateDistance`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
+T-SQL関数`fnCalculateDistance`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[スカラー値関数]の順に展開します。`fnCalculateDistance`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+1. Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[スカラー値関数]の順に展開します。
+
+2. `fnCalculateDistance`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
   
     ```SQL:fnCalculateDistance
     CREATE FUNCTION [dbo].[fnCalculateDistance] (@Lat1 float, @Long1 float, @Lat2 float, @Long2 float)
@@ -39,16 +41,16 @@ T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し
     END
     GO
     ```
-**Notes:**
-
-- この関数はスカラー値関数であり、事前定義された型の単一のデータ値を返します。
-- 乗車位置と降車位置の場所から得られた緯度と経度の値が入力として使用されます。Haversine式は、位置をラジアンに変換し、これらの値を使用して、2つの場所の間の直接距離を計算します。
+    - この関数はスカラー値関数であり、事前定義された型の単一のデータ値を返します。
+    - 乗車位置と降車位置の場所から得られた緯度と経度の値が入力として使用されます。Haversine式は、位置をラジアンに変換し、これらの値を使用して、2つの場所の間の直接距離を計算します。
 
 ### fnEngineerFeaturesを使用して特徴値を保存する
 
-1.  T-SQL関数`fnEngineerFeatures`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
+T-SQL関数`fnEngineerFeatures`は[Step 2: PowerShellを使用したSQL Serverへのデータインポート](sqldev-py2-import-data-to-sql-server-using-powershell.md)を通じてSQL Serverに定義されています。
 
-    Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[テーブル値関数]の順に展開します。`fnCalculateDistance`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
+1. Management Studioのオブジェクトエクスプローラで、[プログラミング]、[関数]、[テーブル値関数]の順に展開します。
+
+2. `fnCalculateDistance`を右クリックし、[変更] を選択して新しいクエリウィンドウでTransact-SQLスクリプトを開きます。
     
     `fnEngineerFeatures`は複数の列を入力として使用し複数の特徴値列を返すテーブル値関数です。`fnEngineerFeatures`の目的は、モデル構築に使用する特徴値セットを作成することです。`fnEngineerFeatures`は乗車位置と降車位置の間の直線距離を得るために`fnCalculateDistance`を呼び出します。
   
@@ -75,7 +77,7 @@ T-SQL関数`fnCalculateDistance`はHaversine式を使用して距離を計算し
     GO
     ```
 
-2. これが機能することを確認するために、乗車位置と降車位置の場所が異なる運転にもかかわらずメーター距離値が0に設定された記録に対して地理的距離を計算してみます。
+3. 動作確認として、乗車位置と降車位置の場所が異なる運転にもかかわらずメーター距離値が0に設定された記録に対して地理的距離を計算してみます。
 
     ```SQL:T-SQL
         SELECT tipped, fare_amount, passenger_count,(trip_time_in_secs/60) as TripMinutes,

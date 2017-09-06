@@ -9,9 +9,9 @@
 
 1. Windows PowerShellコマンドコンソールを開きます。
 
-    宛先ディレクトリを作成したり、指定された宛先にファイルを書き込むために、管理者権限が必要な場合は**管理者として実行**を使用します。
+    ダウンロード先ディレクトリを作成したり、指定されたダウンロード先にファイルを書き込むために管理者権限が必要な場合は**管理者として実行**を使用します。
 
-2. 次のPowerShellコマンドを実行し、パラメータDestDirの値をローカルディレクトリに変更します。ここで使用しているデフォルトは**C:\tempPythonSQL**です。
+2. 次のPowerShellコマンドを実行し、パラメータDestDirの値をローカルディレクトリに変更します。ここでは**C:\tempPythonSQL**をダウンロード先ディレクトリに指定しています。
 
     ```PowerShell:PowerShell
     $source = 'https://raw.githubusercontent.com/Azure/Azure-MachineLearning-DataScience/master/Misc/PythonSQL/Download_Scripts_SQL_Walkthrough.ps1'
@@ -23,19 +23,11 @@
     
     DestDirで指定したフォルダが存在しない場合は、PowerShellスクリプトによって作成されます。
     
-    エラーが発生した場合は、**Bypass引数**を使用して現在のセッションの変更をスコープすることによって、PowerShellスクリプトの実行ポリシーをこのチュートリアルでのみ一時的に**無制限**に設定できます。このコマンドを実行しても構成は変更されません。
-    
-    ```PowerShell:PowerShell
-    Set-ExecutionPolicy Bypass -Scope Process
-    ```
-
 3. インターネット接続によっては、ダウンロードに時間がかかることがあります。すべてのファイルがダウンロードされたらPowerShellコマンドプロンプトで次のコマンドを実行し、ダウンロードされたファイルを確認します。
 
     ```PowerShell:PowerShell
     ls
     ```
-
-### 結果
 
 ![image](media/sqldev-python-filelist-gho9o9.png "image")
 

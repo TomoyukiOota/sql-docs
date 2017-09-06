@@ -10,11 +10,7 @@
 
 ## 概要
 
-エンドツーエンドソリューションを構築するプロセスは通常、データの取得とクレンジング、データの探索と特徴エンジニアリング、モデルのトレーニングとチューニング、そして最終的には本番環境へのモデル展開で構成されます。実際のコーディング、デバッグ、テストは、以下のようなPython用の統合開発環境（IDE）を使用するのが最適です。
-
-+ PyCharm：人気のあるIDEです。
-+ Spyder：[Visual Studio 2017](https://blogs.msdn.microsoft.com/visualstudio/2017/05/12/a-lap-around-python-in-visual-studio-2017/)に含まれ[Data Science workload](https://blogs.msdn.microsoft.com/visualstudio/2016/11/18/data-science-workloads-in-visual-studio-2017-rc/)によりインストールされます。
-+ Python Tools for Visual Studio：[Visual Studio用のPython Extensions](https://docs.microsoft.com/visualstudio/python/python-in-visual-studio).
+機械学習開発のライフサイクルは一般的に、データの取得とクレンジング、データの探索と特徴エンジニアリング、モデルのトレーニングとチューニング、そして最終的には本番環境へのモデル展開で構成されます。実際のコーディング、デバッグ、テストは、以下のようなPython用の統合開発環境（Python Tools for Visual Studio、PyCharm、Spyderなど）を使用するのが最適です。
 
 Python IDEでソリューションを作成してテストした後、PythonコードをTransact-SQLストアドプロシージャとしてSQL Serverに展開します。このチュートリアルでは、必要なすべてのPythonコードを提供します。
 
@@ -51,8 +47,6 @@ Python IDEでソリューションを作成してテストした後、Pythonコ�
 このチュートリアルでは、よく知られているNYC Taxiデータセットを使用します。このチュートリアルをすばやく簡単にするために、データはサンプリングして利用します。このデータセットの、時刻、距離、ピックアップ場所などの列に基づき、特定の乗車においてチップが得られるかどうかを予測するバイナリ分類モデルを作成します。
 
 ## 要件
-
-このチュートリアルは、データベースやテーブルの作成、テーブルへのデータのインポート、SQLクエリの作成など、基本的なデータベース操作に慣れているユーザーを対象としています。
 
 チュートリアルを開始する前に、次の準備を完了する必要があります。:
 
