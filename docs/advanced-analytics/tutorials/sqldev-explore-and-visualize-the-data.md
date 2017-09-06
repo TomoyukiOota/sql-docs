@@ -2,6 +2,9 @@
 
 このレッスンでは、サンプルデータを探索しR関数を使用していくつかのプロットを生成します。これらのR関数は、すでにRサービス（データベース内）に含まれています。 Transact-SQLからR関数を呼び出すことができます。
 
+## 出典
+[Lesson 3: Explore and visualize the data](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-explore-and-visualize-the-data)
+
 ## データの確認
 
 データサイエンスソリューション開発には、通常、集中的なデータの探索とデータの可視化が含まれます。まずサンプルデータを確認してください。

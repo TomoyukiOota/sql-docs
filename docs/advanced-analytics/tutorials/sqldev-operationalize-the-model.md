@@ -6,6 +6,10 @@
 
 - **個々のスコアリングモード**：個々のパラメータ値のセットを入力として渡します。ストアドプロシージャは単一のレコードまたは値を返します。
 
+## 出典
+
+(Lesson 6: Operationalize the R model)[https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-operationalize-the-model]
+
 ## バッチスコアリング
 
 1. 今回は小さな入力データセットを扱います。以下のクエリは予測を行うために必要な乗客数および他の特徴列を備えた10件の運転記録を返します。

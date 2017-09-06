@@ -2,6 +2,9 @@
 
 このレッスンでは、Rを使用して機械学習モデルをトレーニングする方法を学習します。作成したデータ特徴を使用してモデルをトレーニングし、訓練されたモデルをSQL Serverのテーブルに保存します。
 
+## 出典
+[Lesson 5: Train and save a model using T-SQL](https://docs.microsoft.com/en-us/sql/advanced-analytics/r/sqldev-train-and-save-a-model-using-t-sql)
+
 ## モデルのトレーニングのためのストアドプロシージャを作成する
 
 T-SQLからRを呼び出すときは、システムストアドプロシージャsp_execute_external_scriptを使用します。ここではモデルトレーニングを繰り返すことを念頭に、sp_execute_exernal_scriptをカプセル化した別のストアド・プロシージャ`TrainTipPredictionModel`を作成します。

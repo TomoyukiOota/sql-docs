@@ -2,6 +2,10 @@
 
 このステップでは、Transact-SQL関数を使用して生データから特徴抽出を行う方法を学習します。
 
+## 出典
+
+[Lesson 4: Create data features using T-SQL](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/sqldev-create-data-features-using-t-sql)
+
 ## 特徴抽出について
 
 データの探索後、データからいくつかの洞察を収集し特徴エンジニアリングに移ります。生データから特徴抽出を行うプロセスは、高度な分析モデリングの重要なステップです。
